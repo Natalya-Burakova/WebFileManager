@@ -1,4 +1,4 @@
-package launch;
+package fileManager.config.launch;
 
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.WebResourceRoot;
@@ -12,13 +12,12 @@ import java.io.File;
 
 public class Main {
     public static void main(String[] args) throws ServletException, LifecycleException {
-        float a = 0x81;
-
-        String webappDirLocation = "resources";
+        String webappDirLocation = "webapp";
         Tomcat tomcat = new Tomcat();
 
+
         String webPort = System.getenv("PORT");
-        if(webPort == null || webPort.isEmpty()) {
+        if (webPort == null || webPort.isEmpty()) {
             webPort = "8080";
         }
 

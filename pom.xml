@@ -44,7 +44,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib</classpathPrefix>
-                            <mainClass>launch.Main</mainClass>
+                            <mainClass>fileManager.config.launch.Main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -60,7 +60,7 @@
                             <goal>copy-resources</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${basedir}/target/resources/</outputDirectory>
+                            <outputDirectory>${basedir}/target/webapp/</outputDirectory>
                             <resources>
                                 <resource>
                                     <directory>src/main/web</directory>
@@ -112,7 +112,7 @@
                     <assembleDirectory>target</assembleDirectory>
                     <programs>
                         <program>
-                            <mainClass>launch.Main</mainClass>
+                            <mainClass>fileManager.config.launch.Main</mainClass>
                             <name>webapp</name>
                         </program>
                     </programs>
@@ -146,7 +146,6 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
-            <version>${org.springframework-version}</version>
         </dependency>
 
         <dependency>
@@ -264,6 +263,12 @@
             <groupId>org.apache.tomcat</groupId>
             <artifactId>tomcat-jsp-api</artifactId>
             <version>${tomcat.version}</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.webjars/angularjs -->
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>angularjs</artifactId>
+            <version>1.6.0</version>
         </dependency>
 
     </dependencies>
