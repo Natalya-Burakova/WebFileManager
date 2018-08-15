@@ -36,8 +36,8 @@
 
 
     <welcome-file-list>
-        <welcome-file>resources/login.html</welcome-file>
-        <welcome-file>resources/login.htm</welcome-file>
-        <welcome-file>resources/login.jsp</welcome-file>
+        <welcome-file>fileManager.resources/login.html</welcome-file>
+        <welcome-file>fileManager.resources/login.htm</welcome-file>
+        <welcome-file>fileManager.resources/login.jsp</welcome-file>
     </welcome-file-list>
 </web-app>
