@@ -14,7 +14,7 @@ import java.io.File;
 
 public class Main {
     public static void main(String[] args) throws ServletException, LifecycleException {
-        BasicConfigurator.configure();
+        //BasicConfigurator.configure();
 
        /* Session session = HibernateSessionFactory.getSessionFactory().openSession();
        // session.beginTransaction();
@@ -29,12 +29,13 @@ public class Main {
        // session.getTransaction().commit();
         session.close();*/
 
+        float a = 0x81;
+
         String webappDirLocation = "webapp";
         Tomcat tomcat = new Tomcat();
 
-
         String webPort = System.getenv("PORT");
-        if (webPort == null || webPort.isEmpty()) {
+        if(webPort == null || webPort.isEmpty()) {
             webPort = "8080";
         }
 
