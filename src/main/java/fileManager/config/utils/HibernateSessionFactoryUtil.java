@@ -1,7 +1,7 @@
 package fileManager.config.utils;
 
-import fileManager.app.model.User;
-import fileManager.app.model.UsersFile;
+import fileManager.app.models.User;
+import fileManager.app.models.UploadFile;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
@@ -16,7 +16,7 @@ public class HibernateSessionFactoryUtil {
             try {
                 Configuration configuration = new Configuration().configure();
                 configuration.addAnnotatedClass(User.class);
-                configuration.addAnnotatedClass(UsersFile.class);
+                configuration.addAnnotatedClass(UploadFile.class);
                 StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties());
                 sessionFactory = configuration.buildSessionFactory(builder.build());
             } catch (Exception e) { e.printStackTrace(); }

@@ -1,20 +1,22 @@
 package fileManager.config.launch;
 
-import fileManager.config.root.HibernateSessionFactory;
 import org.apache.catalina.LifecycleException;
+import org.apache.catalina.WebResourceRoot;
+import org.apache.catalina.core.StandardContext;
+import org.apache.catalina.startup.Tomcat;
+import org.apache.catalina.webresources.DirResourceSet;
+import org.apache.catalina.webresources.StandardRoot;
 import org.apache.log4j.BasicConfigurator;
 
-import org.hibernate.Session;
-
-
 import javax.servlet.ServletException;
+import java.io.File;
 
 
 public class Main {
     public static void main(String[] args) throws ServletException, LifecycleException {
         BasicConfigurator.configure();
 
-        Session session = HibernateSessionFactory.getSessionFactory().openSession();
+       /* Session session = HibernateSessionFactory.getSessionFactory().openSession();
        // session.beginTransaction();
 
         //User contactEntity = new User();
@@ -25,11 +27,9 @@ public class Main {
       //  session.save(contactEntity);
 
        // session.getTransaction().commit();
-        session.close();
+        session.close();*/
 
-
-
-        /*String webappDirLocation = "webapp";
+        String webappDirLocation = "webapp";
         Tomcat tomcat = new Tomcat();
 
 
@@ -49,6 +49,6 @@ public class Main {
         ctx.setResources(resources);
 
         tomcat.start();
-        tomcat.getServer().await();*/
+        tomcat.getServer().await();
     }
 }
