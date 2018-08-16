@@ -15,10 +15,12 @@ angular.module('common', ['ngMessages'])
             fieldWithFocus = undefined;
         };
 
+        /*если поле с именем или форму отправили - истинно, иначе ложно*/
         $scope.isMessagesVisible = function (fieldName) {
             return fieldWithFocus === fieldName || $scope.vm.submitted;
         };
 
+        /*подготовка данных*/
         $scope.preparePostData = function () {
             var username = $scope.vm.username != undefined ? $scope.vm.username : '';
             var password = $scope.vm.password != undefined ? $scope.vm.password : '';
@@ -26,9 +28,10 @@ angular.module('common', ['ngMessages'])
 
             return 'username=' + username + '&password=' + password + '&email=' + email;
         };
+        /*проверка есть ли в бд такой  пользователь*/
         $scope.login = function (username, password) {
             var postData = $scope.preparePostData();
-
+            /*отправляем post запрос*/
             $http({
                 method: 'POST',
                 url: '/authenticate',
@@ -38,9 +41,10 @@ angular.module('common', ['ngMessages'])
                     "X-Login-Ajax-call": 'true'
                 }
             })
+                /*смотрим ответ*/
                 .then(function(response) {
                     if (response.data == 'ok') {
-                        window.location.replace('/resources/calories-tracker.html');
+                        window.location.replace('/resources/start-page-web-file-manager.html');
                     }
                     else {
                         $scope.vm.errorMessages = [];
@@ -51,7 +55,7 @@ angular.module('common', ['ngMessages'])
 
 
     }])
-
+    /*проверка соответствия паролей*/
     .directive('checkPasswordsMatch', function () {
         return {
             require: 'ngModel',

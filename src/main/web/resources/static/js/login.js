@@ -1,4 +1,4 @@
-angular.module('loginApp', ['common', 'spring-security-csrf-token-interceptor', 'editableTableWidgets'])
+angular.module('loginApp', ['common', 'spring-security-csrf-token-interceptor', 'edit'])
     .controller('LoginCtrl', ['$scope', '$http', function ($scope, $http) {
 
         $scope.onLogin = function () {
@@ -10,7 +10,7 @@ angular.module('loginApp', ['common', 'spring-security-csrf-token-interceptor', 
                 return;
             }
 
-            $scope.login($scope.vm.userName, $scope.vm.password);
+            $scope.login($scope.vm.username, $scope.vm.password);
 
         };
 

@@ -10,13 +10,15 @@ public class User {
 
     private Integer id;
     private String login;
+    private String mail;
     private String password;
     private List<UploadFile> listAllUploadFile;
 
     public User(){}
 
-    public User(String login, String password) {
+    public User(String login, String mail, String password) {
         this.login = login;
+        this.mail = mail;
         this.password = password;
         listAllUploadFile = new ArrayList<UploadFile>();
     }
@@ -40,6 +42,16 @@ public class User {
 
     public void setLogin(String login) {
         this.login = login;
+    }
+
+    @Basic
+    @Column(name = "mail", nullable = false, length = 50)
+    public String getMail() {
+        return mail;
+    }
+
+    public void setMail(String mail) {
+        this.mail = mail;
     }
 
     @Basic

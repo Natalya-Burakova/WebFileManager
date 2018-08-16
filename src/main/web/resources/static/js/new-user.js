@@ -1,4 +1,4 @@
-angular.module('newUserApp', ['common', 'spring-security-csrf-token-interceptor', 'editableTableWidgets'])
+angular.module('newUserApp', ['common', 'spring-security-csrf-token-interceptor', 'edit'])
     .controller('NewUserCtrl', ['$scope', '$http', function ($scope, $http) {
 
         $scope.createUser = function () {
@@ -27,7 +27,7 @@ angular.module('newUserApp', ['common', 'spring-security-csrf-token-interceptor'
             })
                 .then(function (response) {
                     if (response.status == 200) {
-                        $scope.login($scope.vm.userName, $scope.vm.password);
+                        $scope.login($scope.vm.username, $scope.vm.password);
                     }
                     else {
                         $scope.vm.errorMessages = [];
