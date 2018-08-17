@@ -15,11 +15,12 @@ import javax.persistence.EntityManagerFactory;
 public class RootContextConfig {
 
     @Bean(name = "transactionManager")
-    public PlatformTransactionManager transactionManager(EntityManagerFactory entityManagerFactory,
-                                                         DriverManagerDataSource dataSource) {
+    public PlatformTransactionManager transactionManager(EntityManagerFactory entityManagerFactory, DriverManagerDataSource dataSource) {
+
         JpaTransactionManager transactionManager = new JpaTransactionManager();
         transactionManager.setEntityManagerFactory(entityManagerFactory);
         transactionManager.setDataSource(dataSource);
+
         return transactionManager;
     }
 

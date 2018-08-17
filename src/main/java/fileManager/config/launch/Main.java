@@ -28,9 +28,6 @@ public class Main {
 
        // session.getTransaction().commit();
         session.close();*/
-
-        float a = 0x81;
-
         String webappDirLocation = "webapp";
         Tomcat tomcat = new Tomcat();
 

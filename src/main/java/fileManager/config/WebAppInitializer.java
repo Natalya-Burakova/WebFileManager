@@ -10,8 +10,7 @@ public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServlet
 
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return new Class<?>[]{RootContextConfig.class, DevelopmentConfiguration.class,
-                AppSecurityConfig.class};
+        return new Class<?>[]{RootContextConfig.class, DevelopmentConfiguration.class, AppSecurityConfig.class};
     }
 
     @Override
@@ -23,8 +22,6 @@ public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServlet
     protected String[] getServletMappings() {
         return new String[]{"/"};
     }
-
-
 
 
 }
