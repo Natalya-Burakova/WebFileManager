@@ -9,4 +9,5 @@ public interface CrudDao<T> {
     void update(T model);
     void delete(Integer id);
     List<T> findAll();
+
 }
