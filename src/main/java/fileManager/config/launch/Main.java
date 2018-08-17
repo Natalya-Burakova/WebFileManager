@@ -14,7 +14,7 @@ import java.io.File;
 
 public class Main {
     public static void main(String[] args) throws ServletException, LifecycleException {
-        //BasicConfigurator.configure();
+        BasicConfigurator.configure();
 
        /* Session session = HibernateSessionFactory.getSessionFactory().openSession();
        // session.beginTransaction();

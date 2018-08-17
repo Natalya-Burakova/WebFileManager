@@ -1,5 +1,5 @@
 body {
-    background-color: #ffffff;
+    background-color: rgba(255, 255, 255, 0.99);
 }
 
 /* from PURE buttons-core.css */
@@ -93,7 +93,7 @@ body {
 .pure-skin-theme .pure-button-selected,
 .pure-skin-theme a.pure-button-primary,
 .pure-skin-theme a.pure-button-selected {
-    background-color: #67c0fc;
+    background-color: #cac81d;
     color: #2d3e50;
 }
 

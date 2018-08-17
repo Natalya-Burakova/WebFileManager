@@ -6,13 +6,27 @@ import java.util.List;
 
 @Entity
 @Table(name = "new_user")
+@NamedQueries({
+        @NamedQuery(
+                name = User.FIND_USER_BY_ID,
+                query = "select u from User u where id = :id"
+        ),
+        @NamedQuery(
+                name = User.FIND_USER_BY_LOGIN,
+                query = "select u from  User u where login = :login"
+        )
+})
 public class User {
+
+    public static final String FIND_USER_BY_ID = "user.findUserById";
+    public static final String FIND_USER_BY_LOGIN = "user.findUserByLogin";
 
     private Integer id;
     private String login;
     private String mail;
     private String password;
     private List<UploadFile> listAllUploadFile;
+
 
     public User(){}
 
@@ -29,7 +43,6 @@ public class User {
     public Integer getId() {
         return id;
     }
-
     public void setId(Integer id) {
         this.id = id;
     }
@@ -39,7 +52,6 @@ public class User {
     public String getLogin() {
         return login;
     }
-
     public void setLogin(String login) {
         this.login = login;
     }
@@ -49,7 +61,6 @@ public class User {
     public String getMail() {
         return mail;
     }
-
     public void setMail(String mail) {
         this.mail = mail;
     }
@@ -59,20 +70,15 @@ public class User {
     public String getPassword() {
         return password;
     }
-
     public void setPassword(String password) {
         this.password = password;
     }
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     public List<UploadFile> getListAllUploadFile() { return listAllUploadFile; }
-
     public void setListAllUploadFile(List<UploadFile>listAllUploadFile) { this.listAllUploadFile = listAllUploadFile; }
 
-    public void addFile(UploadFile file) {
-        file.setUser(this);
-        listAllUploadFile.add(file);
-    }
+    public void addFile(UploadFile file) { file.setUser(this);listAllUploadFile.add(file); }
 
     public void removeFile(UploadFile file) {
         listAllUploadFile.remove(file);
@@ -87,6 +93,7 @@ public class User {
 
         if (id != that.id) return false;
         if (login != null ? !login.equals(that.login) : that.login != null) return false;
+        if (mail != null ? !mail.equals(that.mail) : that.mail != null) return false;
         if (password != null ? !password.equals(that.password) : that.password != null) return false;
         return true;
     }
@@ -95,8 +102,12 @@ public class User {
     public int hashCode() {
         int result = id;
         result = 31 * result + (login != null ? login.hashCode() : 0);
+        result = 31 * result + (mail != null ? mail.hashCode() : 0);
         result = 31 * result + (password != null ? password.hashCode() : 0);
         return result;
     }
+
+    @Override
+    public String toString() { return "User{" + "login='" + login + '\'' + ", mail='" + mail + '\'' + '}'; }
 
 }

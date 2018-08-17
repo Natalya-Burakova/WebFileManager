@@ -41,7 +41,7 @@ angular.module('common', ['ngMessages'])
                     "X-Login-Ajax-call": 'true'
                 }
             })
-                /*смотрим ответ*/
+            /*смотрим ответ*/
                 .then(function(response) {
                     if (response.data == 'ok') {
                         window.location.replace('/resources/start-page-web-file-manager.html');

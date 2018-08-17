@@ -5,6 +5,6 @@ angular.module('edit', [])
             link: function(scope, element, attrs) {
                 scope.extraStyles = attrs.extraStyles;
             },
-            templateUrl: '/resources/public/partials/error-messages.html'
+            templateUrl: '/resources/public/partials/error.html'
         }
     }) /*директива для ошибок*/
