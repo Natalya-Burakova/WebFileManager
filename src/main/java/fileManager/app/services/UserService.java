@@ -14,20 +14,17 @@ import static fileManager.app.services.Validation.assertNotBlank;
 
 public class UserService {
 
-    private static final UserService userService = new UserService();
-
-    private UserService(){}
-
-    public static UserService getInstance(){ return userService; }
-
     private static final Pattern PASSWORD_REGEX = Pattern.compile("(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{6,}");
     private static final Pattern EMAIL_REGEX = Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
 
+
     private UserDao usersDao = UserDaoImpl.getInstance();
 
+    private static final UserService userService = new UserService();
+    private UserService(){}
+    public static UserService getInstance(){ return userService; }
 
     public void createUser(String login, String mail, String password) {
-
         assertNotBlank(login, "Login cannot be empty.");
         assertMinimumLength(login, 6, "Login must have at least 6 characters.");
         assertNotBlank(mail, "Email cannot be empty.");
@@ -40,8 +37,11 @@ public class UserService {
         User user = new User(login, mail, new BCryptPasswordEncoder().encode(password));
         usersDao.save(user);
     }
+
     public User findUserByLogin(String login) { return usersDao.findUserByLogin(login);}
 
     public boolean isUserExist(User user) { return usersDao.isUserExist(user); }
+
+
 
 }

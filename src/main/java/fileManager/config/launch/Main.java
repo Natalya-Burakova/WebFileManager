@@ -20,8 +20,6 @@ import java.io.File;
 public class Main {
     public static void main(String[] args) throws ServletException, LifecycleException {
         BasicConfigurator.configure();
-        //UserService userService = new UserService();
-      //  userService.createUser("nataNura", "n-f@mail.ru", "1997Erwre");
 
         String webappDirLocation = "webapp";
         Tomcat tomcat = new Tomcat();

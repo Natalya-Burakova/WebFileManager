@@ -27,12 +27,8 @@ public class UserController {
 
         userService.createUser(user.getLogin(), user.getMail(), user.getPassword());
 
-        if (userService.isUserExist(userEntity)) {
-            response.setStatus(HttpStatus.OK.value());
-            System.out.println("ok");
-        }
+        if (userService.isUserExist(userEntity)) response.setStatus(HttpStatus.OK.value());
         else response.setStatus(HttpStatus.NOT_FOUND.value());
-
     }
 
     @ExceptionHandler(Exception.class)
