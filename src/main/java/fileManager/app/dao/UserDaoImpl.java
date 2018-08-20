@@ -8,28 +8,17 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
 
 
 public class UserDaoImpl implements UserDao{
 
-    private Map<String, User> users = new HashMap<String, User>();
-
     private static final UserDaoImpl userDao = new UserDaoImpl();
-
     private UserDaoImpl(){}
-
     public static UserDaoImpl getInstance(){ return userDao; }
 
     @Override
-    public User findUserById(Integer id) {
-        return (User) HibernateSessionFactoryUtil.getSessionFactory().openSession().get(User.class, id);
-    }
-
-
+    public User findUserById(Integer id) { return (User) HibernateSessionFactoryUtil.getSessionFactory().openSession().get(User.class, id); }
 
     @Override
     public User findUserByLogin(String login) {
@@ -40,8 +29,8 @@ public class UserDaoImpl implements UserDao{
 
     @Override
     public boolean isLoginAvailable(String login) {
-        if (!users.containsKey(login))
-            return true;
+        Query query = HibernateSessionFactoryUtil.getSessionFactory().openSession().createQuery("from User where login = :login").setString("login", login);
+        if (query.list().isEmpty()) return true;
         return false;
     }
 
