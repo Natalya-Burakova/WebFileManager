@@ -1,5 +1,10 @@
 package fileManager.config.launch;
 
+import com.mchange.v2.c3p0.DriverManagerDataSource;
+import fileManager.app.dao.UserDao;
+import fileManager.app.dao.UserDaoImpl;
+import fileManager.app.models.User;
+import fileManager.app.services.UserService;
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.WebResourceRoot;
 import org.apache.catalina.core.StandardContext;
@@ -15,19 +20,9 @@ import java.io.File;
 public class Main {
     public static void main(String[] args) throws ServletException, LifecycleException {
         BasicConfigurator.configure();
+        //UserService userService = new UserService();
+      //  userService.createUser("nataNura", "n-f@mail.ru", "1997Erwre");
 
-       /* Session session = HibernateSessionFactory.getSessionFactory().openSession();
-       // session.beginTransaction();
-
-        //User contactEntity = new User();
-
-       // contactEntity.setLogin("rdjrtj");
-       // contactEntity.setPassword("Nick");
-
-      //  session.save(contactEntity);
-
-       // session.getTransaction().commit();
-        session.close();*/
         String webappDirLocation = "webapp";
         Tomcat tomcat = new Tomcat();
 

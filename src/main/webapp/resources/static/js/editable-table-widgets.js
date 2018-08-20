@@ -1,4 +1,4 @@
-angular.module('edit', [])
+angular.module('editableTableWidgets', [])
     .directive('ttErrorMessages', function() {
         return {
             restrict: 'E',
@@ -7,4 +7,4 @@ angular.module('edit', [])
             },
             templateUrl: '/resources/public/partials/error.html'
         }
-    }) /*директива для ошибок*/
+    });

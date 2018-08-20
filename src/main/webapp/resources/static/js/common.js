@@ -1,5 +1,6 @@
 angular.module('common', ['ngMessages'])
     .controller('BaseFormCtrl', ['$scope', '$http', function ($scope, $http) {
+
         var fieldWithFocus;
 
         $scope.vm = {
@@ -15,35 +16,34 @@ angular.module('common', ['ngMessages'])
             fieldWithFocus = undefined;
         };
 
-        /*если поле с именем или форму отправили - истинно, иначе ложно*/
         $scope.isMessagesVisible = function (fieldName) {
             return fieldWithFocus === fieldName || $scope.vm.submitted;
         };
 
-        /*подготовка данных*/
         $scope.preparePostData = function () {
             var username = $scope.vm.username != undefined ? $scope.vm.username : '';
             var password = $scope.vm.password != undefined ? $scope.vm.password : '';
             var email = $scope.vm.email != undefined ? $scope.vm.email : '';
 
-            return 'username=' + username + '&password=' + password + '&email=' + email;
-        };
-        /*проверка есть ли в бд такой  пользователь*/
+            return {login: username,
+                password: password,
+                mail: email};
+        }
+
         $scope.login = function (username, password) {
             var postData = $scope.preparePostData();
-            /*отправляем post запрос*/
+
             $http({
                 method: 'POST',
                 url: '/authenticate',
                 data: postData,
                 headers: {
-                    "Content-Type": "application/x-www-form-urlencoded",
-                    "X-Login-Ajax-call": 'true'
+                    "Content-Type": "application/json",
+                    "Accept": "text/plain"
                 }
             })
-            /*смотрим ответ*/
                 .then(function(response) {
-                    if (response.data == 'ok') {
+                    if (response.status == 200) {
                         window.location.replace('/resources/start-page-web-file-manager.html');
                     }
                     else {
@@ -55,7 +55,6 @@ angular.module('common', ['ngMessages'])
 
 
     }])
-    /*проверка соответствия паролей*/
     .directive('checkPasswordsMatch', function () {
         return {
             require: 'ngModel',
