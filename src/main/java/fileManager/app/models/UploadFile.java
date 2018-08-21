@@ -8,12 +8,13 @@ import javax.persistence.*;
 public class UploadFile {
 
         private Integer id;
-        private String fileName;
+        private String urlFile;
         private User user;
+        private byte[] file;
 
         public UploadFile() {}
 
-        public UploadFile(String fileName) { this.fileName = fileName; }
+        public UploadFile(String urlFile) { this.urlFile = urlFile; }
 
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,18 +22,16 @@ public class UploadFile {
         public Integer getId() {
             return id;
         }
-
         public void setId(Integer id) { this.id = id; }
 
 
         @Basic
-        @Column(name = "fileName", nullable = false, length = 50)
-        public String getFileName() {
-            return fileName;
+        @Column(name = "urlFile", nullable = false, length = 50)
+        public String getUrlFile() {
+            return urlFile;
         }
-
-        public void setFileName(String fileName) {
-            this.fileName = fileName;
+        public void setUrlFile(String urlFile) {
+            this.urlFile = urlFile;
         }
 
 
@@ -42,11 +41,19 @@ public class UploadFile {
         public User getUser() {
             return user;
         }
-
         public void setUser(User user) {
             this.user = user;
         }
 
+
+        @Basic
+        @Column(name = "file", nullable = false)
+        public byte[] getFile() {
+                return file;
+        }
+        public void setFile(byte[] file) {
+                this.file = file;
+        }
 
 }
 

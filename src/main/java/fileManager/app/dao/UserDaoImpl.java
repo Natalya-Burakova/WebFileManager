@@ -2,7 +2,7 @@ package fileManager.app.dao;
 
 import fileManager.app.models.UploadFile;
 import fileManager.app.models.User;
-import fileManager.app.services.UserService;
+
 import fileManager.config.utils.HibernateSessionFactoryUtil;
 import org.hibernate.Query;
 import org.hibernate.Session;

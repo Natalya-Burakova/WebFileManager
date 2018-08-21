@@ -1,21 +1,42 @@
+
 angular.module('frontendServices', [])
     .service('FileService', ['$http', '$q', function($http, $q) {
         return {
-            searchFile: function(fileName, pageNumber) {
+            searchFiles: function() {
                 var deferred = $q.defer();
 
-                $http.get('/file/',{
-                    params: {
-                        fileName: fileName,
-                        pageNumber: pageNumber
-                    }
-                })
+                $http.get('/file/')
                     .then(function (response) {
                         if (response.status == 200) {
                             deferred.resolve(response.data);
                         }
                         else {
                             deferred.reject('Error retrieving list of meals');
+                        }
+                    });
+
+                return deferred.promise;
+            },
+            saveFiles: function(files) {
+                console.log("hello save files")
+                var deferred = $q.defer();
+
+                $http({
+                    method: 'POST',
+                    url: '/file',
+                    data: files,
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Accept": "text/plain, application/json"
+                    }
+                })
+                    .then(function (response) {
+                        if (response.status == 200) {
+                            console.log('save files');
+                            deferred.resolve();
+                        }
+                        else {
+                            deferred.reject("Error saving meals: " + response.data);
                         }
                     });
 
@@ -29,7 +50,9 @@ angular.module('frontendServices', [])
                     method: 'DELETE',
                     url: '/file',
                     data: deletedFileIds,
-                    headers: {"Content-Type": "application/json"}
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
                 })
                     .then(function (response) {
                         if (response.status == 200) {
@@ -42,30 +65,6 @@ angular.module('frontendServices', [])
 
                 return deferred.promise;
             },
-
-            saveFiles: function(dirtyFiles) {
-                var deferred = $q.defer();
-
-                $http({
-                    method: 'POST',
-                    url: '/file',
-                    data: dirtyFiles,
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Accept": "text/plain, application/json"
-                    }
-                })
-                    .then(function (response) {
-                        if (response.status == 200) {
-                            deferred.resolve();
-                        }
-                        else {
-                            deferred.reject("Error saving meals: " + response.data);
-                        }
-                    });
-
-                return deferred.promise;
-            }
         }
     }])
     .service('UserService', ['$http','$q', function($http, $q) {
@@ -82,7 +81,6 @@ angular.module('frontendServices', [])
                             deferred.reject('Error retrieving user info');
                         }
                     });
-
                 return deferred.promise;
             },
             logout: function () {
@@ -92,7 +90,7 @@ angular.module('frontendServices', [])
                 })
                     .then(function (response) {
                         if (response.status == 200) {
-                            window.location.reload();
+                            window.location.assign("/");
                         }
                         else {
                             console.log("Logout failed!");

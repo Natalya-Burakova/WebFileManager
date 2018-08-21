@@ -7,6 +7,7 @@ public class UserDto {
     private String password;
 
     public UserDto() { }
+    public UserDto(String login) { this.login = login; }
 
     public String getLogin() {
         return login;

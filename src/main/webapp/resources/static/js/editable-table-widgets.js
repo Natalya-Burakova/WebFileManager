@@ -3,7 +3,7 @@ angular.module('editableTableWidgets', [])
         return {
             restrict: 'E',
             link: function(scope, element, attrs) { scope.extraStyles = attrs.extraStyles; },
-            templateUrl: '/resources/public/partials/error-messages.html'
+            templateUrl: '/resources/public/partials/error.html'
         }
     })
     .directive('ttEditableRow', function() {

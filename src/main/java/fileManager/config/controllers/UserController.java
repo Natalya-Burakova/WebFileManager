@@ -7,11 +7,13 @@ import fileManager.app.services.UserService;
 import org.springframework.http.HttpStatus;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 
 @Controller
@@ -19,6 +21,21 @@ import javax.servlet.http.HttpServletResponse;
 public class UserController {
 
     private UserService userService = UserService.getInstance();
+
+    @ResponseBody
+    @ResponseStatus(HttpStatus.OK)
+    @RequestMapping(method = RequestMethod.GET)
+    public UserDto getUserInfo(HttpServletRequest request, HttpServletResponse response) {
+       HttpSession session = request.getSession(false);
+       User user =null;
+       if (session==null || session.getAttribute("user")==null);
+       else {
+           UserDetails userDetails = (UserDetails) session.getAttribute("user");
+           user = userService.findUserByLogin(userDetails.getUsername());
+       }
+       return user != null ? new UserDto(user.getLogin()) : null;
+    }
+
 
     @ResponseStatus(HttpStatus.OK)
     @RequestMapping(method = RequestMethod.POST)
@@ -32,6 +49,8 @@ public class UserController {
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<String> errorHandler(Exception exc) { return new ResponseEntity<>(exc.getMessage(), HttpStatus.BAD_REQUEST); }
+    public ResponseEntity<String> errorHandler(Exception exc) {
+        return new ResponseEntity<>(exc.getMessage(), HttpStatus.BAD_REQUEST);
+    }
 
 }

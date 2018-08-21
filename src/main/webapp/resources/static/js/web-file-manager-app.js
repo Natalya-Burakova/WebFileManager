@@ -1,23 +1,24 @@
-angular.module('webFileManager', ['editableTableWidgets', 'frontendServices', 'spring-security-csrf-token-interceptor'])
+angular.module('fileManagerApp', ['editableTableWidgets', 'frontendServices', 'spring-security-csrf-token-interceptor'])
     .filter('excludeDeleted', function () {
         return function (input) {
-            return _.filter(input, function (item) {return item.deleted == undefined || !item.deleted;});
+            return _.filter(input, function (item) {
+                return item.deleted == undefined || !item.deleted;
+            });
         }
     })
-    .controller('WebFileCtrl', ['$scope' , 'FileService', 'UserService', '$timeout',
+    .controller('FileManagerCtrl', ['$scope' , 'FileService', 'UserService', '$timeout',
         function ($scope, FileService, UserService, $timeout) {
 
             $scope.vm = {
-                currentPage: 1,
-                totalPages: 0,
+                originalFiles: [],
                 files: [],
                 isSelectionEmpty: true,
                 errorMessages: [],
                 infoMessages: []
             };
 
-            updateFiles();
-            loadFileData(null, 1);
+            updateUserInfo();
+            loadFileData();
 
 
             function showErrorMessage(errorMessage) {
@@ -25,39 +26,30 @@ angular.module('webFileManager', ['editableTableWidgets', 'frontendServices', 's
                 $scope.vm.errorMessages.push({description: errorMessage});
             }
 
-            function updateFiles() {
-                FileService.getFiles()
+            function updateUserInfo() {
+                UserService.getUserInfo()
                     .then(function (userInfo) {
-                            $scope.vm.userName = userInfo.userName;
-
+                            $scope.vm.userName = userInfo.login;
                         },
-                        function (errorMessage) {showErrorMessage(errorMessage);});
+                        function (errorMessage) {
+                            showErrorMessage(errorMessage);
+                        });
             }
 
-            function markAppAsInitialized() {
-                if ($scope.vm.appReady == undefined) {
-                    $scope.vm.appReady = true;
-                }
-            }
 
-            function loadFileData(fileName, pageNumber) {
-                FileService.searchFile(fileName, pageNumber)
+            function loadFileData() {
+
+                FileService.searchFiles()
                     .then(function (data) {
-
+                            $scope.vm.files = data.files;
                             $scope.vm.errorMessages = [];
-                            $scope.vm.currentPage = data.currentPage;
-                            $scope.vm.totalPages = data.totalPages;
 
-                            $scope.vm.originalFiles = _.map(data.files, function (file) {
-                                return file; });
-
+                            $scope.vm.originalFiles = _.map(data.files);
                             $scope.vm.files = _.cloneDeep($scope.vm.originalFiles);
 
                             _.each($scope.vm.files, function (file) {
                                 file.selected = false;
                             });
-
-                            markAppAsInitialized();
 
                             if ($scope.vm.files && $scope.vm.files.length == 0) {
                                 showInfoMessage("No results found.");
@@ -65,7 +57,6 @@ angular.module('webFileManager', ['editableTableWidgets', 'frontendServices', 's
                         },
                         function (errorMessage) {
                             showErrorMessage(errorMessage);
-                            markAppAsInitialized();
                         });
             }
 
@@ -73,10 +64,6 @@ angular.module('webFileManager', ['editableTableWidgets', 'frontendServices', 's
                 $scope.vm.errorMessages = [];
                 $scope.vm.infoMessages = [];
             }
-
-
-
-
 
             function showInfoMessage(infoMessage) {
                 $scope.vm.infoMessages = [];
@@ -88,72 +75,49 @@ angular.module('webFileManager', ['editableTableWidgets', 'frontendServices', 's
 
 
             $scope.selectionChanged = function () {
-                $scope.vm.isSelectionEmpty = !_.any($scope.vm.files, function (meal) {
-                    return files.selected && !files.deleted;
+                $scope.vm.isSelectionEmpty = !_.any($scope.vm.files, function (file) {
+                    return file.selected && !file.deleted;
                 });
             };
 
-            $scope.pages = function () {
-                return _.range(1, $scope.vm.totalPages + 1);
-            };
 
-            $scope.search = function (page) {
-                    loadFileData($scope.vm.fileName, page == undefined ? 1 : page);
-            };
 
-            $scope.previous = function () {
-                if ($scope.vm.currentPage > 1) {
-                    $scope.vm.currentPage-= 1;
-                    loadFileData($e.vm.fileName, $scope.vm.currentPage)}
-            };
-
-            $scope.next = function () {
-                if ($scope.vm.currentPage < $scope.vm.totalPages) {
-                    $scope.vm.currentPage += 1;
-                    loadFileData($scope.vm.fileName, $scope.vm.currentPage);
-                }
-            };
-
-            $scope.goToPage = function (pageNumber) {
-                if (pageNumber > 0 && pageNumber <= $scope.vm.totalPages) {
-                    $scope.vm.currentPage = pageNumber;
-                    loadFileData($scope.vm.fileName, pageNumber);
-                }
+            $scope.search = function () {
+                loadFileData();
             };
 
             $scope.add = function () {
                 $scope.vm.files.unshift({
                     id: null,
-                    datetime: null,
-                    description: null,
-                    calories: null,
+                    urlFile: null,
                     selected: false,
                     new: true
                 });
             };
 
+            $scope.down = function () {};
+
             $scope.delete = function () {
-                var deletedMealIds = _.chain($scope.vm.meals)
-                    .filter(function (meal) {
-                        return meal.selected && !meal.new;
+                var deletedFileIds = _.chain($scope.vm.files)
+                    .filter(function (file) {
+                        return file.selected && !file.new;
                     })
-                    .map(function (meal) {
-                        return meal.id;
+                    .map(function (file) {
+                        return file.id;
                     })
                     .value();
 
-                MealService.deleteMeals(deletedMealIds)
+                FileService.deleteFiles(deletedFileIds)
                     .then(function () {
                             clearMessages();
                             showInfoMessage("deletion successful.");
 
-                            _.remove($scope.vm.meals, function(meal) {
-                                return meal.selected;
+                            _.remove($scope.vm.files, function(file) {
+                                return file.selected;
                             });
 
                             $scope.selectionChanged();
                             updateUserInfo();
-
                         },
                         function () {
                             clearMessages();
@@ -162,82 +126,77 @@ angular.module('webFileManager', ['editableTableWidgets', 'frontendServices', 's
             };
 
             $scope.reset = function () {
-                $scope.vm.meals = $scope.vm.originalMeals;
+                $scope.vm.files = $scope.vm.originalFiles;
             };
 
-            function getNotNew(meals) {
-                return  _.chain(meals)
-                    .filter(function (meal) {
-                        return !meal.new;
+            function getNotNew(files) {
+                return  _.chain(files)
+                    .filter(function (file) {
+                        return !file.new;
                     })
                     .value();
             }
 
-            function prepareMealsDto(meals) {
-                return  _.chain(meals)
-                    .each(function (meal) {
-                        if (meal.datetime) {
-                            var dt = meal.datetime.split(" ");
-                            meal.date = dt[0];
-                            meal.time = dt[1];
-                        }
-                    })
-                    .map(function (meal) {
+            function prepareFilesDto(files) {
+                return  _.chain(files)
+                    .map(function (file) {
                         return {
-                            id: meal.id,
-                            date: meal.date,
-                            time: meal.time,
-                            description: meal.description,
-                            calories: meal.calories,
-                            version: meal.version
+                            id: file.id,
+                            urlFile: file.urlFile
                         }
                     })
                     .value();
             }
 
             $scope.save = function () {
+                var maybeDirty = prepareFilesDto(getNotNew($scope.vm.files));
 
-                var maybeDirty = prepareMealsDto(getNotNew($scope.vm.meals));
+                var original = prepareFilesDto(getNotNew($scope.vm.originalFiles));
 
-                var original = prepareMealsDto(getNotNew($scope.vm.originalMeals));
+                var dirty = _.filter(maybeDirty).filter(function (file) {
 
-                var dirty = _.filter(maybeDirty).filter(function (meal) {
-
-                    var originalMeal = _.filter(original, function (orig) {
-                        return orig.id === meal.id;
+                    var originalFile = _.filter(original, function (orig) {
+                        return orig.id === file.id;
                     });
 
-                    if (originalMeal.length == 1) {
-                        originalMeal = originalMeal[0];
+                    if (originalFile.length == 1) {
+                        originalFile = originalFile[0];
                     }
 
-                    return originalMeal && ( originalMeal.date != meal.date ||
-                        originalMeal.time != meal.time || originalMeal.description != meal.description ||
-                        originalMeal.calories != meal.calories)
+                    return originalFile && ( originalFile.urlFile != file.urlFile)
                 });
 
-                var newItems = _.filter($scope.vm.meals, function (meal) {
-                    return meal.new;
+                var newItems = _.filter($scope.vm.files, function (file) {
+                    return file.new;
                 });
 
-                var saveAll = prepareMealsDto(newItems);
+                var saveAll = prepareFilesDto(newItems);
                 saveAll = saveAll.concat(dirty);
 
                 $scope.vm.errorMessages = [];
 
-                /
-                MealService.saveMeals(saveAll).then(function () {
-                        $scope.search($scope.vm.currentPage);
+                FileService.saveFiles(saveAll).then(function () {
+                        $scope.search();
                         showInfoMessage("Changes saved successfully");
-                        updateUserInfo();
                     },
                     function (errorMessage) {
                         showErrorMessage(errorMessage);
                     });
-
             };
 
-            $scope.logout = function () { FileService.logout();}
+            $scope.logout = function () {
+                UserService.logout();
+            };
 
-
-        }]);
+        }])
+    .directive("selectNgFiles", function() {
+        return {
+            require: "ngModel",
+            link: function postLink(scope,elem,attrs,ngModel) {
+                elem.on("change", function(e) {
+                    var files = elem[0].files;
+                    ngModel.$setViewValue(files);
+                })
+            }
+        }
+    });

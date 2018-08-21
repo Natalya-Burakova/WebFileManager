@@ -6,7 +6,7 @@ require.config({
         lodash: "../../bower_components/lodash/dist/lodash",
         editableTableWidgets: '../../static/js/editable-table-widgets',
         frontendServices: 'frontend-services',
-        webFileManager: "web-file-manager-app"
+        fileManagerApp: "web-file-manager-app"
     },
     shim: {
         angular: {
@@ -24,12 +24,12 @@ require.config({
         frontendServices: {
             deps: ['angular', 'lodash', 'csrfInterceptor']
         },
-        webFileManager: {
+        fileManagerApp: {
             deps: [ 'lodash', 'angular', 'angularMessages', 'editableTableWidgets' , 'frontendServices']
         }
     }
 });
 
-require(['webFileManager'], function () {
-    angular.bootstrap(document.getElementById('webFileManager'), ['webFileManager']);
+require(['fileManagerApp'], function () {
+    angular.bootstrap(document.getElementById('fileManagerApp'), ['fileManagerApp']);
 });
