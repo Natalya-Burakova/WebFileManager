@@ -13,6 +13,7 @@ import org.apache.catalina.webresources.DirResourceSet;
 import org.apache.catalina.webresources.StandardRoot;
 import org.apache.log4j.BasicConfigurator;
 
+
 import javax.servlet.ServletException;
 import java.io.File;
 
@@ -20,7 +21,6 @@ import java.io.File;
 public class Main {
     public static void main(String[] args) throws ServletException, LifecycleException {
         BasicConfigurator.configure();
-
         String webappDirLocation = "webapp";
         Tomcat tomcat = new Tomcat();
 

@@ -2,8 +2,6 @@ angular.module('newUserApp', ['common', 'spring-security-csrf-token-interceptor'
     .controller('NewUserCtrl', ['$scope', '$http', function ($scope, $http) {
 
         $scope.createUser = function () {
-            console.log('Creating user with username ' + $scope.vm.username + ' and password ' + $scope.vm.password);
-
             $scope.vm.submitted = true;
 
             if ($scope.form.$invalid) {

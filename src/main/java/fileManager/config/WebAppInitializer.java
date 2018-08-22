@@ -1,7 +1,10 @@
 package fileManager.config;
 
 import fileManager.config.servlets.ServletContextConfig;
+
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
+
+
 
 public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 

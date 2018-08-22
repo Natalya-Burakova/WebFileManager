@@ -29,57 +29,6 @@ header a {
 
 }
 
-.today-calories-container {
-    position: relative;
-    height: 68px;
-    display: inline-block;
-    vertical-align: top;
-}
-
-.today-calories {
-    position: absolute;
-    top: 50%;
-    margin-top: -17px;
-    display: inline-block;
-    vertical-align: top;
-    height: 1.2em;
-    margin-left: 1em;
-    min-width: 11em;
-    padding: 0.4em 0 0.4em 0;
-    text-align: center;
-    width: 10%;
-    text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.3);
-    border-radius: 6px;
-    border: 2px solid white;
-    background: white;
-    color: #000000;
-}
-
-.today-calories-placeholder {
-    width: 26px;
-    display: inline-block;
-}
-
-.today-calories.cal-limit-ok {
-    color: #eee;
-    border: 2px solid darkgreen;
-    background: green;
-}
-
-.today-calories.cal-limit-nok {
-    color: #eee;
-    border: 2px solid darkred;
-    background: firebrick;
-}
-
-.max-cal {
-    max-width: 5em;
-    height: 1.1em;
-    border-radius: 3px;
-    margin-left: 0.2em;
-    font-size: 90%;
-}
-
 .username {
     font-size: 85%;
     margin-left: 1em;
@@ -105,6 +54,7 @@ a.logout:hover {
 .container {
     margin: 0 0.6em;
 }
+
 
 @media screen and (min-width: 48em) {
     .container {
@@ -143,12 +93,24 @@ a.logout:hover {
         margin-top: 0.7em;
     }
 }
-
-.meals-list {
-    margin-top: 2em;
+.file_upload input[type=file]{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 150%;
+    height: 100%;
+    transform: scale(20);
+    letter-spacing: 10em;     /* IE 9 fix */
+    -ms-transform: scale(20); /* IE 9 fix */
+    opacity: 0;
+    cursor: pointer
+}
+.file-list {
+    margin-top: 0.3em;
 }
 
 .table-buttons {
+    margin-top: 0.4em;
     margin-bottom: 0.4em;
 }
 
@@ -156,37 +118,37 @@ a.logout:hover {
     font-size: 85%;
 }
 
-.meals-list table {
+.file-list table {
     width: 100%;
     table-layout: fixed;
     font-size: 95%;
 }
 
-.pure-skin-theme .meals-list table input[type="text"] {
+.pure-skin-theme .file-list table input[type="text"] {
     padding-top: 0;
     padding-bottom: 0;
 }
 
-.meals-list table .selection-column {
+.file-list table .selection-column {
     width: 1em;
 }
 
-.meals-list table td {
+.file-list table td {
     cursor: pointer;
 }
 
-.pure-skin-theme .meals-list table td.editable-cell {
+.pure-skin-theme .file-list table td.editable-cell {
     padding: 0;
 }
 
-.pure-skin-theme .meals-list table td.editable-cell .edit-widget {
+.pure-skin-theme .file-list table td.editable-cell .edit-widget {
     margin-left: 5px;
     margin-right: 5px;
     padding-top: 0.2em;
     padding-bottom: 0.2em;
 }
 
-.pure-skin-theme .pure-form .meals-list table input[type="text"] {
+.pure-skin-theme .pure-form .file-list table input[type="text"] {
     width: 100%;
     height: 21px;
     max-width: none;
@@ -389,9 +351,3 @@ a.logout:hover {
     z-index: -10;
 }
 
-
-@media screen and (max-width: 585px) {
-    .today-calories-container {
-        display: block;
-    }
-}

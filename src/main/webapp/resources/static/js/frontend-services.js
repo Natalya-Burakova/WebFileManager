@@ -11,7 +11,7 @@ angular.module('frontendServices', [])
                             deferred.resolve(response.data);
                         }
                         else {
-                            deferred.reject('Error retrieving list of meals');
+                            deferred.reject('Error retrieving list');
                         }
                     });
 
@@ -36,7 +36,7 @@ angular.module('frontendServices', [])
                             deferred.resolve();
                         }
                         else {
-                            deferred.reject("Error saving meals: " + response.data);
+                            deferred.reject("Error saving: " + response.data);
                         }
                     });
 
@@ -59,7 +59,7 @@ angular.module('frontendServices', [])
                             deferred.resolve();
                         }
                         else {
-                            deferred.reject('Error deleting meals');
+                            deferred.reject('Error deleting');
                         }
                     });
 
@@ -98,4 +98,24 @@ angular.module('frontendServices', [])
                     });
             }
         };
+    }])
+    .service('fileUpload', ['$http', '$q', function ($http, $q) {
+        this.uploadFileToUrl = function(file, uploadUrl){
+            var deferred = $q.defer();
+            var fd = new FormData();
+            fd.append('file', file);
+            $http.post(uploadUrl, fd, {
+                transformRequest: angular.identity,
+                headers: {'Content-Type': undefined}})
+                .then(function (response) {
+                    if (response.status == 200) {
+                        deferred.resolve(response.data);
+                    }
+                    else {
+                        deferred.reject('Error retrieving user info');
+                    }
+                });
+            return deferred.promise;
+
+        }
     }]);

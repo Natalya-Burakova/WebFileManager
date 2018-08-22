@@ -18,7 +18,7 @@ public class UserService {
     private static final Pattern EMAIL_REGEX = Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
 
 
-    private UserDao usersDao = UserDaoImpl.getInstance();
+    private UserDaoImpl usersDao = UserDaoImpl.getInstance();
 
     private static final UserService userService = new UserService();
     private UserService(){}

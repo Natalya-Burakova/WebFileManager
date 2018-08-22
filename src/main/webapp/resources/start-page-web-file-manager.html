@@ -3,7 +3,7 @@
 <head lang="en">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Calories Tracker</title>
+    <title>Web File Manager</title>
     <link rel="stylesheet" href="/resources/bower_components/pure/pure.css">
     <link rel="stylesheet" href="/resources/bower_components/pure/grids-responsive.css">
     <link rel="stylesheet" href="/resources/static/css/pure-theme.css">
@@ -34,27 +34,18 @@
 
 <main class="container">
     <form class="pure-form pure-form-aligned search-form">
-        <div class="meals-list">
-            <div class="table-buttons">
-                <button type="submit" class="pure-button"  ng-click="add()">Add</button>
-                <button type="submit" class="pure-button" ng-click="delete()" ng-disabled="vm.isSelectionEmpty" disabled>Add to basket</button>
-                <input type="file" select-ng-files ng-model="fileArray" multiple>
-                <code><table ng-show="fileArray.length">
-                    <tr><td>Name</td><td>Date</td><td>Size</td><td>Type</td><tr>
-                    <tr ng-repeat="file in fileArray" >
-                        <td>{{file.name}}</td>
-                        <td>{{file.lastModified | date  : 'MMMdd,yyyy'}}</td>
-                        <td>{{file.size}}</td>
-                        <td>{{file.type}}</td>
-                    </tr>
-                </table></code>
-            </div>
-
+        <div class="table-buttons">
+            <label for="file"> Select a file to upload: </label>
+            <input type="file"  id="file" name="file" value="file" file-model="myFile"/>
+            <br>
+            <button type="submit" class="pure-button" ng-click="uploadFile()">Upload</button>
+        </div>
+        <div class="file-list">
             <table class="pure-table">
                 <thead>
                 <tr>
                     <th class="selection-column"></th>
-                    <th>Url</th>
+                    <th>File name</th>
                     <th>Download</th>
                 </tr>
                 </thead>
@@ -73,6 +64,9 @@
                 </tr>
                 </tbody>
             </table>
+            <div class="table-buttons">
+                <button type="submit" class="pure-button" ng-click="delete()" ng-disabled="vm.isSelectionEmpty" disabled>Add to basket</button>
+            </div>
         </div>
 
 

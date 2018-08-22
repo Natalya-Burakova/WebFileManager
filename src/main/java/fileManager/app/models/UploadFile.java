@@ -1,6 +1,8 @@
 package fileManager.app.models;
 
 
+import org.hibernate.annotations.Type;
+
 import javax.persistence.*;
 
 @Entity
@@ -14,7 +16,11 @@ public class UploadFile {
 
         public UploadFile() {}
 
-        public UploadFile(String urlFile) { this.urlFile = urlFile; }
+        public UploadFile(String urlFile, User user, byte[] file) {
+                this.urlFile = urlFile;
+                this.user = user;
+                this.file= file;
+        }
 
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,7 +32,7 @@ public class UploadFile {
 
 
         @Basic
-        @Column(name = "urlFile", nullable = false, length = 50)
+        @Column(name = "url_file", nullable = false, length = 50)
         public String getUrlFile() {
             return urlFile;
         }
@@ -37,7 +43,7 @@ public class UploadFile {
 
 
         @ManyToOne(fetch = FetchType.LAZY)
-        @JoinColumn(name = "user_id", nullable = false)
+        @JoinColumn(name = "user_id")
         public User getUser() {
             return user;
         }
@@ -47,7 +53,7 @@ public class UploadFile {
 
 
         @Basic
-        @Column(name = "file", nullable = false)
+        @Column(name = "file", columnDefinition="bytea")
         public byte[] getFile() {
                 return file;
         }

@@ -4,10 +4,11 @@ angular.module('fileManagerApp', ['editableTableWidgets', 'frontendServices', 's
             return _.filter(input, function (item) {
                 return item.deleted == undefined || !item.deleted;
             });
+
         }
     })
-    .controller('FileManagerCtrl', ['$scope' , 'FileService', 'UserService', '$timeout',
-        function ($scope, FileService, UserService, $timeout) {
+    .controller('FileManagerCtrl', ['$scope' , 'FileService', 'UserService','fileUpload', '$timeout',
+        function ($scope, FileService, UserService, fileUpload, $timeout) {
 
             $scope.vm = {
                 originalFiles: [],
@@ -86,16 +87,15 @@ angular.module('fileManagerApp', ['editableTableWidgets', 'frontendServices', 's
                 loadFileData();
             };
 
+
             $scope.add = function () {
-                $scope.vm.files.unshift({
+               $scope.vm.files.unshift({
                     id: null,
                     urlFile: null,
                     selected: false,
                     new: true
                 });
             };
-
-            $scope.down = function () {};
 
             $scope.delete = function () {
                 var deletedFileIds = _.chain($scope.vm.files)
@@ -150,31 +150,20 @@ angular.module('fileManagerApp', ['editableTableWidgets', 'frontendServices', 's
 
             $scope.save = function () {
                 var maybeDirty = prepareFilesDto(getNotNew($scope.vm.files));
-
                 var original = prepareFilesDto(getNotNew($scope.vm.originalFiles));
-
                 var dirty = _.filter(maybeDirty).filter(function (file) {
-
-                    var originalFile = _.filter(original, function (orig) {
-                        return orig.id === file.id;
-                    });
-
+                    var originalFile = _.filter(original, function (orig) {return orig.id === file.id;});
                     if (originalFile.length == 1) {
                         originalFile = originalFile[0];
                     }
-
                     return originalFile && ( originalFile.urlFile != file.urlFile)
                 });
-
                 var newItems = _.filter($scope.vm.files, function (file) {
                     return file.new;
                 });
-
                 var saveAll = prepareFilesDto(newItems);
                 saveAll = saveAll.concat(dirty);
-
                 $scope.vm.errorMessages = [];
-
                 FileService.saveFiles(saveAll).then(function () {
                         $scope.search();
                         showInfoMessage("Changes saved successfully");
@@ -184,19 +173,37 @@ angular.module('fileManagerApp', ['editableTableWidgets', 'frontendServices', 's
                     });
             };
 
+
             $scope.logout = function () {
                 UserService.logout();
             };
 
-        }])
-    .directive("selectNgFiles", function() {
-        return {
-            require: "ngModel",
-            link: function postLink(scope,elem,attrs,ngModel) {
-                elem.on("change", function(e) {
-                    var files = elem[0].files;
-                    ngModel.$setViewValue(files);
-                })
+            $scope.uploadFile = function(){
+                var file = $scope.myFile;
+                console.log('file is ' );
+                console.dir(file);
+                var uploadUrl = "/upload";
+                fileUpload.uploadFileToUrl(file, uploadUrl);
+            };
+
+            $scope.updateNew = function () {
+                loadFileData();
             }
-        }
-    });
+
+        }])
+    .directive('fileModel', ['$parse', function ($parse) {
+        return {
+            restrict: 'A',
+            link: function(scope, element, attrs) {
+                var model = $parse(attrs.fileModel);
+                var modelSetter = model.assign;
+
+                element.bind('change', function(){
+                    scope.$apply(function(){
+                        modelSetter(scope, element[0].files[0]);
+                    });
+
+                });
+            }
+        };
+    }]);
