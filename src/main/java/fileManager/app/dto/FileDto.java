@@ -1,38 +1,42 @@
 package fileManager.app.dto;
 
 
-import fileManager.app.models.UploadFile;
-
-import java.util.List;
-import java.util.stream.Collectors;
-
 public class FileDto {
 
     private Integer id;
+    private String nameFile;
     private String urlFile;
+    private String type;
+    private long size;
+    private Boolean status;
 
 
     public FileDto(){}
 
-    public FileDto(Integer id, String urlFile) {
+    public FileDto(Integer id, String nameFile, String urlFile, String type, Long size, Boolean status) {
         this.id = id;
+        this.nameFile = nameFile;
         this.urlFile = urlFile;
+        this.type = type;
+        this.size = size;
+        this.status = status;
     }
 
     public void setId(Integer id) { this.id = id; }
     public Integer getId() { return id; }
 
-    public void setUrlFile(String urlFile) { this.urlFile = urlFile;}
+    public void setNameFile(String urlFile) { this.nameFile = nameFile;}
+    public String getNameFile() { return nameFile; }
+
+    public void setUrlFile(String urlFile) { this.urlFile = urlFile; }
     public String getUrlFile() { return urlFile; }
 
-    public static FileDto mapFromFileEntity(UploadFile uploadFile) {
-        return new FileDto(uploadFile.getId(), uploadFile.getUrlFile());
-    }
+    public void setSize(Long size) { this.size = size; }
+    public Long getSize() { return size; }
 
-    public static List<FileDto> mapFromFilesEntities(List<UploadFile> files) {
-        return files.stream().map((file) -> mapFromFileEntity(file)).collect(Collectors.toList());
-    }
+    public void setType(String type) { this.type = type; }
+    public String getType() { return type; }
 
-
-
+    public void setStatus(Boolean status) { this.status = status; }
+    public Boolean getStatus() { return status; }
 }

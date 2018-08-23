@@ -31,13 +31,11 @@
 </header>
 
 
-
 <main class="container">
+    <label style="margin-top: 0.4em" for="file"> Select a file to upload: </label>
+    <input type="file" id="file" name="file" value="file" file-model="myFile" style="margin-top: 1em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 350px"/>
     <form class="pure-form pure-form-aligned search-form">
         <div class="table-buttons">
-            <label for="file"> Select a file to upload: </label>
-            <input type="file"  id="file" name="file" value="file" file-model="myFile"/>
-            <br>
             <button type="submit" class="pure-button" ng-click="uploadFile()">Upload</button>
         </div>
         <div class="file-list">
@@ -46,7 +44,10 @@
                 <tr>
                     <th class="selection-column"></th>
                     <th>File name</th>
-                    <th>Download</th>
+                    <th width="140">Type</th>
+                    <th width="80">Size</th>
+                    <th width="70">Download</th>
+                    <th width="90">In basket?</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -55,17 +56,27 @@
                     <td class="selection-column">
                         <input type="checkbox" ng-model="file.selected" ng-click="selectionChanged()">
                     </td>
-                    <td tt-editable-cell value="file.urlFile" is-new="file.urlFile">
-                        <input type="text" tt-cell-field ng-model="file.urlFile">
+                    <td tt-editable-cell  value="file.nameFile" is-new="file.nameFile">
+                        <input type="text" tt-cell-field ng-model="file.nameFile" >
                     </td>
-                    <td class="table-buttons" width="10">
-                        <button type="submit" class="table-buttons" ng-click="down()">-></button>
+                    <td tt-editable-cell  value="file.type" is-new="file.type">
+                        <input type="text" tt-cell-field ng-model="file.type" readonly/>
+                    </td>
+                    <td tt-editable-cell  value="file.size" is-new="file.size">
+                        <input type="text" tt-cell-field ng-model="file.size" readonly/>
+                    </td>
+                    <td class="table-buttons" >
+                        <button type="button" ng-click="goToUrlFile(file.urlFile)" ng-disabled="file.status" disabled>-></button>
+                    </td>
+                    <td tt-editable-cell  value="file.status" is-new="file.status">
+                        <input type="text" tt-cell-field ng-model="file.status" readonly/>
                     </td>
                 </tr>
                 </tbody>
             </table>
             <div class="table-buttons">
-                <button type="submit" class="pure-button" ng-click="delete()" ng-disabled="vm.isSelectionEmpty" disabled>Add to basket</button>
+                <button type="submit" class="pure-button" ng-click="delete()" ng-disabled="vm.isSelectionEmpty" disabled>Delete</button>
+                <button type="submit" class="pure-button" ng-click="addToBasket()"  ng-disabled="vm.isSelectionEmpty" disabled>Add to basket</button>
             </div>
         </div>
 

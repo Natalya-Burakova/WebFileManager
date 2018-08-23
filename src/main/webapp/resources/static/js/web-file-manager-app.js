@@ -39,7 +39,6 @@ angular.module('fileManagerApp', ['editableTableWidgets', 'frontendServices', 's
 
 
             function loadFileData() {
-
                 FileService.searchFiles()
                     .then(function (data) {
                             $scope.vm.files = data.files;
@@ -91,7 +90,11 @@ angular.module('fileManagerApp', ['editableTableWidgets', 'frontendServices', 's
             $scope.add = function () {
                $scope.vm.files.unshift({
                     id: null,
+                    nameFile: null,
                     urlFile: null,
+                    size: null,
+                    status: null,
+                    type: null,
                     selected: false,
                     new: true
                 });
@@ -99,12 +102,8 @@ angular.module('fileManagerApp', ['editableTableWidgets', 'frontendServices', 's
 
             $scope.delete = function () {
                 var deletedFileIds = _.chain($scope.vm.files)
-                    .filter(function (file) {
-                        return file.selected && !file.new;
-                    })
-                    .map(function (file) {
-                        return file.id;
-                    })
+                    .filter(function (file) {return file.selected && !file.new;})
+                    .map(function (file) {return file.id;})
                     .value();
 
                 FileService.deleteFiles(deletedFileIds)
@@ -112,9 +111,7 @@ angular.module('fileManagerApp', ['editableTableWidgets', 'frontendServices', 's
                             clearMessages();
                             showInfoMessage("deletion successful.");
 
-                            _.remove($scope.vm.files, function(file) {
-                                return file.selected;
-                            });
+                            _.remove($scope.vm.files, function(file) {return file.selected;});
 
                             $scope.selectionChanged();
                             updateUserInfo();
@@ -125,57 +122,40 @@ angular.module('fileManagerApp', ['editableTableWidgets', 'frontendServices', 's
                         });
             };
 
+
+            $scope.addToBasket = function () {
+                var addToBasketFileIds = _.chain($scope.vm.files)
+                    .filter(function (file) {return file.selected && !file.new;})
+                    .map(function (file) {return file.id;})
+                    .value();
+
+                FileService.addToBasketFiles(addToBasketFileIds)
+                    .then(function () {
+                            clearMessages();
+                            showInfoMessage("add to basket successful.");
+                            _.remove($scope.vm.files, function(file) {return file.selected;});
+
+                            $scope.selectionChanged();
+                            updateUserInfo();
+                        },
+                        function () {
+                            clearMessages();
+                            $scope.vm.errorMessages.push({description: "add to basket failed."});
+                        });
+            };
+
+
             $scope.reset = function () {
                 $scope.vm.files = $scope.vm.originalFiles;
             };
 
-            function getNotNew(files) {
-                return  _.chain(files)
-                    .filter(function (file) {
-                        return !file.new;
-                    })
-                    .value();
-            }
-
-            function prepareFilesDto(files) {
-                return  _.chain(files)
-                    .map(function (file) {
-                        return {
-                            id: file.id,
-                            urlFile: file.urlFile
-                        }
-                    })
-                    .value();
-            }
-
-            $scope.save = function () {
-                var maybeDirty = prepareFilesDto(getNotNew($scope.vm.files));
-                var original = prepareFilesDto(getNotNew($scope.vm.originalFiles));
-                var dirty = _.filter(maybeDirty).filter(function (file) {
-                    var originalFile = _.filter(original, function (orig) {return orig.id === file.id;});
-                    if (originalFile.length == 1) {
-                        originalFile = originalFile[0];
-                    }
-                    return originalFile && ( originalFile.urlFile != file.urlFile)
-                });
-                var newItems = _.filter($scope.vm.files, function (file) {
-                    return file.new;
-                });
-                var saveAll = prepareFilesDto(newItems);
-                saveAll = saveAll.concat(dirty);
-                $scope.vm.errorMessages = [];
-                FileService.saveFiles(saveAll).then(function () {
-                        $scope.search();
-                        showInfoMessage("Changes saved successfully");
-                    },
-                    function (errorMessage) {
-                        showErrorMessage(errorMessage);
-                    });
+            $scope.logout = function () {
+                UserService.logout();
             };
 
 
-            $scope.logout = function () {
-                UserService.logout();
+            $scope.updateList = function () {
+                loadFileData();
             };
 
             $scope.uploadFile = function(){
@@ -186,8 +166,22 @@ angular.module('fileManagerApp', ['editableTableWidgets', 'frontendServices', 's
                 fileUpload.uploadFileToUrl(file, uploadUrl);
             };
 
-            $scope.updateNew = function () {
-                loadFileData();
+            $scope.goToUrlFile = function (data) {
+                console.log(data);
+                var fileName = data.toString().substring(data.toString().lastIndexOf("/")+1,data.toString().length);
+                console.log(fileName);
+                FileService.goToUrlFile(data)
+                    .then(function (value) {
+                        var blob = new Blob([value], {type: "multipart/form-data"});
+                        var fileURL = window.URL.createObjectURL(blob);
+                        var a = document.createElement("a");
+                        document.body.appendChild(a);
+                        a.style = "display: none";
+                        a.href = fileURL;
+                        a.download = fileName;
+                        a.click();
+
+                    })
             }
 
         }])

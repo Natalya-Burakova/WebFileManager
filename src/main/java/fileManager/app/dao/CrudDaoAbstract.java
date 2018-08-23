@@ -35,7 +35,5 @@ public abstract class CrudDaoAbstract implements CrudDao{
     }
 
     @Override
-    public List findAll() {
-        return null;
-    }
+    public List findAll() { return null; }
 }

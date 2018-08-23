@@ -17,32 +17,24 @@ angular.module('frontendServices', [])
 
                 return deferred.promise;
             },
-            saveFiles: function(files) {
-                console.log("hello save files")
+
+            goToUrlFile: function(name) {
                 var deferred = $q.defer();
 
-                $http({
-                    method: 'POST',
-                    url: '/file',
-                    data: files,
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Accept": "text/plain, application/json"
-                    }
-                })
+                $http.get(name,{ responseType: 'arraybuffer' })
                     .then(function (response) {
                         if (response.status == 200) {
-                            console.log('save files');
-                            deferred.resolve();
+                            deferred.resolve(response.data);
+                            return response;
                         }
                         else {
-                            deferred.reject("Error saving: " + response.data);
+                            alert("File does not exist.")
+                            deferred.reject('Error retrieving list');
                         }
                     });
 
                 return deferred.promise;
             },
-
             deleteFiles: function(deletedFileIds) {
                 var deferred = $q.defer();
 
@@ -57,6 +49,29 @@ angular.module('frontendServices', [])
                     .then(function (response) {
                         if (response.status == 200) {
                             deferred.resolve();
+                        }
+                        else {
+                            deferred.reject('Error deleting');
+                        }
+                    });
+
+                return deferred.promise;
+            },
+            addToBasketFiles: function(addToBasketFileIds) {
+                var deferred = $q.defer();
+
+                $http({
+                    method: 'POST',
+                    url: '/file',
+                    data: addToBasketFileIds,
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                })
+                    .then(function (response) {
+                        if (response.status == 200) {
+                            deferred.resolve();
+                            window.location.replace('/resources/start-page-web-file-manager.html');
                         }
                         else {
                             deferred.reject('Error deleting');
@@ -90,7 +105,7 @@ angular.module('frontendServices', [])
                 })
                     .then(function (response) {
                         if (response.status == 200) {
-                            window.location.assign("/");
+                            window.location.replace('/resources/start-page-web-file-manager.html');
                         }
                         else {
                             console.log("Logout failed!");
@@ -110,9 +125,16 @@ angular.module('frontendServices', [])
                 .then(function (response) {
                     if (response.status == 200) {
                         deferred.resolve(response.data);
+                        alert("Your file download successful.");
+                        window.location.assign('/resources/start-page-web-file-manager.html');
+                    }
+                    else if (response.status == 400) {
+                        deferred.reject('Error. File with name already exist');
+                        alert('Error. File with name already exist.');
                     }
                     else {
-                        deferred.reject('Error retrieving user info');
+                        deferred.reject('Error. File was not uploaded.');
+                        alert('Error. File was not uploaded.');
                     }
                 });
             return deferred.promise;

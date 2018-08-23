@@ -8,5 +8,7 @@ import java.util.List;
 
 public interface FileDao {
     List<UploadFile> findFilesForUser(User user);
-    byte[] getDocumentFile(Integer id);
+    UploadFile getFileById(Integer id);
+    boolean isFileExist(UploadFile file);
+    UploadFile getFileByName(String fileName);
 }

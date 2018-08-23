@@ -6,20 +6,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "new_user")
-@NamedQueries({
-        @NamedQuery(
-                name = User.FIND_USER_BY_ID,
-                query = "select u from User u where id = :id"
-        ),
-        @NamedQuery(
-                name = User.FIND_USER_BY_LOGIN,
-                query = "select u from  User u where login = :login"
-        )
-})
 public class User {
-
-    public static final String FIND_USER_BY_ID = "user.findUserById";
-    public static final String FIND_USER_BY_LOGIN = "user.findUserByLogin";
 
     private Integer id;
     private String login;

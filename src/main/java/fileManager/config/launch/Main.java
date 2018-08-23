@@ -1,10 +1,5 @@
 package fileManager.config.launch;
 
-import com.mchange.v2.c3p0.DriverManagerDataSource;
-import fileManager.app.dao.UserDao;
-import fileManager.app.dao.UserDaoImpl;
-import fileManager.app.models.User;
-import fileManager.app.services.UserService;
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.WebResourceRoot;
 import org.apache.catalina.core.StandardContext;

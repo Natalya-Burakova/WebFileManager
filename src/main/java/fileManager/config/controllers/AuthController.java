@@ -37,7 +37,6 @@ public class AuthController {
             if (new BCryptPasswordEncoder().matches(user.getPassword(), userDetails.getPassword())) {
                 HttpSession session = request.getSession(false);
                 if (session != null) session.invalidate();
-
                 session = request.getSession();
                 session.setAttribute("user", userDetails);
                 response.setStatus(HttpStatus.OK.value());

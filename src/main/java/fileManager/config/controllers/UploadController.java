@@ -1,60 +1,65 @@
 package fileManager.config.controllers;
 
 
+
+import fileManager.app.models.UploadFile;
+import fileManager.app.models.User;
 import fileManager.app.services.FileService;
 import fileManager.app.services.UserService;
 
 import org.springframework.context.annotation.Bean;
-import org.springframework.core.annotation.Order;
 import org.springframework.http.*;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
-import org.springframework.web.multipart.support.MultipartFilter;
 
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.List;
 
 
 @Controller
 @RequestMapping(value = "/upload")
 public class UploadController {
 
-    FileService fileService = FileService.getInstance();
-
-    @Bean(name = "filterMultipartResolver")
-    public CommonsMultipartResolver multiPartResolver(){
-        CommonsMultipartResolver resolver = new CommonsMultipartResolver();
-        return resolver;
-    }
-
     @RequestMapping(method = RequestMethod.POST)
-    public void uploadFile(@RequestParam(value = "file", required = true) MultipartFile file, HttpServletResponse response) throws IOException {
-        fileService.save(UserService.getInstance().findUserByLogin("nataBur"),file);
-        response.setStatus(HttpStatus.OK.value());
+    public void uploadFile(@RequestParam(value = "file", required = true) MultipartFile file, HttpServletResponse response, HttpServletRequest request) throws IOException {
+        HttpSession session = request.getSession(false);
+        if (session == null && session.getAttribute("user") == null)
+            response.setStatus(HttpStatus.NOT_FOUND.value());
+        else {
+            UserDetails userDetails = (UserDetails) session.getAttribute("user");
+            User user = UserService.getInstance().findUserByLogin(userDetails.getUsername());
+            if (!FileService.getInstance().isFileExist(new UploadFile(file.getOriginalFilename()))) {
+                FileService.getInstance().saveFile(user, file, request.getRequestURL() + "/" + file.getOriginalFilename());
+                response.setStatus(HttpStatus.OK.value());
+            }
+            else
+                response.setStatus(HttpStatus.BAD_REQUEST.value());
+        }
     }
 
-    /*
+
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public HttpEntity getDocument(@PathVariable Integer id) {
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.IMAGE_JPEG);
-        return new ResponseEntity(fileService.getDocumentFile(id), httpHeaders, HttpStatus.OK);
+    public ResponseEntity<byte[]> getFile(HttpServletRequest request, HttpServletResponse response) {
+        String nameFile = request.getRequestURL().substring(request.getRequestURL().lastIndexOf("/")+1);
+        UploadFile file =  FileService.getInstance().findFileByFileName(nameFile);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentDispositionFormData(nameFile, nameFile);
+        headers.setContentType(MediaType.parseMediaType(file.getType()));
+        return new ResponseEntity<byte[]>(file.getFile(), headers, HttpStatus.OK);
     }
-
-    @RequestMapping(method = RequestMethod.GET)
-    public @ResponseBody List getDocument() {
-        return  fileService.findFileForUser("nataBur");
-    }*/
 
     @Bean
     public CommonsMultipartResolver multipartResolver() {
         CommonsMultipartResolver multipart = new CommonsMultipartResolver();
-        multipart.setMaxUploadSize(3 * 1024 * 1024);
+        multipart.setMaxUploadSize(10 * 1024 * 1024);
         return multipart;
     }
+
 
 }

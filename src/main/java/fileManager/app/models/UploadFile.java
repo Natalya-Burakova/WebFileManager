@@ -1,25 +1,37 @@
 package fileManager.app.models;
 
 
-import org.hibernate.annotations.Type;
-
 import javax.persistence.*;
+import java.util.Date;
+
 
 @Entity
 @Table(name = "new_file")
 public class UploadFile {
 
         private Integer id;
+        private String nameFile;
         private String urlFile;
+        private String type;
+        private Long size;
+        private Boolean status;
+        private Date data;
         private User user;
         private byte[] file;
 
         public UploadFile() {}
 
-        public UploadFile(String urlFile, User user, byte[] file) {
+        public UploadFile(String nameFile) { this.nameFile = nameFile; }
+
+        public UploadFile(String nameFile, String urlFile, User user, byte[] file, String type, Boolean status, Long size, Date data) {
+                this.nameFile = nameFile;
                 this.urlFile = urlFile;
                 this.user = user;
                 this.file= file;
+                this.type = type;
+                this.status = status;
+                this.size =size;
+                this.data = data;
         }
 
         @Id
@@ -32,12 +44,10 @@ public class UploadFile {
 
 
         @Basic
-        @Column(name = "url_file", nullable = false, length = 50)
-        public String getUrlFile() {
-            return urlFile;
-        }
-        public void setUrlFile(String urlFile) {
-            this.urlFile = urlFile;
+        @Column(name = "name_file", nullable = false)
+        public String getNameFile() { return nameFile; }
+        public void setNameFile(String nameFile) {
+            this.nameFile = nameFile;
         }
 
 
@@ -53,12 +63,46 @@ public class UploadFile {
 
 
         @Basic
-        @Column(name = "file", columnDefinition="bytea")
-        public byte[] getFile() {
-                return file;
+        @Column(name = "url_file", nullable = false)
+        public String getUrlFile() {
+                return urlFile;
         }
+        public void setUrlFile(String urlFile) {
+                this.urlFile = urlFile;
+        }
+
+
+        @Basic
+        @Column(name = "type", nullable = false)
+        public String getType() { return type; }
+        public void setType(String type) {
+                this.type = type;
+        }
+
+
+        @Basic
+        @Column(name = "status", nullable = false)
+        public Boolean getStatus() { return status; }
+        public void setStatus(Boolean status) { this.status = status; }
+
+        @Basic
+        @Column(name = "size", nullable = false)
+        public Long getSize() { return size; }
+        public void setSize(Long size) { this.size = size; }
+
+
+        @Basic
+        @Column(name = "file", columnDefinition="bytea")
+        public byte[] getFile() { return file; }
         public void setFile(byte[] file) {
                 this.file = file;
+        }
+
+        @Basic
+        @Column(name = "data", nullable = false)
+        public Date getData() { return data; }
+        public void setData(Date data) {
+                this.data = data;
         }
 
 }

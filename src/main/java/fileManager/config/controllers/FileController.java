@@ -33,24 +33,39 @@ public class FileController {
             UserDetails user = (UserDetails) session.getAttribute("user");
             List<UploadFile> savedFiles = fileService.findFileForUser(user.getUsername());
             for (UploadFile file: savedFiles)
-                listFile.add(new FileDto(file.getId(), file.getUrlFile()));
+                listFile.add(new FileDto(file.getId(), file.getNameFile(), file.getUrlFile(), file.getType(),file.getSize(), file.getStatus()));
         }
         return new FilesDto(listFile);
     }
 
+
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
     @RequestMapping(method = RequestMethod.POST)
-    public List<FileDto> saveFiles(@RequestBody List<FileDto> files) {
-        return null;
+    public void addToBasketFiles(@RequestBody List<Integer> deletedFileIds, HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession(false);
+        if (session!=null && session.getAttribute("user")!=null) {
+            UserDetails user = (UserDetails) session.getAttribute("user");
+            fileService.addToBasketFilesById(user.getUsername(), deletedFileIds);
+            response.setStatus(HttpStatus.OK.value());
+        }
+        else
+            response.setStatus(HttpStatus.NOT_FOUND.value());
     }
+
 
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
     @RequestMapping(method = RequestMethod.DELETE)
-    public void deleteMeals(@RequestBody List<Long> deletedMealIds) {
-        System.out.println("delete zapros");
-
+    public void deleteFiles(@RequestBody List<Integer> deletedFileIds, HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession(false);
+        if (session!=null && session.getAttribute("user")!=null) {
+            UserDetails user = (UserDetails) session.getAttribute("user");
+            fileService.deleteFilesById(user.getUsername(), deletedFileIds);
+            response.setStatus(HttpStatus.OK.value());
+        }
+        else
+            response.setStatus(HttpStatus.NOT_FOUND.value());
     }
 
     @ExceptionHandler(Exception.class)
