@@ -27,7 +27,7 @@ public class UserController {
     @RequestMapping(method = RequestMethod.GET)
     public UserDto getUserInfo(HttpServletRequest request, HttpServletResponse response) {
        HttpSession session = request.getSession(false);
-       User user =null;
+       User user = null;
        if (session==null || session.getAttribute("user")==null);
        else {
            UserDetails userDetails = (UserDetails) session.getAttribute("user");

@@ -4,9 +4,7 @@ angular.module('newUserApp', ['common', 'spring-security-csrf-token-interceptor'
         $scope.createUser = function () {
             $scope.vm.submitted = true;
 
-            if ($scope.form.$invalid) {
-                return;
-            }
+            if ($scope.form.$invalid) {return;}
 
             var postData = {
                 login: $scope.vm.username,
@@ -31,6 +29,7 @@ angular.module('newUserApp', ['common', 'spring-security-csrf-token-interceptor'
                         $scope.vm.errorMessages = [];
                         $scope.vm.errorMessages.push({description: response.data});
                         console.log("failed user creation: " + response.data);
+                        alert("Error. Failed user creation: " + response.data);
                     }
                 });
         }

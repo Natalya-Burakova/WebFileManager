@@ -7,25 +7,27 @@ public class FileDto {
     private String nameFile;
     private String urlFile;
     private String type;
+    private String info;
     private long size;
     private Boolean status;
 
 
     public FileDto(){}
 
-    public FileDto(Integer id, String nameFile, String urlFile, String type, Long size, Boolean status) {
+    public FileDto(Integer id, String nameFile, String urlFile, String type, Long size, Boolean status, String info) {
         this.id = id;
         this.nameFile = nameFile;
         this.urlFile = urlFile;
         this.type = type;
         this.size = size;
         this.status = status;
+        this.info = info;
     }
 
     public void setId(Integer id) { this.id = id; }
     public Integer getId() { return id; }
 
-    public void setNameFile(String urlFile) { this.nameFile = nameFile;}
+    public void setNameFile(String nameFile) { this.nameFile = nameFile;}
     public String getNameFile() { return nameFile; }
 
     public void setUrlFile(String urlFile) { this.urlFile = urlFile; }
@@ -39,4 +41,8 @@ public class FileDto {
 
     public void setStatus(Boolean status) { this.status = status; }
     public Boolean getStatus() { return status; }
+
+    public void setInfo(String info) { this.info = info; }
+    public String getInfo() { return info; }
+
 }

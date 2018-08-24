@@ -16,6 +16,7 @@ import java.io.File;
 public class Main {
     public static void main(String[] args) throws ServletException, LifecycleException {
         BasicConfigurator.configure();
+
         String webappDirLocation = "webapp";
         Tomcat tomcat = new Tomcat();
 

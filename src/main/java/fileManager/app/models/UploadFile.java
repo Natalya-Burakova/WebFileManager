@@ -14,6 +14,7 @@ public class UploadFile {
         private String urlFile;
         private String type;
         private Long size;
+        private String info;
         private Boolean status;
         private Date data;
         private User user;
@@ -23,7 +24,7 @@ public class UploadFile {
 
         public UploadFile(String nameFile) { this.nameFile = nameFile; }
 
-        public UploadFile(String nameFile, String urlFile, User user, byte[] file, String type, Boolean status, Long size, Date data) {
+        public UploadFile(String nameFile, String urlFile, User user, byte[] file, String type, Boolean status, Long size, Date data, String info) {
                 this.nameFile = nameFile;
                 this.urlFile = urlFile;
                 this.user = user;
@@ -32,6 +33,7 @@ public class UploadFile {
                 this.status = status;
                 this.size =size;
                 this.data = data;
+                this.info = info;
         }
 
         @Id
@@ -96,6 +98,14 @@ public class UploadFile {
         public byte[] getFile() { return file; }
         public void setFile(byte[] file) {
                 this.file = file;
+        }
+
+
+        @Basic
+        @Column(name = "info", nullable = false)
+        public String getInfo() { return info; }
+        public void setInfo(String info) {
+                this.info = info;
         }
 
         @Basic

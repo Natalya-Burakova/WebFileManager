@@ -11,4 +11,5 @@ public interface FileDao {
     UploadFile getFileById(Integer id);
     boolean isFileExist(UploadFile file);
     UploadFile getFileByName(String fileName);
+    List<UploadFile> findAll();
 }

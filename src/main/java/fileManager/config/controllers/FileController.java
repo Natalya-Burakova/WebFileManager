@@ -33,13 +33,12 @@ public class FileController {
             UserDetails user = (UserDetails) session.getAttribute("user");
             List<UploadFile> savedFiles = fileService.findFileForUser(user.getUsername());
             for (UploadFile file: savedFiles)
-                listFile.add(new FileDto(file.getId(), file.getNameFile(), file.getUrlFile(), file.getType(),file.getSize(), file.getStatus()));
+                listFile.add(new FileDto(file.getId(), file.getNameFile(), file.getUrlFile(), file.getType(),file.getSize(), file.getStatus(), file.getInfo()));
         }
         return new FilesDto(listFile);
     }
 
 
-    @ResponseBody
     @ResponseStatus(HttpStatus.OK)
     @RequestMapping(method = RequestMethod.POST)
     public void addToBasketFiles(@RequestBody List<Integer> deletedFileIds, HttpServletRequest request, HttpServletResponse response) {
@@ -54,7 +53,20 @@ public class FileController {
     }
 
 
-    @ResponseBody
+    @ResponseStatus(HttpStatus.OK)
+    @RequestMapping(method = RequestMethod.PUT)
+    public void returnFromBasketFiles(@RequestBody List<Integer> returnFilesIds,HttpServletRequest request, HttpServletResponse response ) {
+        HttpSession session = request.getSession(false);
+        if (session!=null && session.getAttribute("user")!=null) {
+            UserDetails user = (UserDetails) session.getAttribute("user");
+            fileService.returnFromBasketFilesById(user.getUsername(), returnFilesIds);
+            response.setStatus(HttpStatus.OK.value());
+        }
+        else
+            response.setStatus(HttpStatus.NOT_FOUND.value());
+    }
+
+
     @ResponseStatus(HttpStatus.OK)
     @RequestMapping(method = RequestMethod.DELETE)
     public void deleteFiles(@RequestBody List<Integer> deletedFileIds, HttpServletRequest request, HttpServletResponse response) {

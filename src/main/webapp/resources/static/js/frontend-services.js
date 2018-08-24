@@ -11,25 +11,52 @@ angular.module('frontendServices', [])
                             deferred.resolve(response.data);
                         }
                         else {
-                            deferred.reject('Error retrieving list');
+                            alert("Error. It is not possible to download ");
+                            deferred.reject('Error');
                         }
                     });
 
                 return deferred.promise;
             },
 
+            addFileInfo: function(name) {
+                var deferred = $q.defer();
+
+                $http({
+                    method: 'PUT',
+                    url: '/upload',
+                    data: name,
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                })
+                    .then(function (response) {
+                        if (response.status == 200) {
+                            deferred.resolve();
+                            window.location.replace('/resources/start-page-web-file-manager.html');
+                        }
+                        else {
+                            alert("Error. It is not possible to upload file. ");
+                            deferred.reject('Error');
+                        }
+                    });
+
+                return deferred.promise;
+
+
+            },
             goToUrlFile: function(name) {
                 var deferred = $q.defer();
 
                 $http.get(name,{ responseType: 'arraybuffer' })
                     .then(function (response) {
-                        if (response.status == 200) {
+                        if (response.status == 200 && response.data!=null) {
                             deferred.resolve(response.data);
                             return response;
                         }
                         else {
-                            alert("File does not exist.")
-                            deferred.reject('Error retrieving list');
+                            alert("File does not exist.");
+                            deferred.reject('Error');
                         }
                     });
 
@@ -51,7 +78,8 @@ angular.module('frontendServices', [])
                             deferred.resolve();
                         }
                         else {
-                            deferred.reject('Error deleting');
+                            alert("Error. It is not possible to delete. ");
+                            deferred.reject('Error');
                         }
                     });
 
@@ -74,12 +102,55 @@ angular.module('frontendServices', [])
                             window.location.replace('/resources/start-page-web-file-manager.html');
                         }
                         else {
-                            deferred.reject('Error deleting');
+                            alert("Error. It is not possible to add to basket. ");
+                            deferred.reject('Error');
                         }
                     });
 
                 return deferred.promise;
             },
+
+            viewDownloadStatisticsFiles: function() {
+                var deferred = $q.defer();
+                $http.get("/statistics",{ responseType: 'arraybuffer' })
+                    .then(function (response) {
+                        if (response.status == 200 && response.data!=null) {
+                            deferred.resolve(response.data);
+                            return response;
+                        }
+                        else {
+                            alert("Statistics is empty.");
+                            deferred.reject('Error');
+                        }
+                    });
+
+                return deferred.promise;
+            },
+
+            returnFromBasketFiles: function (returnFromBasketFilesIds) {
+                var deferred = $q.defer();
+
+                $http({
+                    method: 'PUT',
+                    url: '/file',
+                    data: returnFromBasketFilesIds,
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                })
+                    .then(function (response) {
+                        if (response.status == 200) {
+                            deferred.resolve();
+                            window.location.replace('/resources/start-page-web-file-manager.html');
+                        }
+                        else {
+                            alert("Error. It is not possible to return from basket. ");
+                            deferred.reject('Error');
+                        }
+                    });
+
+                return deferred.promise;
+            }
         }
     }])
     .service('UserService', ['$http','$q', function($http, $q) {
@@ -93,7 +164,8 @@ angular.module('frontendServices', [])
                             deferred.resolve(response.data);
                         }
                         else {
-                            deferred.reject('Error retrieving user info');
+                            alert("Error. It is not possible to download user info. ");
+                            deferred.reject('Error');
                         }
                     });
                 return deferred.promise;
@@ -108,6 +180,7 @@ angular.module('frontendServices', [])
                             window.location.replace('/resources/start-page-web-file-manager.html');
                         }
                         else {
+                            alert("Error. It is not possible to log out. ");
                             console.log("Logout failed!");
                         }
                     });

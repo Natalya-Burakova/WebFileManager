@@ -1,10 +1,7 @@
 angular.module('fileManagerApp', ['editableTableWidgets', 'frontendServices', 'spring-security-csrf-token-interceptor'])
     .filter('excludeDeleted', function () {
         return function (input) {
-            return _.filter(input, function (item) {
-                return item.deleted == undefined || !item.deleted;
-            });
-
+            return _.filter(input, function (item) {return item.deleted == undefined || !item.deleted;});
         }
     })
     .controller('FileManagerCtrl', ['$scope' , 'FileService', 'UserService','fileUpload', '$timeout',
@@ -21,7 +18,6 @@ angular.module('fileManagerApp', ['editableTableWidgets', 'frontendServices', 's
             updateUserInfo();
             loadFileData();
 
-
             function showErrorMessage(errorMessage) {
                 clearMessages();
                 $scope.vm.errorMessages.push({description: errorMessage});
@@ -36,7 +32,6 @@ angular.module('fileManagerApp', ['editableTableWidgets', 'frontendServices', 's
                             showErrorMessage(errorMessage);
                         });
             }
-
 
             function loadFileData() {
                 FileService.searchFiles()
@@ -81,11 +76,9 @@ angular.module('fileManagerApp', ['editableTableWidgets', 'frontendServices', 's
             };
 
 
-
             $scope.search = function () {
                 loadFileData();
             };
-
 
             $scope.add = function () {
                $scope.vm.files.unshift({
@@ -93,6 +86,7 @@ angular.module('fileManagerApp', ['editableTableWidgets', 'frontendServices', 's
                     nameFile: null,
                     urlFile: null,
                     size: null,
+                    info: null,
                     status: null,
                     type: null,
                     selected: false,
@@ -122,7 +116,6 @@ angular.module('fileManagerApp', ['editableTableWidgets', 'frontendServices', 's
                         });
             };
 
-
             $scope.addToBasket = function () {
                 var addToBasketFileIds = _.chain($scope.vm.files)
                     .filter(function (file) {return file.selected && !file.new;})
@@ -144,6 +137,30 @@ angular.module('fileManagerApp', ['editableTableWidgets', 'frontendServices', 's
                         });
             };
 
+            $scope.viewDownloadStatistics = function () {
+                FileService.viewDownloadStatisticsFiles();
+            };
+
+            $scope.returnFromBasket = function() {
+                var returnFromBasketFileIds = _.chain($scope.vm.files)
+                    .filter(function (file) {return file.selected && !file.new;})
+                    .map(function (file) {return file.id;})
+                    .value();
+
+                FileService.returnFromBasketFiles(returnFromBasketFileIds)
+                    .then(function () {
+                            clearMessages();
+                            showInfoMessage("add to basket successful.");
+                            _.remove($scope.vm.files, function(file) {return file.selected;});
+
+                            $scope.selectionChanged();
+                            updateUserInfo();
+                        },
+                        function () {
+                            clearMessages();
+                            $scope.vm.errorMessages.push({description: "add to basket failed."});
+                        });
+            };
 
             $scope.reset = function () {
                 $scope.vm.files = $scope.vm.originalFiles;
@@ -160,29 +177,46 @@ angular.module('fileManagerApp', ['editableTableWidgets', 'frontendServices', 's
 
             $scope.uploadFile = function(){
                 var file = $scope.myFile;
-                console.log('file is ' );
-                console.dir(file);
-                var uploadUrl = "/upload";
-                fileUpload.uploadFileToUrl(file, uploadUrl);
+                if (file!=null || file!=undefined) {
+                    console.log('file is ');
+                    console.dir(file);
+                    var uploadUrl = "/upload";
+                    fileUpload.uploadFileToUrl(file, uploadUrl);
+                }
+                else
+                    alert("Error. File is not select. ")
             };
 
             $scope.goToUrlFile = function (data) {
-                console.log(data);
                 var fileName = data.toString().substring(data.toString().lastIndexOf("/")+1,data.toString().length);
-                console.log(fileName);
                 FileService.goToUrlFile(data)
                     .then(function (value) {
-                        var blob = new Blob([value], {type: "multipart/form-data"});
-                        var fileURL = window.URL.createObjectURL(blob);
-                        var a = document.createElement("a");
-                        document.body.appendChild(a);
-                        a.style = "display: none";
-                        a.href = fileURL;
-                        a.download = fileName;
-                        a.click();
+                        if (value!=null) {
+                            var blob = new Blob([value], {type: "multipart/form-data"});
+                            var fileURL = window.URL.createObjectURL(blob);
+                            var a = document.createElement("a");
+                            document.body.appendChild(a);
+                            a.style = "display: none";
+                            a.href = fileURL;
+                            a.download = fileName;
+                            a.click();
+                        }
+                        else {
+                            alert("File not found. ");
+                        }
 
                     })
-            }
+            };
+
+            $scope.addFileInfo = function (name) {
+                var info = prompt("Window for entering information about the file: ","");
+                if (info != "") {
+                    FileService.addFileInfo(name+"&"+info);
+                }
+                else {
+                    alert("Your info text is empty. ")
+                }
+            };
 
         }])
     .directive('fileModel', ['$parse', function ($parse) {
