@@ -238,10 +238,28 @@ angular.module('fileManagerApp', ['editableTableWidgets', 'frontendServices', 's
             };
 
             $scope.replaceFile = function (name) {
+                document.getElementById("avatar").click();
+                var input = document.querySelector("input[name=avatar]");
 
+                /*
+                input.onchange = function () {
+                    var file = document.getElementById("avatar").value;
+                    if (file!=null || file!=undefined) {
+                        console.log(file.dir);
+                        var uploadUrl = "/upload/replace";
+                        FileService.replaceFileIn(file, uploadUrl, name);
+                    }
+                    else alert("Error. File is not select. ")
+                }
+                */
             }
 
-        }])
+
+
+
+
+
+    }])
     .directive('fileModel', ['$parse', function ($parse) {
         return {
             restrict: 'A',

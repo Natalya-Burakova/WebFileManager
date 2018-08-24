@@ -1,6 +1,5 @@
 package fileManager.app.models;
 
-
 import javax.persistence.*;
 import java.util.Date;
 
@@ -19,13 +18,14 @@ public class UploadFile {
         private Date data;
         private User user;
         private byte[] file;
+        private Integer replace;
         private Integer count;
 
         public UploadFile() {}
 
         public UploadFile(String nameFile) { this.nameFile = nameFile; }
 
-        public UploadFile(String nameFile, String urlFile, User user, byte[] file, String type, Boolean status, Long size, Date data, String info, Integer count) {
+        public UploadFile(String nameFile, String urlFile, User user, byte[] file, String type, Boolean status, Long size, Date data, String info, Integer count, Integer replace) {
                 this.nameFile = nameFile;
                 this.urlFile = urlFile;
                 this.user = user;
@@ -36,6 +36,7 @@ public class UploadFile {
                 this.data = data;
                 this.info = info;
                 this.count = count;
+                this.replace = replace;
         }
 
         @Id
@@ -116,6 +117,14 @@ public class UploadFile {
         public Integer getCount() { return count; }
         public void setCount(Integer count) {
                 this.count = count;
+        }
+
+
+        @Basic
+        @Column(name = "replace", nullable = false)
+        public Integer getReplace() { return replace; }
+        public void setReplace(Integer replace) {
+                this.replace = replace;
         }
 
         @Basic

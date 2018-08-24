@@ -32,7 +32,7 @@ public class FileService {
 
 
     public void saveFile(User user, MultipartFile file, String  urlFile) throws IOException {
-        UploadFile uploadFile = new UploadFile(file.getOriginalFilename(), urlFile, user, file.getBytes(), file.getContentType(), false, file.getSize(), new Date(), "nothing", 0);
+        UploadFile uploadFile = new UploadFile(file.getOriginalFilename(), urlFile, user, file.getBytes(), file.getContentType(), false, file.getSize(), new Date(), "nothing", 0, null);
         fileDao.save(uploadFile);
         user.addFile(uploadFile);
     }

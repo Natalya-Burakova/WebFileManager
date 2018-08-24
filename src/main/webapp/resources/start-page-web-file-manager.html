@@ -50,6 +50,7 @@
                     <th width="80">In basket?</th>
                     <th width="55">Change info</th>
                     <th width="120">File info</th>
+                    <th width="60">Replace?</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -82,6 +83,7 @@
                     <td class="table-buttons">
                         <button type="button" ng-click="replaceFile(file.nameFile)" ng-disabled="file.status"  disabled>Replace</button>
                     </td>
+                    <input type="file" name="avatar" id="avatar" file-model="avatar" style="display: none">
                 </tr>
                 </tbody>
             </table>
@@ -101,6 +103,7 @@
     </form>
     <div class="form-separator"></div>
 </main>
+
 
 <script type="text/javascript" data-main="/resources/static/js/run-start-page"
         src="/resources/bower_components/requirejs/require.js"></script>

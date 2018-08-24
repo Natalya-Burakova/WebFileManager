@@ -20,19 +20,13 @@ import javax.servlet.http.HttpSession;
 @RequestMapping("/user")
 public class UserController {
 
-    private UserService userService = UserService.getInstance();
-
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
     @RequestMapping(method = RequestMethod.GET)
     public UserDto getUserInfo(HttpServletRequest request, HttpServletResponse response) {
        HttpSession session = request.getSession(false);
-       User user = null;
-       if (session==null || session.getAttribute("user")==null);
-       else {
-           UserDetails userDetails = (UserDetails) session.getAttribute("user");
-           user = userService.findUserByLogin(userDetails.getUsername());
-       }
+       UserDetails userDetails = (UserDetails) session.getAttribute("user");
+       User user = UserService.getInstance().findUserByLogin(userDetails.getUsername());
        return user != null ? new UserDto(user.getLogin()) : null;
     }
 
@@ -41,8 +35,8 @@ public class UserController {
     @RequestMapping(method = RequestMethod.POST)
     public void createUser(@RequestBody UserDto user,  HttpServletRequest request, HttpServletResponse response) {
         User userEntity = new User (user.getLogin(), user.getMail(), user.getPassword());
-        userService.createUser(user.getLogin(), user.getMail(), user.getPassword());
-        if (userService.isUserExist(userEntity)) response.setStatus(HttpStatus.OK.value());
+        UserService.getInstance().createUser(user.getLogin(), user.getMail(), user.getPassword());
+        if (UserService.getInstance().isUserExist(userEntity)) response.setStatus(HttpStatus.OK.value());
         else response.setStatus(HttpStatus.NOT_FOUND.value());
     }
 

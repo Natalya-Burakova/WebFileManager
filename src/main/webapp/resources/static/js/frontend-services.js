@@ -45,6 +45,32 @@ angular.module('frontendServices', [])
 
 
             },
+
+            replaceFileIn: function(file, uploadUrl, name) {
+                var deferred = $q.defer();
+
+                $http({
+                    method: 'POST',
+                    url: uploadUrl+"/" + name,
+                    data: file,
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                })
+                    .then(function (response) {
+                        if (response.status == 200) {
+                            deferred.resolve();
+                            window.location.replace('/resources/start-page-web-file-manager.html');
+                        }
+                        else {
+                            alert("Error. It is not possible to upload file. ");
+                            deferred.reject('Error');
+                        }
+                    });
+
+                return deferred.promise;
+            },
+
             goToUrlFile: function(name) {
                 var deferred = $q.defer();
 
