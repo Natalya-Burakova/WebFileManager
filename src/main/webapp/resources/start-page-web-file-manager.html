@@ -59,7 +59,7 @@
                         <input type="checkbox" ng-model="file.selected" ng-click="selectionChanged()">
                     </td>
                     <td tt-editable-cell  value="file.nameFile" is-new="file.nameFile">
-                        <input type="text" tt-cell-field ng-model="file.nameFile" >
+                        <input type="text" tt-cell-field ng-model="file.nameFile" ng-change="rename(file.nameFile, file.urlFile)" >
                     </td>
                     <td tt-editable-cell  value="file.type" is-new="file.type">
                         <input type="text" tt-cell-field ng-model="file.type" readonly/>
@@ -78,6 +78,9 @@
                     </td>
                     <td tt-editable-cell  value="file.info" is-new="file.info">
                         <input type="text" tt-cell-field ng-model="file.info" readonly/>
+                    </td>
+                    <td class="table-buttons">
+                        <button type="button" ng-click="replaceFile(file.nameFile)" ng-disabled="file.status"  disabled>Replace</button>
                     </td>
                 </tr>
                 </tbody>

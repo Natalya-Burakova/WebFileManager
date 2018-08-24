@@ -75,6 +75,10 @@ angular.module('fileManagerApp', ['editableTableWidgets', 'frontendServices', 's
                 });
             };
 
+            $scope.rename = function(newName, urlFile) {
+                UserService.renameFile(newName, urlFile);
+            }
+
 
             $scope.search = function () {
                 loadFileData();
@@ -137,8 +141,23 @@ angular.module('fileManagerApp', ['editableTableWidgets', 'frontendServices', 's
                         });
             };
 
+            function popup(el) {
+                var t = window.open('', 'New window', 'width=800,height=300').document;
+                t.open();
+                t.write(el);
+            };
+
             $scope.viewDownloadStatistics = function () {
-                FileService.viewDownloadStatisticsFiles();
+                FileService.searchFiles()
+                    .then(function (data) {
+                            var spisok = data.files;
+                            var i;
+                            var message = "";
+                            for (i = 0; i < spisok.length; i++) {
+                                message = message + "link: " + spisok[i].urlFile + ", count download: " + spisok[i].count +";<br/>";
+                            }
+                        popup(message);
+                        });
             };
 
             $scope.returnFromBasket = function() {
@@ -209,7 +228,7 @@ angular.module('fileManagerApp', ['editableTableWidgets', 'frontendServices', 's
             };
 
             $scope.addFileInfo = function (name) {
-                var info = prompt("Window for entering information about the file: ","");
+                var info = prompt("Window for entering information about the file: ");
                 if (info != "") {
                     FileService.addFileInfo(name+"&"+info);
                 }
@@ -217,6 +236,10 @@ angular.module('fileManagerApp', ['editableTableWidgets', 'frontendServices', 's
                     alert("Your info text is empty. ")
                 }
             };
+
+            $scope.replaceFile = function (name) {
+
+            }
 
         }])
     .directive('fileModel', ['$parse', function ($parse) {

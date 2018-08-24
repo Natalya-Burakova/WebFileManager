@@ -1,9 +1,7 @@
 package fileManager.app.dao;
 
 import fileManager.app.models.User;
-import fileManager.app.models.UploadFile;
 
-import java.util.List;
 
 
 public interface UserDao{

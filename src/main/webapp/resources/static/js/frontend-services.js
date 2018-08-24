@@ -110,23 +110,6 @@ angular.module('frontendServices', [])
                 return deferred.promise;
             },
 
-            viewDownloadStatisticsFiles: function() {
-                var deferred = $q.defer();
-                $http.get("/statistics",{ responseType: 'arraybuffer' })
-                    .then(function (response) {
-                        if (response.status == 200 && response.data!=null) {
-                            deferred.resolve(response.data);
-                            return response;
-                        }
-                        else {
-                            alert("Statistics is empty.");
-                            deferred.reject('Error');
-                        }
-                    });
-
-                return deferred.promise;
-            },
-
             returnFromBasketFiles: function (returnFromBasketFilesIds) {
                 var deferred = $q.defer();
 
@@ -182,6 +165,21 @@ angular.module('frontendServices', [])
                         else {
                             alert("Error. It is not possible to log out. ");
                             console.log("Logout failed!");
+                        }
+                    });
+            },
+            renameFile: function(newName, urlFile) {
+                console.log(newName+urlFile);
+                $http({
+                    method: 'POST',
+                    data: newName+"&"+urlFile,
+                    url: '/upload/rename'
+                })
+                    .then(function (response) {
+                        if (response.status == 200) {
+                            window.location.replace('/resources/start-page-web-file-manager.html');
+                        }
+                        else {
                         }
                     });
             }

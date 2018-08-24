@@ -1,9 +1,9 @@
 package fileManager.config.controllers;
-
 import fileManager.app.dto.FileDto;
 import fileManager.app.dto.FilesDto;
 import fileManager.app.models.UploadFile;
 import fileManager.app.services.FileService;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -33,7 +33,7 @@ public class FileController {
             UserDetails user = (UserDetails) session.getAttribute("user");
             List<UploadFile> savedFiles = fileService.findFileForUser(user.getUsername());
             for (UploadFile file: savedFiles)
-                listFile.add(new FileDto(file.getId(), file.getNameFile(), file.getUrlFile(), file.getType(),file.getSize(), file.getStatus(), file.getInfo()));
+                listFile.add(new FileDto(file.getId(), file.getNameFile(), file.getUrlFile(), file.getType(),file.getSize(), file.getStatus(), file.getInfo(), file.getCount()));
         }
         return new FilesDto(listFile);
     }
@@ -79,6 +79,7 @@ public class FileController {
         else
             response.setStatus(HttpStatus.NOT_FOUND.value());
     }
+
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> errorHandler(Exception exc) {

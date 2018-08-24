@@ -50,15 +50,26 @@ public class UploadController {
         HttpSession session = request.getSession(false);
         if (session != null && session.getAttribute("user") != null) {
             String nameFile = request.getRequestURL().substring(request.getRequestURL().lastIndexOf("/") + 1);
+
+            UserDetails userDetails = (UserDetails) session.getAttribute("user");
             UploadFile file = FileService.getInstance().findFileByFileName(nameFile);
 
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentDispositionFormData(nameFile, nameFile);
+            if (userDetails.getUsername().equals(file.getUser().getLogin())) {
+                file.setCount(file.getCount() + 1);
+                FileService.getInstance().updateCount(file);
 
-            try { headers.setContentType(MediaType.parseMediaType(file.getType())); }
-            catch (NullPointerException e) { return ResponseEntity.ok(null); }
+                HttpHeaders headers = new HttpHeaders();
+                headers.setContentDispositionFormData(nameFile, nameFile);
 
-            return new ResponseEntity<byte[]>(file.getFile(), headers, HttpStatus.OK);
+                try {
+                    headers.setContentType(MediaType.parseMediaType(file.getType()));
+                } catch (NullPointerException e) {
+                    return ResponseEntity.ok(null);
+                }
+
+                return new ResponseEntity<byte[]>(file.getFile(), headers, HttpStatus.OK);
+            }
+            else return ResponseEntity.ok(null);
         }
         else
             return ResponseEntity.ok(null);
@@ -87,6 +98,28 @@ public class UploadController {
             else
                 response.setStatus(HttpStatus.BAD_REQUEST.value());
         }
+    }
+
+    @ResponseBody
+    @ResponseStatus(HttpStatus.OK)
+    @RequestMapping(value="/rename", method = RequestMethod.POST)
+    public void renameFile(@RequestBody String information, HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession(false);
+        String[] mas = information.split("&");
+        if (session!=null && session.getAttribute("user")!=null) {
+            UserDetails user = (UserDetails) session.getAttribute("user");
+            UploadFile file = FileService.getInstance().findFileByUrlFile(mas[1]);
+            if (file.getUser().getLogin().equals(user.getUsername())) {
+                file.setNameFile(mas[0]);
+                file.setUrlFile(request.getRequestURL().substring(0, request.getRequestURL().lastIndexOf("/")+1) + mas[0]);
+                FileDaoImpl.getInstance().update(file);
+                response.setStatus(HttpStatus.OK.value());
+            }
+            else
+                response.setStatus(HttpStatus.NOT_FOUND.value());
+        }
+        else
+            response.setStatus(HttpStatus.BAD_REQUEST.value());
     }
 
 

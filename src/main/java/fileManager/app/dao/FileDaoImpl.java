@@ -47,6 +47,13 @@ public class FileDaoImpl extends CrudDaoAbstract  implements FileDao{
     }
 
     @Override
+    public UploadFile getFileByUrlFile(String urlFile) {
+        Query query = HibernateSessionFactoryUtil.getSessionFactory().openSession().createQuery("from UploadFile where urlFile = :urlFile").setString("urlFile", urlFile);
+        if (query.list().isEmpty()) return null;
+        return (UploadFile) query.list().get(0);
+    }
+
+    @Override
     public List<UploadFile> findAll() {
         List files =  HibernateSessionFactoryUtil.getSessionFactory().openSession().createQuery("From UploadFile").list();
         return files;

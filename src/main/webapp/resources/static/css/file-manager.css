@@ -56,16 +56,16 @@ a.logout:hover {
 }
 
 
-@media screen and (min-width: 48em) {
+@media screen and (min-width: 78em) {
     .container {
-        max-width: 48em;
+        max-width: 78em;
         margin: 0 auto;
     }
 }
 
-@media screen and (min-width: 14em) {
+@media screen and (min-width: 18em) {
     .login-container {
-        max-width: 14em;
+        max-width: 18em;
         margin: 0 auto;
     }
 }

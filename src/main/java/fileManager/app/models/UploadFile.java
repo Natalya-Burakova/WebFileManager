@@ -19,12 +19,13 @@ public class UploadFile {
         private Date data;
         private User user;
         private byte[] file;
+        private Integer count;
 
         public UploadFile() {}
 
         public UploadFile(String nameFile) { this.nameFile = nameFile; }
 
-        public UploadFile(String nameFile, String urlFile, User user, byte[] file, String type, Boolean status, Long size, Date data, String info) {
+        public UploadFile(String nameFile, String urlFile, User user, byte[] file, String type, Boolean status, Long size, Date data, String info, Integer count) {
                 this.nameFile = nameFile;
                 this.urlFile = urlFile;
                 this.user = user;
@@ -34,6 +35,7 @@ public class UploadFile {
                 this.size =size;
                 this.data = data;
                 this.info = info;
+                this.count = count;
         }
 
         @Id
@@ -106,6 +108,14 @@ public class UploadFile {
         public String getInfo() { return info; }
         public void setInfo(String info) {
                 this.info = info;
+        }
+
+
+        @Basic
+        @Column(name = "count", nullable = false)
+        public Integer getCount() { return count; }
+        public void setCount(Integer count) {
+                this.count = count;
         }
 
         @Basic

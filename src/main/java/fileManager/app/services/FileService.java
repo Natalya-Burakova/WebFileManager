@@ -32,7 +32,7 @@ public class FileService {
 
 
     public void saveFile(User user, MultipartFile file, String  urlFile) throws IOException {
-        UploadFile uploadFile = new UploadFile(file.getOriginalFilename(), urlFile, user, file.getBytes(), file.getContentType(), false, file.getSize(), new Date(), "");
+        UploadFile uploadFile = new UploadFile(file.getOriginalFilename(), urlFile, user, file.getBytes(), file.getContentType(), false, file.getSize(), new Date(), "nothing", 0);
         fileDao.save(uploadFile);
         user.addFile(uploadFile);
     }
@@ -81,6 +81,13 @@ public class FileService {
         return fileDao.getFileByName(fileName);
     }
 
+    public UploadFile findFileByUrlFile(String urlFile) {
+        return fileDao.getFileByUrlFile(urlFile);
+    }
+
+    public void updateCount(UploadFile file) {
+        fileDao.update(file);
+    }
 
     private static  void monitorFile() {
         Thread thread = new Thread(() -> {
