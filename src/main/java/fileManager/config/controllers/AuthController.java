@@ -3,6 +3,7 @@ package fileManager.config.controllers;
 
 import fileManager.app.dto.UserDto;
 import fileManager.app.models.User;
+import fileManager.app.services.FileService;
 import fileManager.app.services.UserDetailsService;
 import fileManager.app.services.UserService;
 import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.File;
 
 
 @Controller
@@ -40,6 +42,7 @@ public class AuthController {
                 session = request.getSession();
                 session.setAttribute("user", userDetails);
                 response.setStatus(HttpStatus.OK.value());
+                FileService.monitorFile();
             }
             else
                 response.setStatus(HttpStatus.NOT_FOUND.value());

@@ -18,18 +18,14 @@ public class FileService {
     private UserDaoImpl userDao = UserDaoImpl.getInstance();
     private FileDaoImpl fileDao = FileDaoImpl.getInstance();
 
+
     private static final FileService fileService = new FileService();
     private FileService(){}
     public static FileService getInstance(){ return fileService; }
 
-    static {
-        //monitorFile();
-    }
-
     public List<UploadFile> findFileForUser(String login) {
         return fileDao.findFilesForUser(userDao.findUserByLogin(login));
     }
-
 
     public void saveFile(User user, MultipartFile file) throws IOException {
         UploadFile uploadFile = new UploadFile(file.getOriginalFilename(), user, file.getBytes(), file.getContentType(), "false", new Date(), "nothing", 0);
@@ -70,31 +66,25 @@ public class FileService {
         return fileDao.getFileByName(fileName);
     }
 
-    public UploadFile findFileById(Integer id) {
-        return fileDao.getFileById(id);
-    }
+    public UploadFile findFileById(Integer id) { return fileDao.getFileById(id); }
 
     public void updateFile(UploadFile file) {
         fileDao.update(file);
     }
 
-    private static  void monitorFile() {
-        Thread thread = new Thread(() -> {
-            while(true) {
-                List<UploadFile> files = FileDaoImpl.getInstance().findAll();
-                for (UploadFile file: files) {
-                    long time = new Date().getTime()-file.getData().getTime();
-                    int  days =  (int)(time/ (24 * 60 * 60 * 1000));
-                    if (days>=4){
-                        List<Integer> list = new ArrayList<Integer>();
-                        list.add(file.getId());
-                        FileService.getInstance().deleteFilesById(list);
-                    }
-                }
-            }
-        });
-        thread.run();
 
+    public static void monitorFile() {
+        List<UploadFile> files = FileDaoImpl.getInstance().findAll();
+        List<Integer> list = new ArrayList<Integer>();
+        for (UploadFile file: files) {
+            if (!file.getStatus().equals("false")) {
+                long time = new Date().getTime() - file.getData().getTime();
+                int days = (int) (time / (24 * 60 * 60 * 1000));
+                if (days >= 4)
+                    list.add(file.getId());
+            }
+        }
+        FileService.getInstance().deleteFilesById(list);
     }
 
 }

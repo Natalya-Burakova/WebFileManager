@@ -32,6 +32,7 @@ import java.util.List;
 @RequestMapping("/file")
 public class FileController {
 
+
     private FileService fileService = FileService.getInstance();
 
 
@@ -72,8 +73,8 @@ public class FileController {
         HttpSession session = request.getSession(false);
         UserDetails userDetails = (UserDetails) session.getAttribute("user");
         User user = UserService.getInstance().findUserByLogin(userDetails.getUsername());
-        if (!FileService.getInstance().isFileExist(new UploadFile(file.getOriginalFilename()))) {
-            FileService.getInstance().saveFile(user, file);
+        if (!fileService.isFileExist(new UploadFile(file.getOriginalFilename()))) {
+            fileService.saveFile(user, file);
             response.setStatus(HttpStatus.OK.value());
         }
         else
@@ -147,7 +148,7 @@ public class FileController {
         User user = UserService.getInstance().findUserByLogin(userDetails.getUsername());
 
         String nameFile = request.getRequestURL().substring(request.getRequestURL().lastIndexOf("/") + 1);
-        UploadFile uploadFile =  FileService.getInstance().findFileByFileName(nameFile);
+        UploadFile uploadFile =  fileService.findFileByFileName(nameFile);
 
         if (uploadFile!=null && !fileService.isFileExist(new UploadFile(file.getOriginalFilename()))) {
             fileService.saveFile(user, file);
@@ -171,7 +172,7 @@ public class FileController {
         User user = UserService.getInstance().findUserByLogin(userDetails.getUsername());
 
         String nameFile = request.getRequestURL().substring(request.getRequestURL().lastIndexOf("/") + 1);
-        UploadFile uploadFile =  FileService.getInstance().findFileByFileName(nameFile);
+        UploadFile uploadFile =  fileService.findFileByFileName(nameFile);
 
         List<UploadFile> files = fileService.findFileForUser(user.getLogin());
 
@@ -195,7 +196,7 @@ public class FileController {
     @RequestMapping(value="/info/{fileName}", method = RequestMethod.PUT)
     public void addFileInfo(@RequestBody String info, HttpServletResponse response, HttpServletRequest request){
         String fileName = request.getRequestURL().substring(request.getRequestURL().lastIndexOf("/")+1);
-        if (FileService.getInstance().isFileExist(new UploadFile(fileName))) {
+        if (fileService.isFileExist(new UploadFile(fileName))) {
             UploadFile file = fileService.findFileByFileName(fileName);
             file.setInfo(info);
             fileService.updateFile(file);

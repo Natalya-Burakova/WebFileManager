@@ -4,7 +4,6 @@ import fileManager.config.utils.HibernateSessionFactoryUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import java.util.List;
 
 public abstract class CrudDaoAbstract implements CrudDao{
     @Override
@@ -34,8 +33,4 @@ public abstract class CrudDaoAbstract implements CrudDao{
         session.close();
     }
 
-    @Override
-    public List findAll() {
-       return null;
-    }
 }

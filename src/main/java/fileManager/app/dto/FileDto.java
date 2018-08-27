@@ -58,6 +58,5 @@ public class FileDto {
     public Boolean getNewReplaceFile() { return newReplaceFile; }
 
     public void setUndoReplaceFile(Boolean undoReplaceFile) { this.undoReplaceFile = undoReplaceFile; }
-
     public Boolean getUndoReplaceFile() { return undoReplaceFile; }
 }
