@@ -31,45 +31,34 @@ public class FileService {
     }
 
 
-    public void saveFile(User user, MultipartFile file, String  urlFile) throws IOException {
-        UploadFile uploadFile = new UploadFile(file.getOriginalFilename(), urlFile, user, file.getBytes(), file.getContentType(), false, file.getSize(), new Date(), "nothing", 0, null);
+    public void saveFile(User user, MultipartFile file) throws IOException {
+        UploadFile uploadFile = new UploadFile(file.getOriginalFilename(), user, file.getBytes(), file.getContentType(), "false", new Date(), "nothing", 0);
         fileDao.save(uploadFile);
         user.addFile(uploadFile);
     }
 
-    public void deleteFilesById(String login, List<Integer> fileDeleteIds) {
+    public void deleteFilesById(List<Integer> fileDeleteIds) {
         for (Integer id: fileDeleteIds) {
             UploadFile uploadFile = fileDao.getFileById(id);
-            User user = UserService.getInstance().findUserByLogin(uploadFile.getUser().getLogin());
-            if (login.equals(user.getLogin())) {
-                fileDao.delete(uploadFile);
-                user.removeFile(uploadFile);
-            }
+            fileDao.delete(uploadFile);
         }
     }
 
-
-    public void addToBasketFilesById(String login, List<Integer> fileAddToBasketIds) {
+    public void addToBasketFilesById(List<Integer> fileAddToBasketIds) {
         for (Integer id: fileAddToBasketIds) {
             UploadFile uploadFile = fileDao.getFileById(id);
-            User user = UserService.getInstance().findUserByLogin(uploadFile.getUser().getLogin());
-            if (login.equals(user.getLogin())) {
-                uploadFile.setStatus(true);
-                uploadFile.setData(new Date());
-                fileDao.update(uploadFile);
-            }
+            uploadFile.setStatus("true");
+            uploadFile.setData(new Date());
+            fileDao.update(uploadFile);
         }
     }
 
-    public void returnFromBasketFilesById(String login, List<Integer> fileReturnToBasketIds) {
+    public void returnFromBasketFilesById(List<Integer> fileReturnToBasketIds) {
         for (Integer id: fileReturnToBasketIds) {
             UploadFile uploadFile = fileDao.getFileById(id);
-            User user = UserService.getInstance().findUserByLogin(uploadFile.getUser().getLogin());
-            if (login.equals(user.getLogin())) {
-                uploadFile.setStatus(false);
-                uploadFile.setData(new Date());
-                fileDao.update(uploadFile);
-            }
+            uploadFile.setStatus("false");
+            uploadFile.setData(new Date());
+            fileDao.update(uploadFile);
         }
     }
 
@@ -81,11 +70,11 @@ public class FileService {
         return fileDao.getFileByName(fileName);
     }
 
-    public UploadFile findFileByUrlFile(String urlFile) {
-        return fileDao.getFileByUrlFile(urlFile);
+    public UploadFile findFileById(Integer id) {
+        return fileDao.getFileById(id);
     }
 
-    public void updateCount(UploadFile file) {
+    public void updateFile(UploadFile file) {
         fileDao.update(file);
     }
 
@@ -99,7 +88,7 @@ public class FileService {
                     if (days>=4){
                         List<Integer> list = new ArrayList<Integer>();
                         list.add(file.getId());
-                        FileService.getInstance().deleteFilesById(file.getUser().getLogin(), list);
+                        FileService.getInstance().deleteFilesById(list);
                     }
                 }
             }

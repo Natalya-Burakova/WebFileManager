@@ -3,40 +3,36 @@ package fileManager.app.models;
 import javax.persistence.*;
 import java.util.Date;
 
-
 @Entity
 @Table(name = "new_file")
 public class UploadFile {
 
         private Integer id;
         private String nameFile;
-        private String urlFile;
         private String type;
-        private Long size;
         private String info;
-        private Boolean status;
+        private String status;
         private Date data;
         private User user;
         private byte[] file;
-        private Integer replace;
         private Integer count;
 
         public UploadFile() {}
 
-        public UploadFile(String nameFile) { this.nameFile = nameFile; }
 
-        public UploadFile(String nameFile, String urlFile, User user, byte[] file, String type, Boolean status, Long size, Date data, String info, Integer count, Integer replace) {
+        public UploadFile(String nameFile) {
+        this.nameFile = nameFile;
+    }
+
+        public UploadFile(String nameFile, User user, byte[] file, String type, String status, Date data, String info, Integer count) {
                 this.nameFile = nameFile;
-                this.urlFile = urlFile;
                 this.user = user;
                 this.file= file;
                 this.type = type;
                 this.status = status;
-                this.size =size;
                 this.data = data;
                 this.info = info;
                 this.count = count;
-                this.replace = replace;
         }
 
         @Id
@@ -67,33 +63,17 @@ public class UploadFile {
         }
 
 
-        @Basic
-        @Column(name = "url_file", nullable = false)
-        public String getUrlFile() {
-                return urlFile;
-        }
-        public void setUrlFile(String urlFile) {
-                this.urlFile = urlFile;
-        }
-
 
         @Basic
         @Column(name = "type", nullable = false)
         public String getType() { return type; }
-        public void setType(String type) {
-                this.type = type;
-        }
+        public void setType(String type) { this.type = type; }
 
 
         @Basic
         @Column(name = "status", nullable = false)
-        public Boolean getStatus() { return status; }
-        public void setStatus(Boolean status) { this.status = status; }
-
-        @Basic
-        @Column(name = "size", nullable = false)
-        public Long getSize() { return size; }
-        public void setSize(Long size) { this.size = size; }
+        public String getStatus() { return status; }
+        public void setStatus(String status) { this.status = status; }
 
 
         @Basic
@@ -121,18 +101,9 @@ public class UploadFile {
 
 
         @Basic
-        @Column(name = "replace", nullable = false)
-        public Integer getReplace() { return replace; }
-        public void setReplace(Integer replace) {
-                this.replace = replace;
-        }
-
-        @Basic
         @Column(name = "data", nullable = false)
         public Date getData() { return data; }
-        public void setData(Date data) {
-                this.data = data;
-        }
+        public void setData(Date data) { this.data = data; }
 
 }
 

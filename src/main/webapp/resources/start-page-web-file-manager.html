@@ -43,12 +43,12 @@
                 <thead>
                 <tr>
                     <th class="selection-column"></th>
-                    <th width="160">File name</th>
-                    <th width="120">Type</th>
-                    <th width="65">Size</th>
-                    <th width="70">Download</th>
-                    <th width="80">In basket?</th>
-                    <th width="55">Change info</th>
+                    <th width="140">File name</th>
+                    <th width="110">Type</th>
+                    <th width="60">Size</th>
+                    <th width="60">Download</th>
+                    <th width="70">In basket?</th>
+                    <th width="50">Change info</th>
                     <th width="120">File info</th>
                     <th width="60">Replace?</th>
                 </tr>
@@ -81,7 +81,8 @@
                         <input type="text" tt-cell-field ng-model="file.info" readonly/>
                     </td>
                     <td class="table-buttons">
-                        <button type="button" ng-click="replaceFile(file.nameFile)" ng-disabled="file.status"  disabled>Replace</button>
+                        <button type="button" ng-click="replaceFile(file.nameFile)" ng-disabled="file.newReplaceFile"  disabled>Replace</button>
+                        <button type="button" ng-click="undoReplace(file.nameFile)" ng-disabled="file.undoReplaceFile"  disabled>Undo replace</button>
                     </td>
                     <input type="file" name="avatar" id="avatar" file-model="avatar" style="display: none">
                 </tr>

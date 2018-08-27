@@ -76,7 +76,7 @@ angular.module('fileManagerApp', ['editableTableWidgets', 'frontendServices', 's
             };
 
             $scope.rename = function(newName, urlFile) {
-                UserService.renameFile(newName, urlFile);
+                FileService.renameFile(newName, urlFile);
             }
 
 
@@ -91,6 +91,8 @@ angular.module('fileManagerApp', ['editableTableWidgets', 'frontendServices', 's
                     urlFile: null,
                     size: null,
                     info: null,
+                    newReplaceFile: null,
+                    undoReplaceFile: null,
                     status: null,
                     type: null,
                     selected: false,
@@ -199,7 +201,7 @@ angular.module('fileManagerApp', ['editableTableWidgets', 'frontendServices', 's
                 if (file!=null || file!=undefined) {
                     console.log('file is ');
                     console.dir(file);
-                    var uploadUrl = "/upload";
+                    var uploadUrl = "/file/upload";
                     fileUpload.uploadFileToUrl(file, uploadUrl);
                 }
                 else
@@ -230,7 +232,7 @@ angular.module('fileManagerApp', ['editableTableWidgets', 'frontendServices', 's
             $scope.addFileInfo = function (name) {
                 var info = prompt("Window for entering information about the file: ");
                 if (info != "") {
-                    FileService.addFileInfo(name+"&"+info);
+                    FileService.addFileInfo(name, info);
                 }
                 else {
                     alert("Your info text is empty. ")
@@ -241,21 +243,19 @@ angular.module('fileManagerApp', ['editableTableWidgets', 'frontendServices', 's
                 document.getElementById("avatar").click();
                 var input = document.querySelector("input[name=avatar]");
 
-                /*
                 input.onchange = function () {
-                    var file = document.getElementById("avatar").value;
+                    var file = document.getElementById("avatar").files[0];
                     if (file!=null || file!=undefined) {
-                        console.log(file.dir);
-                        var uploadUrl = "/upload/replace";
-                        FileService.replaceFileIn(file, uploadUrl, name);
+                        FileService.replaceFileIn(file,  name);
                     }
                     else alert("Error. File is not select. ")
                 }
-                */
+
+            };
+
+            $scope.undoReplace = function (name) {
+                FileService.undoReplaceFileIn(name);
             }
-
-
-
 
 
 

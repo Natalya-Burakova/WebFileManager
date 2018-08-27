@@ -4,7 +4,6 @@ angular.module('frontendServices', [])
         return {
             searchFiles: function() {
                 var deferred = $q.defer();
-
                 $http.get('/file/')
                     .then(function (response) {
                         if (response.status == 200) {
@@ -19,13 +18,13 @@ angular.module('frontendServices', [])
                 return deferred.promise;
             },
 
-            addFileInfo: function(name) {
+            addFileInfo: function(name, info) {
                 var deferred = $q.defer();
 
                 $http({
                     method: 'PUT',
-                    url: '/upload',
-                    data: name,
+                    url: '/file/info/' + name,
+                    data: info,
                     headers: {
                         "Content-Type": "application/json"
                     }
@@ -46,16 +45,16 @@ angular.module('frontendServices', [])
 
             },
 
-            replaceFileIn: function(file, uploadUrl, name) {
+            replaceFileIn: function(file,  name) {
                 var deferred = $q.defer();
-
+                var fd = new FormData();
+                fd.append('file', file);
                 $http({
                     method: 'POST',
-                    url: uploadUrl+"/" + name,
-                    data: file,
-                    headers: {
-                        "Content-Type": "application/json"
-                    }
+                    url: "/file/replace/" + name,
+                    data: fd,
+                    transformRequest: angular.identity,
+                    headers: {'Content-Type': undefined}
                 })
                     .then(function (response) {
                         if (response.status == 200) {
@@ -68,6 +67,25 @@ angular.module('frontendServices', [])
                         }
                     });
 
+                return deferred.promise;
+            },
+
+            undoReplaceFileIn: function(name) {
+                var deferred = $q.defer();
+                $http({
+                    method: 'GET',
+                    url: "/file/undoreplace/" + name
+                })
+                    .then(function (response) {
+                        if (response.status == 200) {
+                            deferred.resolve();
+                            window.location.replace('/resources/start-page-web-file-manager.html');
+                        }
+                        else {
+                            alert("Error. It is not possible to upload file. ");
+                            deferred.reject('Error');
+                        }
+                    });
                 return deferred.promise;
             },
 
@@ -116,7 +134,7 @@ angular.module('frontendServices', [])
 
                 $http({
                     method: 'POST',
-                    url: '/file',
+                    url: '/file/addToBasket',
                     data: addToBasketFileIds,
                     headers: {
                         "Content-Type": "application/json"
@@ -136,12 +154,27 @@ angular.module('frontendServices', [])
                 return deferred.promise;
             },
 
+            renameFile: function(newName, urlFile) {
+                console.log(newName+urlFile);
+                $http({
+                    method: 'PUT',
+                    data: newName,
+                    url: '/file/rename/' + urlFile.substring(urlFile.lastIndexOf("/")+1)
+                })
+                    .then(function (response) {
+                        if (response.status == 200) {
+                            window.location.replace('/resources/start-page-web-file-manager.html');
+                        }
+                        else {
+                        }
+                    });
+            },
             returnFromBasketFiles: function (returnFromBasketFilesIds) {
                 var deferred = $q.defer();
 
                 $http({
-                    method: 'PUT',
-                    url: '/file',
+                    method: 'POST',
+                    url: '/file/returnFromBasket',
                     data: returnFromBasketFilesIds,
                     headers: {
                         "Content-Type": "application/json"
@@ -193,22 +226,8 @@ angular.module('frontendServices', [])
                             console.log("Logout failed!");
                         }
                     });
-            },
-            renameFile: function(newName, urlFile) {
-                console.log(newName+urlFile);
-                $http({
-                    method: 'POST',
-                    data: newName+"&"+urlFile,
-                    url: '/upload/rename'
-                })
-                    .then(function (response) {
-                        if (response.status == 200) {
-                            window.location.replace('/resources/start-page-web-file-manager.html');
-                        }
-                        else {
-                        }
-                    });
             }
+
         };
     }])
     .service('fileUpload', ['$http', '$q', function ($http, $q) {

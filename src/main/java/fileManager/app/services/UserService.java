@@ -1,6 +1,6 @@
 package fileManager.app.services;
 
-import fileManager.app.dao.UserDao;
+
 import fileManager.app.dao.UserDaoImpl;
 
 import fileManager.app.models.User;
@@ -40,7 +40,7 @@ public class UserService {
 
     public User findUserByLogin(String login) { return usersDao.findUserByLogin(login);}
 
-    public boolean isUserExist(User user) { return usersDao.isUserExist(user); }
+    public boolean isUserExist(User user) { return usersDao.isLoginAvailable(user.getLogin()); }
 
 
 

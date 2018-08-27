@@ -10,9 +10,9 @@ public abstract class CrudDaoAbstract implements CrudDao{
     @Override
     public void save(Object model) {
         Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
-        Transaction tx1 = session.beginTransaction();
+        Transaction transaction = session.beginTransaction();
         session.save(model);
-        tx1.commit();
+        transaction.commit();
         session.close();
     }
 

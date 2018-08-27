@@ -8,13 +8,15 @@ public class FileDto {
     private String urlFile;
     private String type;
     private String info;
-    private Long size;
+    private Integer size;
     private Integer count;
     private Boolean status;
+    private Boolean newReplaceFile;
+    private Boolean undoReplaceFile;
 
     public FileDto() {}
 
-    public FileDto(Integer id, String nameFile, String urlFile, String type, Long size, Boolean status, String info, Integer count) {
+    public FileDto(Integer id, String nameFile, String urlFile, String type, Integer size, Boolean status, String info, Integer count, Boolean newReplaceFile, Boolean undoReplaceFile) {
         this.id = id;
         this.nameFile = nameFile;
         this.urlFile = urlFile;
@@ -23,6 +25,8 @@ public class FileDto {
         this.status = status;
         this.info = info;
         this.count = count;
+        this.newReplaceFile = newReplaceFile;
+        this.undoReplaceFile = undoReplaceFile;
     }
 
     public void setId(Integer id) { this.id = id; }
@@ -34,8 +38,8 @@ public class FileDto {
     public void setUrlFile(String urlFile) { this.urlFile = urlFile; }
     public String getUrlFile() { return urlFile; }
 
-    public void setSize(Long size) { this.size = size; }
-    public Long getSize() { return size; }
+    public void setSize(Integer size) { this.size = size; }
+    public Integer getSize() { return size; }
 
     public void setType(String type) { this.type = type; }
     public String getType() { return type; }
@@ -47,6 +51,13 @@ public class FileDto {
     public String getInfo() { return info; }
 
     public void setCount(Integer count) { this.count = count; }
-
     public Integer getCount() { return count; }
+
+
+    public void setNewReplaceFile(Boolean newReplaceFile) { this.newReplaceFile = newReplaceFile; }
+    public Boolean getNewReplaceFile() { return newReplaceFile; }
+
+    public void setUndoReplaceFile(Boolean undoReplaceFile) { this.undoReplaceFile = undoReplaceFile; }
+
+    public Boolean getUndoReplaceFile() { return undoReplaceFile; }
 }

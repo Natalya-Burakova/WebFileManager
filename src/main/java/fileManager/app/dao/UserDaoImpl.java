@@ -28,11 +28,4 @@ public class UserDaoImpl extends CrudDaoAbstract implements UserDao{
     }
 
 
-    @Override
-    public boolean isUserExist(User user) {
-        Query query = HibernateSessionFactoryUtil.getSessionFactory().openSession().createQuery("from User where login = :login").setString("login", user.getLogin());
-        if (query.list().isEmpty()) return false;
-        return true;
-    }
-
 }

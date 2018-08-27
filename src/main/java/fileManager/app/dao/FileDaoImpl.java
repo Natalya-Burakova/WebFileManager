@@ -4,6 +4,7 @@ import fileManager.app.models.UploadFile;
 import fileManager.app.models.User;
 import fileManager.config.utils.HibernateSessionFactoryUtil;
 import org.hibernate.Query;
+import org.hibernate.Session;
 
 import java.util.List;
 
@@ -16,46 +17,59 @@ public class FileDaoImpl extends CrudDaoAbstract  implements FileDao{
 
     @Override
     public List<UploadFile> findFilesForUser(User user) {
-        Integer id = user.getId();
-        Query query = HibernateSessionFactoryUtil.getSessionFactory().openSession().createQuery("from UploadFile where user = :user").setParameter("user", user);
+        Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
+        Query query = session.createQuery("from UploadFile where user = :user").setParameter("user", user);
         List<UploadFile> list = (List<UploadFile>) query.list();
         user.setListAllUploadFile(list);
+        session.close();
         return list;
     }
 
     @Override
     public UploadFile getFileById(Integer id) {
-        Query query = HibernateSessionFactoryUtil.getSessionFactory().openSession().createQuery("from UploadFile where id = :id").setInteger("id", id);
-        if (query.list().isEmpty()) return null;
-        return (UploadFile) query.list().get(0);
+        Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
+        Query query = session.createQuery("from UploadFile where id = :id").setInteger("id", id);
+        if (query.list().isEmpty()) {
+            session.close();
+            return null;
+        }
+        UploadFile file =(UploadFile) query.list().get(0);
+        session.close();
+        return file;
     }
-
-
 
     @Override
     public boolean isFileExist(UploadFile file) {
-        Query query = HibernateSessionFactoryUtil.getSessionFactory().openSession().createQuery("from UploadFile where nameFile = :nameFile").setString("nameFile", file.getNameFile());
-        if (query.list().isEmpty()) return false;
+        Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
+        Query query = session.createQuery("from UploadFile where nameFile = :nameFile").setString("nameFile", file.getNameFile());
+        if (query.list().isEmpty()) {
+            session.close();
+            return false;
+        }
+        session.close();
         return true;
     }
 
     @Override
     public UploadFile getFileByName(String nameFile) {
-        Query query = HibernateSessionFactoryUtil.getSessionFactory().openSession().createQuery("from UploadFile where nameFile = :nameFile").setString("nameFile", nameFile);
-        if (query.list().isEmpty()) return null;
-        return (UploadFile) query.list().get(0);
+        Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
+        Query query = session.createQuery("from UploadFile where nameFile = :nameFile").setString("nameFile", nameFile);
+        if (query.list().isEmpty()) {
+            session.close();
+            return null;
+        }
+        UploadFile file = (UploadFile) query.list().get(0);
+        session.close();
+        return file;
+
     }
 
-    @Override
-    public UploadFile getFileByUrlFile(String urlFile) {
-        Query query = HibernateSessionFactoryUtil.getSessionFactory().openSession().createQuery("from UploadFile where urlFile = :urlFile").setString("urlFile", urlFile);
-        if (query.list().isEmpty()) return null;
-        return (UploadFile) query.list().get(0);
-    }
 
     @Override
     public List<UploadFile> findAll() {
-        List files =  HibernateSessionFactoryUtil.getSessionFactory().openSession().createQuery("From UploadFile").list();
+        Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
+        List<UploadFile> files =  session.createQuery("From UploadFile").list();
+        session.close();
         return files;
     }
 }
