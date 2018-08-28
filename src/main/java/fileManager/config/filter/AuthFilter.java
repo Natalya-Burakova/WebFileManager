@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebFilter(urlPatterns = {"/file", "/logout", "/upload/*", "/user", "/resources/start-page-web-file-manager.html"})
+@WebFilter(urlPatterns = {"/file/*", "/logout", "/resources/start-page-web-file-manager.html"})
 public class AuthFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException { }

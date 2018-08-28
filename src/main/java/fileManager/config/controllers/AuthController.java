@@ -2,25 +2,24 @@ package fileManager.config.controllers;
 
 
 import fileManager.app.dto.UserDto;
-import fileManager.app.models.User;
+
 import fileManager.app.services.FileService;
 import fileManager.app.services.UserDetailsService;
-import fileManager.app.services.UserService;
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
+
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCrypt;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.MultiValueMap;
+
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.File;
+
 
 
 @Controller
@@ -31,7 +30,7 @@ public class AuthController {
 
     @ResponseStatus(HttpStatus.OK)
     @RequestMapping(method = RequestMethod.POST)
-    public void authenticate(@RequestBody UserDto user, HttpServletRequest request, HttpServletResponse response){
+    public void authUser(@RequestBody UserDto user, HttpServletRequest request, HttpServletResponse response){
         if (user.getLogin() == null || user.getPassword() == null)
             response.setStatus(HttpStatus.NOT_FOUND.value());
         else {
@@ -43,8 +42,7 @@ public class AuthController {
                 session.setAttribute("user", userDetails);
                 response.setStatus(HttpStatus.OK.value());
                 FileService.monitorFile();
-            }
-            else
+            } else
                 response.setStatus(HttpStatus.NOT_FOUND.value());
         }
     }

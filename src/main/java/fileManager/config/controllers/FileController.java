@@ -35,7 +35,6 @@ public class FileController {
 
     private FileService fileService = FileService.getInstance();
 
-
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
     @RequestMapping(method = RequestMethod.GET)
@@ -107,14 +106,19 @@ public class FileController {
         String nameFile = request.getRequestURL().substring(request.getRequestURL().lastIndexOf("/") + 1);
         if (fileService.isFileExist(new UploadFile(nameFile))) {
             UploadFile file = fileService.findFileByFileName(nameFile);
-            file.setCount(file.getCount() + 1);
-            fileService.updateFile(file);
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentDispositionFormData(nameFile, nameFile);
-            try {
-                headers.setContentType(MediaType.parseMediaType(file.getType()));
-            } catch (NullPointerException e) { return ResponseEntity.ok(null); }
-            return new ResponseEntity<byte[]>(file.getFile(), headers, HttpStatus.OK);
+            if (file.getStatus().equals("false")) {
+                file.setCount(file.getCount() + 1);
+                fileService.updateFile(file);
+                HttpHeaders headers = new HttpHeaders();
+                headers.setContentDispositionFormData(nameFile, nameFile);
+                try {
+                    headers.setContentType(MediaType.parseMediaType(file.getType()));
+                } catch (NullPointerException e) {
+                    return ResponseEntity.ok(null);
+                }
+                return new ResponseEntity<byte[]>(file.getFile(), headers, HttpStatus.OK);
+            }
+            else return ResponseEntity.ok(null);
         }
         else return ResponseEntity.ok(null);
     }
@@ -158,8 +162,11 @@ public class FileController {
                 fileService.updateFile(uploadFile);
                 response.setStatus(HttpStatus.OK.value());
             }
+            else
+                response.setStatus(HttpStatus.NOT_FOUND.value());
         }
-        response.setStatus(HttpStatus.NOT_FOUND.value());
+        else
+            response.setStatus(HttpStatus.NOT_FOUND.value());
     }
 
 

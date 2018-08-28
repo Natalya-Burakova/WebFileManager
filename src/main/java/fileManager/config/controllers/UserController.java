@@ -33,11 +33,12 @@ public class UserController {
 
     @ResponseStatus(HttpStatus.OK)
     @RequestMapping(method = RequestMethod.POST)
-    public void createUser(@RequestBody UserDto user,  HttpServletRequest request, HttpServletResponse response) {
-        User userEntity = new User (user.getLogin(), user.getMail(), user.getPassword());
+    public void createUser(@RequestBody UserDto user,  HttpServletRequest request, HttpServletResponse response){
+        User userEntity = new User(user.getLogin(), user.getMail(), user.getPassword());
         UserService.getInstance().createUser(user.getLogin(), user.getMail(), user.getPassword());
-        if (UserService.getInstance().isUserExist(userEntity)) response.setStatus(HttpStatus.OK.value());
-        else response.setStatus(HttpStatus.NOT_FOUND.value());
+        if (UserService.getInstance().isUserExist(userEntity)) {
+            response.setStatus(HttpStatus.OK.value());
+        } else response.setStatus(HttpStatus.NOT_FOUND.value());
     }
 
     @ExceptionHandler(Exception.class)

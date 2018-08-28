@@ -206,7 +206,6 @@ angular.module('frontendServices', [])
                             deferred.resolve(response.data);
                         }
                         else {
-                            alert("Error. It is not possible to download user info. ");
                             deferred.reject('Error');
                         }
                     });
@@ -219,7 +218,7 @@ angular.module('frontendServices', [])
                 })
                     .then(function (response) {
                         if (response.status == 200) {
-                            window.location.replace('/resources/start-page-web-file-manager.html');
+                            window.location.replace('/resources/public/login.html');
                         }
                         else {
                             alert("Error. It is not possible to log out. ");

@@ -12,6 +12,7 @@ angular.module('newUserApp', ['common', 'spring-security-csrf-token-interceptor'
                 mail: $scope.vm.email
             };
 
+            console.log($scope.vm.username);
             $http({
                 method: 'POST',
                 url: '/user',

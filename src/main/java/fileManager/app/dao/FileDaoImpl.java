@@ -68,7 +68,7 @@ public class FileDaoImpl extends CrudDaoAbstract  implements FileDao{
     @Override
     public List<UploadFile> findAll() {
         Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
-        List<UploadFile> files =  session.createQuery("From UploadFile").list();
+        List<UploadFile> files =  session.createQuery("from UploadFile").list();
         session.close();
         return files;
     }
