@@ -7,6 +7,8 @@ import fileManager.app.dao.UserDaoImpl;
 import fileManager.app.models.UploadFile;
 import fileManager.app.models.User;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -14,23 +16,22 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@Service
 public class FileService {
-    private UserDaoImpl userDao = UserDaoImpl.getInstance();
-    private FileDaoImpl fileDao = FileDaoImpl.getInstance();
 
+    @Autowired
+    private UserDaoImpl userDao;
 
-    private static final FileService fileService = new FileService();
-    private FileService(){}
-    public static FileService getInstance(){ return fileService; }
+    @Autowired
+    private FileDaoImpl fileDao;
 
     public List<UploadFile> findFileForUser(String login) {
         return fileDao.findFilesForUser(userDao.findUserByLogin(login));
     }
 
     public void saveFile(User user, MultipartFile file) throws IOException {
-        UploadFile uploadFile = new UploadFile(file.getOriginalFilename(), user, file.getBytes(), file.getContentType(), "false", new Date(), "nothing", 0);
+        UploadFile uploadFile = new UploadFile(file.getOriginalFilename(), user.getId(), file.getBytes(), file.getContentType(), "false", new Date(), "nothing", 0);
         fileDao.save(uploadFile);
-        user.addFile(uploadFile);
     }
 
     public void deleteFilesById(List<Integer> fileDeleteIds) {
@@ -45,7 +46,7 @@ public class FileService {
             UploadFile uploadFile = fileDao.getFileById(id);
             uploadFile.setStatus("true");
             uploadFile.setData(new Date());
-            fileDao.update(uploadFile);
+            fileDao.updateStatusAndData(uploadFile);
         }
     }
 
@@ -54,7 +55,7 @@ public class FileService {
             UploadFile uploadFile = fileDao.getFileById(id);
             uploadFile.setStatus("false");
             uploadFile.setData(new Date());
-            fileDao.update(uploadFile);
+            fileDao.updateStatusAndData(uploadFile);
         }
     }
 
@@ -68,13 +69,28 @@ public class FileService {
 
     public UploadFile findFileById(Integer id) { return fileDao.getFileById(id); }
 
-    public void updateFile(UploadFile file) {
-        fileDao.update(file);
+    public void updateCount(UploadFile file) {
+        fileDao.updateCount(file);
     }
 
+    public void updateNameFile(String oldName, UploadFile file) {
+        fileDao.updateNameFile(oldName, file);
+    }
 
-    public static void monitorFile() {
-        List<UploadFile> files = FileDaoImpl.getInstance().findAll();
+    public void updateStatusAndData(UploadFile file) {
+        fileDao.updateStatusAndData(file);
+    }
+
+    public void updateStatus(UploadFile file) {
+        fileDao.updateStatus(file);
+    }
+
+    public void updateInfo(UploadFile file) {
+        fileDao.updateInfo(file);
+    }
+
+    public void monitorFile() {
+        List<UploadFile> files = fileDao.findAll();
         List<Integer> list = new ArrayList<Integer>();
         for (UploadFile file: files) {
             if (!file.getStatus().equals("false")) {
@@ -84,7 +100,7 @@ public class FileService {
                     list.add(file.getId());
             }
         }
-        FileService.getInstance().deleteFilesById(list);
+        deleteFilesById(list);
     }
 
 }

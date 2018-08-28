@@ -6,7 +6,7 @@ import fileManager.app.models.User;
 
 import java.util.List;
 
-public interface FileDao {
+public interface FileDao extends CrudDao<UploadFile>{
     List<UploadFile> findFilesForUser(User user);
     UploadFile getFileById(Integer id);
     boolean isFileExist(UploadFile file);

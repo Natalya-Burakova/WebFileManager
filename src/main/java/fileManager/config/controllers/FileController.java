@@ -7,6 +7,7 @@ import fileManager.app.models.User;
 import fileManager.app.services.FileService;
 
 import fileManager.app.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -32,8 +33,11 @@ import java.util.List;
 @RequestMapping("/file")
 public class FileController {
 
+    @Autowired
+    private FileService fileService;
 
-    private FileService fileService = FileService.getInstance();
+    @Autowired
+    private UserService userService;
 
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
@@ -71,7 +75,7 @@ public class FileController {
     public void uploadFile(@RequestParam(value = "file", required = true) MultipartFile file, HttpServletResponse response, HttpServletRequest request) throws IOException {
         HttpSession session = request.getSession(false);
         UserDetails userDetails = (UserDetails) session.getAttribute("user");
-        User user = UserService.getInstance().findUserByLogin(userDetails.getUsername());
+        User user = userService.findUserByLogin(userDetails.getUsername());
         if (!fileService.isFileExist(new UploadFile(file.getOriginalFilename()))) {
             fileService.saveFile(user, file);
             response.setStatus(HttpStatus.OK.value());
@@ -108,7 +112,7 @@ public class FileController {
             UploadFile file = fileService.findFileByFileName(nameFile);
             if (file.getStatus().equals("false")) {
                 file.setCount(file.getCount() + 1);
-                fileService.updateFile(file);
+                fileService.updateCount(file);
                 HttpHeaders headers = new HttpHeaders();
                 headers.setContentDispositionFormData(nameFile, nameFile);
                 try {
@@ -137,8 +141,9 @@ public class FileController {
     @RequestMapping(value="/rename/{urlFile}", method = RequestMethod.PUT)
     public void renameFile(@RequestBody String information, HttpServletRequest request, HttpServletResponse response) {
         UploadFile file = fileService.findFileByFileName(request.getRequestURL().substring(request.getRequestURL().lastIndexOf("/")+1));
+        String oldName = file.getNameFile();
         file.setNameFile(information);
-        fileService.updateFile(file);
+        fileService.updateNameFile(oldName, file);
         response.setStatus(HttpStatus.OK.value());
     }
 
@@ -149,7 +154,7 @@ public class FileController {
     public void replaceFile(@RequestParam(value = "file", required = true) MultipartFile file, HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession(false);
         UserDetails userDetails = (UserDetails) session.getAttribute("user");
-        User user = UserService.getInstance().findUserByLogin(userDetails.getUsername());
+        User user = userService.findUserByLogin(userDetails.getUsername());
 
         String nameFile = request.getRequestURL().substring(request.getRequestURL().lastIndexOf("/") + 1);
         UploadFile uploadFile =  fileService.findFileByFileName(nameFile);
@@ -159,7 +164,7 @@ public class FileController {
             if (fileService.isFileExist(new UploadFile(file.getOriginalFilename()))) {
                 uploadFile.setStatus("replace/" + fileService.findFileByFileName(file.getOriginalFilename()).getId());
                 uploadFile.setData(new Date());
-                fileService.updateFile(uploadFile);
+                fileService.updateStatusAndData(uploadFile);
                 response.setStatus(HttpStatus.OK.value());
             }
             else
@@ -176,7 +181,7 @@ public class FileController {
     public void undoReplaceFile(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession(false);
         UserDetails userDetails = (UserDetails) session.getAttribute("user");
-        User user = UserService.getInstance().findUserByLogin(userDetails.getUsername());
+        User user = userService.findUserByLogin(userDetails.getUsername());
 
         String nameFile = request.getRequestURL().substring(request.getRequestURL().lastIndexOf("/") + 1);
         UploadFile uploadFile =  fileService.findFileByFileName(nameFile);
@@ -190,7 +195,7 @@ public class FileController {
                     List<Integer> list = new ArrayList<Integer>();
                     list.add(uploadFile.getId());
                     fileService.deleteFilesById(list);
-                    fileService.updateFile(file);
+                    fileService.updateStatus(file);
                     response.setStatus(HttpStatus.OK.value());
                 }
             }
@@ -206,7 +211,7 @@ public class FileController {
         if (fileService.isFileExist(new UploadFile(fileName))) {
             UploadFile file = fileService.findFileByFileName(fileName);
             file.setInfo(info);
-            fileService.updateFile(file);
+            fileService.updateInfo(file);
             response.setStatus(HttpStatus.OK.value());
         }
         else

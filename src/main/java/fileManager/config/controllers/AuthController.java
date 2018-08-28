@@ -6,6 +6,7 @@ import fileManager.app.dto.UserDto;
 import fileManager.app.services.FileService;
 import fileManager.app.services.UserDetailsService;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
 import org.springframework.http.ResponseEntity;
@@ -26,7 +27,11 @@ import javax.servlet.http.HttpSession;
 @RequestMapping("/authenticate")
 public class AuthController {
 
-    private UserDetailsService userDetailsService = UserDetailsService.getInstance();
+    @Autowired
+    private FileService fileService;
+
+    @Autowired
+    private UserDetailsService userDetailsService;
 
     @ResponseStatus(HttpStatus.OK)
     @RequestMapping(method = RequestMethod.POST)
@@ -41,7 +46,7 @@ public class AuthController {
                 session = request.getSession();
                 session.setAttribute("user", userDetails);
                 response.setStatus(HttpStatus.OK.value());
-                FileService.monitorFile();
+                fileService.monitorFile();
             } else
                 response.setStatus(HttpStatus.NOT_FOUND.value());
         }

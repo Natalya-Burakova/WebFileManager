@@ -5,24 +5,24 @@ import fileManager.app.dao.UserDaoImpl;
 
 import fileManager.app.models.User;
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
 import java.util.regex.Pattern;
 
 import static fileManager.app.services.Validation.assertMatches;
 import static fileManager.app.services.Validation.assertMinimumLength;
 import static fileManager.app.services.Validation.assertNotBlank;
 
+@Service
 public class UserService {
 
     private static final Pattern PASSWORD_REGEX = Pattern.compile("(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{6,}");
     private static final Pattern EMAIL_REGEX = Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
 
 
-    private UserDaoImpl usersDao = UserDaoImpl.getInstance();
-
-    private static final UserService userService = new UserService();
-    private UserService(){}
-    public static UserService getInstance(){ return userService; }
+    @Autowired
+    private UserDaoImpl usersDao;
 
     public void createUser(String login, String mail, String password) {
         assertNotBlank(login, "Login cannot be empty.");
@@ -39,6 +39,8 @@ public class UserService {
     }
 
     public User findUserByLogin(String login) { return usersDao.findUserByLogin(login);}
+
+    public User findUserById(Integer id) { return usersDao.findUserById(id);}
 
     public boolean isUserExist(User user) { return usersDao.isLoginAvailable(user.getLogin()); }
 

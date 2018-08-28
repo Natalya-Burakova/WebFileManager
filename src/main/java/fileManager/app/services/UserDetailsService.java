@@ -1,23 +1,21 @@
 package fileManager.app.services;
 
 import fileManager.app.models.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class UserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService {
 
-
-    private UserService userService = UserService.getInstance();
-
-    private static final UserDetailsService userDetailsService= new UserDetailsService();
-    private UserDetailsService(){}
-    public static UserDetailsService getInstance(){ return userDetailsService; }
-
+    @Autowired
+    private UserService userService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

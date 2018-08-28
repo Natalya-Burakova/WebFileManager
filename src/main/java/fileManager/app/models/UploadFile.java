@@ -1,11 +1,17 @@
 package fileManager.app.models;
 
+import fileManager.app.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 @Table(name = "new_file")
 public class UploadFile {
+
+        @Autowired
+        UserService userService;
 
         private Integer id;
         private String nameFile;
@@ -19,14 +25,13 @@ public class UploadFile {
 
         public UploadFile() {}
 
-
         public UploadFile(String nameFile) {
         this.nameFile = nameFile;
     }
 
-        public UploadFile(String nameFile, User user, byte[] file, String type, String status, Date data, String info, Integer count) {
+        public UploadFile(String nameFile, Integer user_id, byte[] file, String type, String status, Date data, String info, Integer count) {
                 this.nameFile = nameFile;
-                this.user = user;
+                this.user = userService.findUserById(user_id);
                 this.file= file;
                 this.type = type;
                 this.status = status;
@@ -93,7 +98,7 @@ public class UploadFile {
 
 
         @Basic
-        @Column(name = "count", nullable = false)
+        @Column(name = "count_down", nullable = false)
         public Integer getCount() { return count; }
         public void setCount(Integer count) {
                 this.count = count;

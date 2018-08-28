@@ -21,7 +21,13 @@ public class User {
         this.login = login;
         this.mail = mail;
         this.password = password;
-        listAllUploadFile = new ArrayList<UploadFile>();
+    }
+
+    public User(Integer id, String login, String mail, String password) {
+        this.id = id;
+        this.login = login;
+        this.mail = mail;
+        this.password = password;
     }
 
     @Id
@@ -64,12 +70,6 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     public List<UploadFile> getListAllUploadFile() { return listAllUploadFile; }
     public void setListAllUploadFile(List<UploadFile>listAllUploadFile) { this.listAllUploadFile = listAllUploadFile; }
-
-    public void addFile(UploadFile file) { file.setUser(this);listAllUploadFile.add(file); }
-
-    public void removeFile(UploadFile file) {
-        listAllUploadFile.remove(file);
-    }
 
     @Override
     public boolean equals(Object o) {

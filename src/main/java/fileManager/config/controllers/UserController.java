@@ -4,6 +4,7 @@ import fileManager.app.dto.UserDto;
 import fileManager.app.models.User;
 import fileManager.app.services.UserService;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
 import org.springframework.http.ResponseEntity;
@@ -20,13 +21,16 @@ import javax.servlet.http.HttpSession;
 @RequestMapping("/user")
 public class UserController {
 
+    @Autowired
+    private UserService userService;
+
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
     @RequestMapping(method = RequestMethod.GET)
     public UserDto getUserInfo(HttpServletRequest request, HttpServletResponse response) {
        HttpSession session = request.getSession(false);
        UserDetails userDetails = (UserDetails) session.getAttribute("user");
-       User user = UserService.getInstance().findUserByLogin(userDetails.getUsername());
+       User user = userService.findUserByLogin(userDetails.getUsername());
        return user != null ? new UserDto(user.getLogin()) : null;
     }
 
@@ -35,8 +39,8 @@ public class UserController {
     @RequestMapping(method = RequestMethod.POST)
     public void createUser(@RequestBody UserDto user,  HttpServletRequest request, HttpServletResponse response){
         User userEntity = new User(user.getLogin(), user.getMail(), user.getPassword());
-        UserService.getInstance().createUser(user.getLogin(), user.getMail(), user.getPassword());
-        if (UserService.getInstance().isUserExist(userEntity)) {
+        userService.createUser(user.getLogin(), user.getMail(), user.getPassword());
+        if (userService.isUserExist(userEntity)) {
             response.setStatus(HttpStatus.OK.value());
         } else response.setStatus(HttpStatus.NOT_FOUND.value());
     }
