@@ -1,19 +1,11 @@
 package fileManager.app.models;
 
-import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
-
-@Entity
-@Table(name = "new_user")
 public class User {
 
     private Integer id;
     private String login;
     private String mail;
     private String password;
-    private List<UploadFile> listAllUploadFile;
-
 
     public User(){}
 
@@ -30,9 +22,7 @@ public class User {
         this.password = password;
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false, insertable = true, updatable = true)
+
     public Integer getId() {
         return id;
     }
@@ -40,8 +30,6 @@ public class User {
         this.id = id;
     }
 
-    @Basic
-    @Column(name = "login", nullable = false, length = 50)
     public String getLogin() {
         return login;
     }
@@ -49,8 +37,6 @@ public class User {
         this.login = login;
     }
 
-    @Basic
-    @Column(name = "mail", nullable = false, length = 50)
     public String getMail() {
         return mail;
     }
@@ -58,18 +44,12 @@ public class User {
         this.mail = mail;
     }
 
-    @Basic
-    @Column(name = "password", nullable = false, length = 50)
     public String getPassword() {
         return password;
     }
     public void setPassword(String password) {
         this.password = password;
     }
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    public List<UploadFile> getListAllUploadFile() { return listAllUploadFile; }
-    public void setListAllUploadFile(List<UploadFile>listAllUploadFile) { this.listAllUploadFile = listAllUploadFile; }
 
     @Override
     public boolean equals(Object o) {

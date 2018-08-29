@@ -34,25 +34,25 @@ public class FileService {
         fileDao.save(uploadFile);
     }
 
-    public void deleteFilesById(List<Integer> fileDeleteIds) {
-        for (Integer id: fileDeleteIds) {
-            UploadFile uploadFile = fileDao.getFileById(id);
+    public void deleteFiles(List<String> fileDelete) {
+        for (String name: fileDelete) {
+            UploadFile uploadFile = fileDao.getFileByName(name);
             fileDao.delete(uploadFile);
         }
     }
 
-    public void addToBasketFilesById(List<Integer> fileAddToBasketIds) {
-        for (Integer id: fileAddToBasketIds) {
-            UploadFile uploadFile = fileDao.getFileById(id);
+    public void addToBasketFiles(List<String> fileAddToBasket) {
+        for (String name: fileAddToBasket) {
+            UploadFile uploadFile = fileDao.getFileByName(name);
             uploadFile.setStatus("true");
             uploadFile.setData(new Date());
             fileDao.updateStatusAndData(uploadFile);
         }
     }
 
-    public void returnFromBasketFilesById(List<Integer> fileReturnToBasketIds) {
-        for (Integer id: fileReturnToBasketIds) {
-            UploadFile uploadFile = fileDao.getFileById(id);
+    public void returnFromBasketFiles(List<String> fileReturnToBasket) {
+        for (String name: fileReturnToBasket) {
+            UploadFile uploadFile = fileDao.getFileByName(name);
             uploadFile.setStatus("false");
             uploadFile.setData(new Date());
             fileDao.updateStatusAndData(uploadFile);
@@ -91,16 +91,16 @@ public class FileService {
 
     public void monitorFile() {
         List<UploadFile> files = fileDao.findAll();
-        List<Integer> list = new ArrayList<Integer>();
+        List<String> list = new ArrayList<String>();
         for (UploadFile file: files) {
             if (!file.getStatus().equals("false")) {
                 long time = new Date().getTime() - file.getData().getTime();
                 int days = (int) (time / (24 * 60 * 60 * 1000));
                 if (days >= 4)
-                    list.add(file.getId());
+                    list.add(file.getNameFile());
             }
         }
-        deleteFilesById(list);
+        deleteFiles(list);
     }
 
 }

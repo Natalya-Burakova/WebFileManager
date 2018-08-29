@@ -130,14 +130,11 @@
     </build>
 
     <dependencies>
-
-        <!-- Spring -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
             <version>${org.springframework-version}</version>
             <exclusions>
-                <!-- Exclude Commons Logging in favor of SLF4j -->
                 <exclusion>
                     <groupId>commons-logging</groupId>
                     <artifactId>commons-logging</artifactId>
@@ -175,7 +172,6 @@
             <version>${org.springframework-version}</version>
         </dependency>
 
-        <!-- Hibernate -->
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
@@ -186,7 +182,7 @@
             <artifactId>hibernate-entitymanager</artifactId>
             <version>${hibernate-version}</version>
         </dependency>
-        <!-- optional -->
+
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-osgi</artifactId>
@@ -223,10 +219,6 @@
             <version>${hibernate-version}</version>
         </dependency>
 
-        <!--END Hibernate -->
-
-
-        <!-- Spring security -->
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-core</artifactId>
@@ -251,14 +243,12 @@
             <version>1.1</version>
         </dependency>
 
-        <!-- Jackson JSON Processor -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <version>${jackson-version}</version>
         </dependency>
 
-        <!-- servlet container provided dependencies -->
         <dependency>
             <groupId>org.apache.tomcat</groupId>
             <artifactId>tomcat-servlet-api</artifactId>
@@ -266,7 +256,6 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- test dependencies -->
         <dependency>
             <groupId>com.jayway.jsonpath</groupId>
             <artifactId>json-path</artifactId>
@@ -280,14 +269,6 @@
             <version>3.3.2</version>
         </dependency>
 
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.12</version>
-            <scope>test</scope>
-        </dependency>
-
-        <!-- Logging -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
@@ -310,7 +291,7 @@
             <artifactId>log4j</artifactId>
             <version>1.2.16</version>
         </dependency>
-        <!-- tomcat embed dependencies -->
+
         <dependency>
             <groupId>org.apache.tomcat.embed</groupId>
             <artifactId>tomcat-embed-core</artifactId>
@@ -341,13 +322,6 @@
             <version>${tomcat.version}</version>
         </dependency>
 
-        <!-- db -->
-        <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <version>42.2.2</version>
-        </dependency>
-        <!-- Apache Commons FileUpload -->
         <dependency>
             <groupId>commons-fileupload</groupId>
             <artifactId>commons-fileupload</artifactId>
@@ -359,7 +333,7 @@
             <artifactId>hsqldb</artifactId>
             <version>2.3.3</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/javax.inject/javax.inject -->
+
         <dependency>
             <groupId>javax.inject</groupId>
             <artifactId>javax.inject</artifactId>
@@ -370,11 +344,6 @@
             <artifactId>h2</artifactId>
             <version>1.4.187</version>
         </dependency>
-        <!-- Apache Commons IO -->
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <version>2.5</version>
-        </dependency>
+
     </dependencies>
 </project>

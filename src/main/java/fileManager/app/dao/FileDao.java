@@ -12,4 +12,9 @@ public interface FileDao extends CrudDao<UploadFile>{
     boolean isFileExist(UploadFile file);
     UploadFile getFileByName(String fileName);
     List<UploadFile> findAll();
+    int updateCount(UploadFile model);
+    int updateNameFile(String oldName, UploadFile model);
+    int updateStatusAndData(UploadFile model);
+    int updateStatus(UploadFile model);
+    int updateInfo(UploadFile model);
 }

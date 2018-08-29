@@ -88,8 +88,8 @@ public class FileController {
 
     @ResponseStatus(HttpStatus.OK)
     @RequestMapping(method = RequestMethod.DELETE)
-    public void deleteFiles(@RequestBody List<Integer> deletedFileIds, HttpServletRequest request, HttpServletResponse response) {
-        fileService.deleteFilesById(deletedFileIds);
+    public void deleteFiles(@RequestBody List<String> deletedFile, HttpServletRequest request, HttpServletResponse response) {
+        fileService.deleteFiles(deletedFile);
         response.setStatus(HttpStatus.OK.value());
     }
 
@@ -97,8 +97,8 @@ public class FileController {
 
     @ResponseStatus(HttpStatus.OK)
     @RequestMapping(value="/addToBasket", method = RequestMethod.POST)
-    public void addToBasketFiles(@RequestBody List<Integer> deletedFileIds, HttpServletRequest request, HttpServletResponse response) {
-        fileService.addToBasketFilesById(deletedFileIds);
+    public void addToBasketFiles(@RequestBody List<String> deletedFile, HttpServletRequest request, HttpServletResponse response) {
+        fileService.addToBasketFiles(deletedFile);
         response.setStatus(HttpStatus.OK.value());
     }
 
@@ -130,8 +130,8 @@ public class FileController {
 
     @ResponseStatus(HttpStatus.OK)
     @RequestMapping(value = "/returnFromBasket", method = RequestMethod.POST)
-    public void returnFromBasketFiles(@RequestBody List<Integer> returnFilesIds,HttpServletRequest request, HttpServletResponse response ) {
-        fileService.returnFromBasketFilesById(returnFilesIds);
+    public void returnFromBasketFiles(@RequestBody List<String> returnFiles,HttpServletRequest request, HttpServletResponse response ) {
+        fileService.returnFromBasketFiles(returnFiles);
         response.setStatus(HttpStatus.OK.value());
     }
 
@@ -192,9 +192,9 @@ public class FileController {
             if (!file.getStatus().equals("true") && !file.getStatus().equals("false")) {
                 if (uploadFile.getId() == Integer.parseInt(file.getStatus().substring(file.getStatus().lastIndexOf("/") + 1))) {
                     file.setStatus("false");
-                    List<Integer> list = new ArrayList<Integer>();
-                    list.add(uploadFile.getId());
-                    fileService.deleteFilesById(list);
+                    List<String> list = new ArrayList<String>();
+                    list.add(uploadFile.getNameFile());
+                    fileService.deleteFiles(list);
                     fileService.updateStatus(file);
                     response.setStatus(HttpStatus.OK.value());
                 }

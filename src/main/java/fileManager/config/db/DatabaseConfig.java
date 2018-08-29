@@ -13,11 +13,7 @@ public class DatabaseConfig {
 
     @Bean
     public DataSource dataSource() {
-        return new EmbeddedDatabaseBuilder()
-                .setType(EmbeddedDatabaseType.HSQL)
-                .setScriptEncoding("UTF-8")
-                .addScript("schema.sql")
-                .build();
+        return new EmbeddedDatabaseBuilder().setType(EmbeddedDatabaseType.HSQL).setScriptEncoding("UTF-8").addScript("schema.sql").build();
     }
 
 }

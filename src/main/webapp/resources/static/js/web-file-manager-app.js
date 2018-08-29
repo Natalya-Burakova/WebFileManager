@@ -101,12 +101,12 @@ angular.module('fileManagerApp', ['editableTableWidgets', 'frontendServices', 's
             };
 
             $scope.delete = function () {
-                var deletedFileIds = _.chain($scope.vm.files)
+                var deletedFile = _.chain($scope.vm.files)
                     .filter(function (file) {return file.selected && !file.new;})
-                    .map(function (file) {return file.id;})
+                    .map(function (file) {return file.nameFile;})
                     .value();
 
-                FileService.deleteFiles(deletedFileIds)
+                FileService.deleteFiles(deletedFile)
                     .then(function () {
                             clearMessages();
                             showInfoMessage("deletion successful.");
@@ -123,12 +123,12 @@ angular.module('fileManagerApp', ['editableTableWidgets', 'frontendServices', 's
             };
 
             $scope.addToBasket = function () {
-                var addToBasketFileIds = _.chain($scope.vm.files)
+                var addToBasketFile = _.chain($scope.vm.files)
                     .filter(function (file) {return file.selected && !file.new;})
-                    .map(function (file) {return file.id;})
+                    .map(function (file) {return file.nameFile;})
                     .value();
 
-                FileService.addToBasketFiles(addToBasketFileIds)
+                FileService.addToBasketFiles(addToBasketFile)
                     .then(function () {
                             clearMessages();
                             showInfoMessage("add to basket successful.");
@@ -163,12 +163,12 @@ angular.module('fileManagerApp', ['editableTableWidgets', 'frontendServices', 's
             };
 
             $scope.returnFromBasket = function() {
-                var returnFromBasketFileIds = _.chain($scope.vm.files)
+                var returnFromBasketFile = _.chain($scope.vm.files)
                     .filter(function (file) {return file.selected && !file.new;})
-                    .map(function (file) {return file.id;})
+                    .map(function (file) {return file.nameFile;})
                     .value();
 
-                FileService.returnFromBasketFiles(returnFromBasketFileIds)
+                FileService.returnFromBasketFiles(returnFromBasketFile)
                     .then(function () {
                             clearMessages();
                             showInfoMessage("add to basket successful.");

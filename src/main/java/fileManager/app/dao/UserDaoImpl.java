@@ -68,10 +68,13 @@ public class UserDaoImpl implements UserDao{
 
     @Override
     public User findUserById(Integer id) {
+        System.out.println("find user");
         List<User> listAllUsers = findAll();
         for (User user : listAllUsers){
-            if (user.getId().equals(id))
-                return new User(user.getId(), user.getLogin(), user.getMail(), user.getPassword());
+            if (user.getId().equals(id)) {
+                System.out.println("nashel");
+                return new User(id, user.getLogin(), user.getMail(), user.getPassword());
+            }
         }
         return null;
     }

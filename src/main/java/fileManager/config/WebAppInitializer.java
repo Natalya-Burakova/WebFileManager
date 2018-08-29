@@ -1,6 +1,6 @@
 package fileManager.config;
 
-import fileManager.config.db.DatabaseConfig;
+
 import fileManager.config.root.SpringRootConfig;
 import fileManager.config.servlets.ServletContextConfig;
 

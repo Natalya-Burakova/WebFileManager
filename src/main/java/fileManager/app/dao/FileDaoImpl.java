@@ -42,7 +42,7 @@ public class FileDaoImpl implements FileDao{
 
 
     private RowMapper<UploadFile> fileRowMapper = (resultSet, i) -> {
-        UploadFile uploadFile =  new UploadFile(resultSet.getString("name_file"), resultSet.getInt("user_id"), resultSet.getBytes("file"), resultSet.getString("type"), resultSet.getString("status"), resultSet.getDate("data"), resultSet.getString("info"), resultSet.getInt("count_down"));
+        UploadFile uploadFile =  new UploadFile(Integer.parseInt(resultSet.getString("id")), resultSet.getString("name_file"), resultSet.getInt("user_id"), resultSet.getBytes("file"), resultSet.getString("type"), resultSet.getString("status"), resultSet.getDate("data"), resultSet.getString("info"), resultSet.getInt("count_down"));
         return uploadFile;
     };
 
@@ -58,7 +58,7 @@ public class FileDaoImpl implements FileDao{
         List<UploadFile> listAllFiles = findAll();
         for (UploadFile file : listAllFiles){
             if (file.getId().equals(id))
-                return new UploadFile(file.getNameFile(), file.getUser().getId(), file.getFile(), file.getType(), file.getStatus(), file.getData(), file.getInfo(), file.getCount());
+                return new UploadFile(id, file.getNameFile(), file.getUser(), file.getFile(), file.getType(), file.getStatus(), file.getData(), file.getInfo(), file.getCount());
         }
         return null;
     }
@@ -78,7 +78,7 @@ public class FileDaoImpl implements FileDao{
         List<UploadFile> listAllFiles = findAll();
         for (UploadFile file : listAllFiles){
             if (file.getNameFile().equals(nameFile))
-                return new UploadFile(nameFile, file.getUser().getId(), file.getFile(), file.getType(), file.getStatus(), file.getData(), file.getInfo(), file.getCount());
+                return new UploadFile(file.getId(), nameFile, file.getUser(), file.getFile(), file.getType(), file.getStatus(), file.getData(), file.getInfo(), file.getCount());
         }
         return null;
     }
@@ -99,7 +99,7 @@ public class FileDaoImpl implements FileDao{
         paramMap.put("name_file", model.getNameFile());
         paramMap.put("status", model.getStatus());
         paramMap.put("type", model.getType());
-        paramMap.put("user_id", model.getUser().getId());
+        paramMap.put("user_id", model.getUser());
         return namedParameterJdbcTemplate.update(INSERT_FILE, paramMap);
     }
 
@@ -107,6 +107,7 @@ public class FileDaoImpl implements FileDao{
     public int update(UploadFile model) { return -1; }
 
 
+    @Override
     public int updateCount(UploadFile model) {
         Map<String, Object> paramMap = new HashMap<String, Object>();
         paramMap.put("count_down", model.getCount());
@@ -114,6 +115,7 @@ public class FileDaoImpl implements FileDao{
         return namedParameterJdbcTemplate.update(UPDATE_COUNT, paramMap);
     }
 
+    @Override
     public int updateNameFile(String oldName, UploadFile model) {
         Map<String, Object> paramMap = new HashMap<String, Object>();
         paramMap.put("new_name", model.getNameFile());
@@ -121,6 +123,7 @@ public class FileDaoImpl implements FileDao{
         return namedParameterJdbcTemplate.update(UPDATE_NAME, paramMap);
     }
 
+    @Override
     public int updateStatusAndData(UploadFile model) {
         Map<String, Object> paramMap = new HashMap<String, Object>();
         paramMap.put("name_file", model.getNameFile());
@@ -129,6 +132,7 @@ public class FileDaoImpl implements FileDao{
         return namedParameterJdbcTemplate.update(UPDATE_STATUS_AND_DATA, paramMap);
     }
 
+    @Override
     public int updateStatus(UploadFile model) {
         Map<String, Object> paramMap = new HashMap<String, Object>();
         paramMap.put("name_file", model.getNameFile());
@@ -136,10 +140,11 @@ public class FileDaoImpl implements FileDao{
         return namedParameterJdbcTemplate.update(UPDATE_STATUS, paramMap);
     }
 
+    @Override
     public int updateInfo(UploadFile model) {
         Map<String, Object> paramMap = new HashMap<String, Object>();
         paramMap.put("name_file", model.getNameFile());
-        paramMap.put("info", model.getStatus());
+        paramMap.put("info", model.getInfo());
         return namedParameterJdbcTemplate.update(UPDATE_INFO, paramMap);
     }
 

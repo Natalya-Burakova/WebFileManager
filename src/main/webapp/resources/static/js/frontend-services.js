@@ -106,13 +106,12 @@ angular.module('frontendServices', [])
 
                 return deferred.promise;
             },
-            deleteFiles: function(deletedFileIds) {
+            deleteFiles: function(deletedFile) {
                 var deferred = $q.defer();
-
                 $http({
                     method: 'DELETE',
                     url: '/file',
-                    data: deletedFileIds,
+                    data: deletedFile,
                     headers: {
                         "Content-Type": "application/json"
                     }
@@ -129,13 +128,13 @@ angular.module('frontendServices', [])
 
                 return deferred.promise;
             },
-            addToBasketFiles: function(addToBasketFileIds) {
+            addToBasketFiles: function(addToBasketFile) {
                 var deferred = $q.defer();
 
                 $http({
                     method: 'POST',
                     url: '/file/addToBasket',
-                    data: addToBasketFileIds,
+                    data: addToBasketFile,
                     headers: {
                         "Content-Type": "application/json"
                     }
@@ -169,13 +168,13 @@ angular.module('frontendServices', [])
                         }
                     });
             },
-            returnFromBasketFiles: function (returnFromBasketFilesIds) {
+            returnFromBasketFiles: function (returnFromBasketFiles) {
                 var deferred = $q.defer();
 
                 $http({
                     method: 'POST',
                     url: '/file/returnFromBasket',
-                    data: returnFromBasketFilesIds,
+                    data: returnFromBasketFiles,
                     headers: {
                         "Content-Type": "application/json"
                     }
