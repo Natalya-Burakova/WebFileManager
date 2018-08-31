@@ -24,7 +24,7 @@ public class FileDaoImpl implements FileDao{
     //language=SQL
     private final String SQL_SELECT_ALL = "select * from new_file";
     //language=SQL
-    private final String INSERT_FILE = "insert into new_file(count_down, data, file,info, name_file, status, type, user_id) values (:count_down, :data, :file, :info, :name_file, :status, :type, :user_id)";
+    private final String INSERT_FILE = "insert into new_file(id, count_down, data, file,info, name_file, status, type, user_id) values (:id, :count_down, :data, :file, :info, :name_file, :status, :type, :user_id)";
     //language=SQL
     private final String DELETE_FILE = "delete from new_file WHERE name_file = :name_file";
     //language=SQL
@@ -42,7 +42,7 @@ public class FileDaoImpl implements FileDao{
 
 
     private RowMapper<UploadFile> fileRowMapper = (resultSet, i) -> {
-        UploadFile uploadFile =  new UploadFile(Integer.parseInt(resultSet.getString("id")), resultSet.getString("name_file"), resultSet.getInt("user_id"), resultSet.getBytes("file"), resultSet.getString("type"), resultSet.getString("status"), resultSet.getDate("data"), resultSet.getString("info"), resultSet.getInt("count_down"));
+        UploadFile uploadFile =  new UploadFile(resultSet.getString("id"), resultSet.getString("name_file"), resultSet.getInt("user_id"), resultSet.getBytes("file"), resultSet.getString("type"), resultSet.getString("status"), resultSet.getDate("data"), resultSet.getString("info"), resultSet.getInt("count_down"));
         return uploadFile;
     };
 
@@ -54,7 +54,7 @@ public class FileDaoImpl implements FileDao{
     }
 
     @Override
-    public UploadFile getFileById(Integer id) {
+    public UploadFile getFileById(String id) {
         List<UploadFile> listAllFiles = findAll();
         for (UploadFile file : listAllFiles){
             if (file.getId().equals(id))
@@ -92,6 +92,7 @@ public class FileDaoImpl implements FileDao{
     @Override
     public int save(UploadFile model) {
         Map<String, Object> paramMap = new HashMap<String, Object>();
+        paramMap.put("id", model.getId());
         paramMap.put("count_down", model.getCount());
         paramMap.put("data", model.getData());
         paramMap.put("file", model.getFile());

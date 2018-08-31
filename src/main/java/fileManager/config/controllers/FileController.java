@@ -190,7 +190,7 @@ public class FileController {
 
         for (UploadFile file: files) {
             if (!file.getStatus().equals("true") && !file.getStatus().equals("false")) {
-                if (uploadFile.getId() == Integer.parseInt(file.getStatus().substring(file.getStatus().lastIndexOf("/") + 1))) {
+                if (uploadFile.getId().equals(file.getStatus().substring(file.getStatus().lastIndexOf("/") + 1))) {
                     file.setStatus("false");
                     List<String> list = new ArrayList<String>();
                     list.add(uploadFile.getNameFile());

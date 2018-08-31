@@ -2,20 +2,14 @@ package fileManager.app.models;
 
 public class User {
 
-    private Integer id;
+    private String  id;
     private String login;
     private String mail;
     private String password;
 
     public User(){}
 
-    public User(String login, String mail, String password) {
-        this.login = login;
-        this.mail = mail;
-        this.password = password;
-    }
-
-    public User(Integer id, String login, String mail, String password) {
+    public User(String  id, String login, String mail, String password) {
         this.id = id;
         this.login = login;
         this.mail = mail;
@@ -23,10 +17,10 @@ public class User {
     }
 
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -67,7 +61,8 @@ public class User {
 
     @Override
     public int hashCode() {
-        int result = id;
+        int result = 17;
+        result = 31 * result + (id != null ? id.hashCode() : 0);
         result = 31 * result + (login != null ? login.hashCode() : 0);
         result = 31 * result + (mail != null ? mail.hashCode() : 0);
         result = 31 * result + (password != null ? password.hashCode() : 0);

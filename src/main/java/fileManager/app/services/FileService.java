@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class FileService {
@@ -30,7 +31,7 @@ public class FileService {
     }
 
     public void saveFile(User user, MultipartFile file) throws IOException {
-        UploadFile uploadFile = new UploadFile(file.getOriginalFilename(), user.getId(), file.getBytes(), file.getContentType(), "false", new Date(), "nothing", 0);
+        UploadFile uploadFile = new UploadFile(UUID.randomUUID().toString(), file.getOriginalFilename(), user.getId(), file.getBytes(), file.getContentType(), "false", new Date(), "nothing", 0);
         fileDao.save(uploadFile);
     }
 
@@ -67,7 +68,7 @@ public class FileService {
         return fileDao.getFileByName(fileName);
     }
 
-    public UploadFile findFileById(Integer id) { return fileDao.getFileById(id); }
+    public UploadFile findFileById(String id) { return fileDao.getFileById(id); }
 
     public void updateCount(UploadFile file) {
         fileDao.updateCount(file);

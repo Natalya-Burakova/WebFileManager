@@ -4,13 +4,13 @@ import java.util.Date;
 
 public class UploadFile {
 
-        private Integer id;
+        private String id;
         private String nameFile;
         private String type;
         private String info;
         private String status;
         private Date data;
-        private Integer user;
+        private String user;
         private byte[] file;
         private Integer count;
 
@@ -20,18 +20,7 @@ public class UploadFile {
         this.nameFile = nameFile;
     }
 
-        public UploadFile(String nameFile, Integer user_id, byte[] file, String type, String status, Date data, String info, Integer count) {
-                this.nameFile = nameFile;
-                this.user = user_id;
-                this.file= file;
-                this.type = type;
-                this.status = status;
-                this.data = data;
-                this.info = info;
-                this.count = count;
-        }
-
-        public UploadFile(Integer id, String nameFile, Integer user_id, byte[] file, String type, String status, Date data, String info, Integer count) {
+        public UploadFile(String id, String nameFile, String user_id, byte[] file, String type, String status, Date data, String info, Integer count) {
                 this.id = id;
                 this.nameFile = nameFile;
                 this.user = user_id;
@@ -43,10 +32,10 @@ public class UploadFile {
                 this.count = count;
         }
 
-        public Integer getId() {
+        public String  getId() {
             return id;
         }
-        public void setId(Integer id) { this.id = id; }
+        public void setId(String id) { this.id = id; }
 
 
         public String getNameFile() { return nameFile; }
@@ -55,10 +44,10 @@ public class UploadFile {
         }
 
 
-        public Integer getUser() {
+        public String getUser() {
             return user;
         }
-        public void setUser(Integer user) {
+        public void setUser(String user) {
             this.user = user;
         }
 

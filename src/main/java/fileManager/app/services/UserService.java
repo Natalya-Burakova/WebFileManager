@@ -8,6 +8,8 @@ import fileManager.app.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.UUID;
 import java.util.regex.Pattern;
 
 import static fileManager.app.services.Validation.assertMatches;
@@ -34,7 +36,7 @@ public class UserService {
 
         if (!usersDao.isLoginAvailable(login)) throw new IllegalArgumentException("The login is not available.");
 
-        User user = new User(login, mail, new BCryptPasswordEncoder().encode(password));
+        User user = new User(UUID.randomUUID().toString(), login, mail, new BCryptPasswordEncoder().encode(password));
         usersDao.save(user);
     }
 

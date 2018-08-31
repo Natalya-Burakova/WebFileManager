@@ -3,7 +3,7 @@ package fileManager.app.dto;
 
 public class FileDto {
 
-    private Integer id;
+    private String id;
     private String nameFile;
     private String urlFile;
     private String type;
@@ -16,7 +16,7 @@ public class FileDto {
 
     public FileDto() {}
 
-    public FileDto(Integer id, String nameFile, String urlFile, String type, Integer size, Boolean status, String info, Integer count, Boolean newReplaceFile, Boolean undoReplaceFile) {
+    public FileDto(String id, String nameFile, String urlFile, String type, Integer size, Boolean status, String info, Integer count, Boolean newReplaceFile, Boolean undoReplaceFile) {
         this.id = id;
         this.nameFile = nameFile;
         this.urlFile = urlFile;
@@ -29,8 +29,8 @@ public class FileDto {
         this.undoReplaceFile = undoReplaceFile;
     }
 
-    public void setId(Integer id) { this.id = id; }
-    public Integer getId() { return id; }
+    public void setId(String id) { this.id = id; }
+    public String getId() { return id; }
 
     public void setNameFile(String nameFile) { this.nameFile = nameFile;}
     public String getNameFile() { return nameFile; }
