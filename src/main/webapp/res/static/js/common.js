@@ -44,7 +44,7 @@ angular.module('common', ['ngMessages'])
             })
                 .then(function(response) {
                     if (response.status == 200) {
-                        window.location.replace('/resources/start-page-web-file-manager.html');
+                       window.location.replace('/res/start-page-web-file-manager.html');
                     }
                     else {
                         $scope.vm.errorMessages = [];

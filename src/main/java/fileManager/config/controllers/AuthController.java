@@ -17,10 +17,11 @@ import org.springframework.stereotype.Controller;
 
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
+import java.io.IOException;
 
 
 @Controller
@@ -33,9 +34,10 @@ public class AuthController {
     @Autowired
     private UserDetailsService userDetailsService;
 
+
     @ResponseStatus(HttpStatus.OK)
     @RequestMapping(method = RequestMethod.POST)
-    public void authUser(@RequestBody UserDto user, HttpServletRequest request, HttpServletResponse response){
+    public void authUser(@RequestBody UserDto user, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if (user.getLogin() == null || user.getPassword() == null)
             response.setStatus(HttpStatus.NOT_FOUND.value());
         else {
@@ -45,8 +47,9 @@ public class AuthController {
                 if (session != null) session.invalidate();
                 session = request.getSession();
                 session.setAttribute("user", userDetails);
-                response.setStatus(HttpStatus.OK.value());
                 fileService.monitorFile();
+                response.setStatus(HttpStatus.OK.value());
+                response.sendRedirect("res/start-page-web-file-manager.html");
             } else
                 response.setStatus(HttpStatus.NOT_FOUND.value());
         }

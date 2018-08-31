@@ -3,7 +3,7 @@ angular.module('editableTableWidgets', [])
         return {
             restrict: 'E',
             link: function(scope, element, attrs) { scope.extraStyles = attrs.extraStyles; },
-            templateUrl: '/resources/public/partials/error.html'
+            templateUrl: '/res/public/partials/error.html'
         }
     })
     .directive('ttEditableRow', function() {
@@ -26,7 +26,7 @@ angular.module('editableTableWidgets', [])
             },
             transclude:true,
             replace:true,
-            templateUrl: '/resources/public/partials/editable-cell.html',
+            templateUrl: '/res/public/partials/editable-cell.html',
             controller: ['$scope', function($scope) {
 
                 $scope.cellState = {

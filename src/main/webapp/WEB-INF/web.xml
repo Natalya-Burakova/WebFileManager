@@ -6,8 +6,8 @@
     <display-name>web-file-manager</display-name>
 
     <welcome-file-list>
-        <welcome-file>resources/public/login.html</welcome-file>
-        <welcome-file>resources/public/login.htm</welcome-file>
-        <welcome-file>resources/public/login.jsp</welcome-file>
+        <welcome-file>res/public/login.html</welcome-file>
+        <welcome-file>res/public/login.htm</welcome-file>
+        <welcome-file>res/public/login.jsp</welcome-file>
     </welcome-file-list>
 </web-app>

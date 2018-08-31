@@ -6,9 +6,9 @@
 
 Для того, чтобы установить необходимые библиотеки.
 
-Для сборки приложения используется maven: **mvn clean install**
+Для сборки приложения используется maven: **mvn clean package**
 
-Для запуска jar-файла перейти в директорию target (cd target) и запустить: **java -jar file-manager.jar**
+Для запуска jar-файла перейти в директорию target (cd target) и запустить: **java -jar file-manager-jar-with-dependencies.jar**
 ```
 Ссылка для начала работы
 ```

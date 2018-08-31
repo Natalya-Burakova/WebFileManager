@@ -32,7 +32,7 @@ angular.module('frontendServices', [])
                     .then(function (response) {
                         if (response.status == 200) {
                             deferred.resolve();
-                            window.location.replace('/resources/start-page-web-file-manager.html');
+                            window.location.replace('/res/start-page-web-file-manager.html');
                         }
                         else {
                             alert("Error. It is not possible to upload file. ");
@@ -59,7 +59,7 @@ angular.module('frontendServices', [])
                     .then(function (response) {
                         if (response.status == 200) {
                             deferred.resolve();
-                            window.location.replace('/resources/start-page-web-file-manager.html');
+                            window.location.replace('/res/start-page-web-file-manager.html');
                         }
                         else {
                             alert("Error. It is not possible to upload file. ");
@@ -79,7 +79,7 @@ angular.module('frontendServices', [])
                     .then(function (response) {
                         if (response.status == 200) {
                             deferred.resolve();
-                            window.location.replace('/resources/start-page-web-file-manager.html');
+                            window.location.replace('/res/start-page-web-file-manager.html');
                         }
                         else {
                             alert("Error. It is not possible to upload file. ");
@@ -142,7 +142,7 @@ angular.module('frontendServices', [])
                     .then(function (response) {
                         if (response.status == 200) {
                             deferred.resolve();
-                            window.location.replace('/resources/start-page-web-file-manager.html');
+                            window.location.replace('/res/start-page-web-file-manager.html');
                         }
                         else {
                             alert("Error. It is not possible to add to basket. ");
@@ -162,7 +162,7 @@ angular.module('frontendServices', [])
                 })
                     .then(function (response) {
                         if (response.status == 200) {
-                            window.location.replace('/resources/start-page-web-file-manager.html');
+                            window.location.replace('/res/start-page-web-file-manager.html');
                         }
                         else {
                         }
@@ -182,7 +182,7 @@ angular.module('frontendServices', [])
                     .then(function (response) {
                         if (response.status == 200) {
                             deferred.resolve();
-                            window.location.replace('/resources/start-page-web-file-manager.html');
+                            window.location.replace('/res/start-page-web-file-manager.html');
                         }
                         else {
                             alert("Error. It is not possible to return from basket. ");
@@ -217,7 +217,7 @@ angular.module('frontendServices', [])
                 })
                     .then(function (response) {
                         if (response.status == 200) {
-                            window.location.replace('/resources/public/login.html');
+                            window.location.replace('/res/public/login.html');
                         }
                         else {
                             alert("Error. It is not possible to log out. ");
@@ -240,7 +240,7 @@ angular.module('frontendServices', [])
                     if (response.status == 200) {
                         deferred.resolve(response.data);
                         alert("Your file download successful.");
-                        window.location.assign('/resources/start-page-web-file-manager.html');
+                        window.location.assign('/res/start-page-web-file-manager.html');
                     }
                     else if (response.status == 400) {
                         deferred.reject('Error. File with name already exist');
