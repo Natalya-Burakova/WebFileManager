@@ -38,8 +38,8 @@ angular.module('common', ['ngMessages'])
                 url: '/authenticate',
                 data: postData,
                 headers: {
-                    "Content-Type": "application/json",
-                    "Accept": "text/plain"
+                    "Content-Type": "application/x-www-form-urlencoded",
+                    "X-Login-Ajax-call": 'true'
                 }
             })
                 .then(function(response) {

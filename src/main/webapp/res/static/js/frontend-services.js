@@ -18,12 +18,12 @@ angular.module('frontendServices', [])
                 return deferred.promise;
             },
 
-            addFileInfo: function(name, info) {
+            addFileInfo: function(id, info) {
                 var deferred = $q.defer();
 
                 $http({
                     method: 'PUT',
-                    url: '/file/info/' + name,
+                    url: '/file/info/' + id,
                     data: info,
                     headers: {
                         "Content-Type": "application/json"
@@ -45,13 +45,13 @@ angular.module('frontendServices', [])
 
             },
 
-            replaceFileIn: function(file,  name) {
+            replaceFileIn: function(file,  id) {
                 var deferred = $q.defer();
                 var fd = new FormData();
                 fd.append('file', file);
                 $http({
                     method: 'POST',
-                    url: "/file/replace/" + name,
+                    url: "/file/replace/" + id,
                     data: fd,
                     transformRequest: angular.identity,
                     headers: {'Content-Type': undefined}
@@ -70,11 +70,11 @@ angular.module('frontendServices', [])
                 return deferred.promise;
             },
 
-            undoReplaceFileIn: function(name) {
+            undoReplaceFileIn: function(id) {
                 var deferred = $q.defer();
                 $http({
                     method: 'GET',
-                    url: "/file/undoreplace/" + name
+                    url: "/file/undoreplace/" + id
                 })
                     .then(function (response) {
                         if (response.status == 200) {
@@ -89,10 +89,10 @@ angular.module('frontendServices', [])
                 return deferred.promise;
             },
 
-            goToUrlFile: function(name) {
+            goToUrlFile: function(urlFile) {
                 var deferred = $q.defer();
 
-                $http.get(name,{ responseType: 'arraybuffer' })
+                $http.get(urlFile,{ responseType: 'arraybuffer' })
                     .then(function (response) {
                         if (response.status == 200 && response.data!=null) {
                             deferred.resolve(response.data);
@@ -240,7 +240,7 @@ angular.module('frontendServices', [])
                     if (response.status == 200) {
                         deferred.resolve(response.data);
                         alert("Your file download successful.");
-                        window.location.assign('/res/start-page-web-file-manager.html');
+                        window.location.assign('../../start-page-web-file-manager.html');
                     }
                     else if (response.status == 400) {
                         deferred.reject('Error. File with name already exist');

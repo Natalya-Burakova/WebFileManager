@@ -23,7 +23,7 @@ angular.module('newUserApp', ['common', 'spring-security-csrf-token-interceptor'
                 }
             })
                 .then(function (response) {
-                    if (response.status == 200) {
+                    if (response.status == 200)  {
                         $scope.login($scope.vm.userName, $scope.vm.password);
                     }
                     else {

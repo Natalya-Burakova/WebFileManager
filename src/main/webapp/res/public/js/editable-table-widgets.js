@@ -26,7 +26,7 @@ angular.module('editableTableWidgets', [])
             },
             transclude:true,
             replace:true,
-            templateUrl: '/res/public/partials/editable-cell.html',
+            templateUrl: '/res/static/partials/editable-cell.html',
             controller: ['$scope', function($scope) {
 
                 $scope.cellState = {

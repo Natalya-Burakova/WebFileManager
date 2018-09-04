@@ -66,6 +66,16 @@ public class FileDaoImpl implements FileDao{
     }
 
     @Override
+    public UploadFile getFileById(String id) {
+        List<UploadFile> listAllFiles = findAll();
+        for (UploadFile file : listAllFiles){
+            if (file.getId().equals(id))
+                return new UploadFile(file.getId(), file.getNameFile(), file.getUser(), file.getFile(), file.getType(), file.getStatus(), file.getData(), file.getInfo(), file.getCount());
+        }
+        return null;
+    }
+
+    @Override
     public UploadFile getFileByName(String nameFile) {
         List<UploadFile> listAllFiles = findAll();
         for (UploadFile file : listAllFiles){

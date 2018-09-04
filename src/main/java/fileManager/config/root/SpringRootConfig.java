@@ -1,5 +1,7 @@
 package fileManager.config.root;
 
+
+import fileManager.app.services.UserDetailsServiceImpl;
 import org.hsqldb.util.DatabaseManagerSwing;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -18,7 +20,6 @@ public class SpringRootConfig {
 
     @Autowired
     DataSource dataSource;
-
 
     @Bean
     public NamedParameterJdbcTemplate getNamedParameterJdbcTemplate() {

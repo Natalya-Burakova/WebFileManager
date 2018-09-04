@@ -2,10 +2,6 @@
 ```
 Предварительная подготовка
 ```
-Необходимо ввести в терминале команду: **bower install**.
-
-Для того, чтобы установить необходимые библиотеки.
-
 Для сборки приложения используется maven: **mvn clean package**
 
 Для запуска jar-файла перейти в директорию target (cd target) и запустить: **java -jar file-manager-jar-with-dependencies.jar**
@@ -70,10 +66,10 @@
 /file/upload                    **POST**    добавление выбранного пользователем файла в бд
 /file                           **DELETE**  запрос на удаление выбранных файлов
 /file/addToBasket               **POST**    добавление выбранных файлов в корзину
-/file/{fileName}                **GET**     запрос на полученеи файла из бд
+/file/{id}                **GET**     запрос на полученеи файла из бд
 /file//returnFromBasket         **POST**    вернуть выбранные файлы из корзины
-/file/rename/{urlFile}          **PUT**     переименовать выбранный файл
-/file/replace/{fileName}        **POST**    заменить выбранный файл
-/file/undoreplace/{fileName}    **GET**     откатить операцию замены
-/file/info/{fileName}           **PUT**     добавление информации выбранному файлу
+/file/rename/{id}          **PUT**     переименовать выбранный файл
+/file/replace/{id}        **POST**    заменить выбранный файл
+/file/undoreplace/{id}    **GET**     откатить операцию замены
+/file/info/{id}           **PUT**     добавление информации выбранному файлу
 ```

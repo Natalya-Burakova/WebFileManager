@@ -4,8 +4,8 @@ require.config({
         angularMessages: '../../bower_components/angular-messages/angular-messages',
         csrfInterceptor: '../../bower_components/spring-security-csrf-token-interceptor/dist/spring-security-csrf-token-interceptor.min',
         lodash: "../../bower_components/lodash/dist/lodash",
-        editableTableWidgets: '../../static/js/editable-table-widgets',
-        frontendServices: 'frontend-services',
+        editableTableWidgets: '../../public/js/editable-table-widgets',
+        frontendServices: './frontend-services',
         fileManagerApp: "web-file-manager-app"
     },
     shim: {

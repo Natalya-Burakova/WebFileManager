@@ -6,8 +6,8 @@
     <title>Web File Manager</title>
     <link rel="stylesheet" href="/res/bower_components/pure/pure.css">
     <link rel="stylesheet" href="/res/bower_components/pure/grids-responsive.css">
-    <link rel="stylesheet" href="/res/static/css/pure-theme.css">
-    <link rel="stylesheet" href="/res/static/css/file-manager.css">
+    <link rel="stylesheet" href="/res/public/css/pure-theme.css">
+    <link rel="stylesheet" href="/res/public/css/file-manager.css">
 </head>
 <body class="pure-skin-theme" id="fileManagerApp" ng-controller="FileManagerCtrl">
 
@@ -69,20 +69,20 @@
                         <input type="text" tt-cell-field ng-model="file.size" readonly/>
                     </td>
                     <td class="table-buttons" >
-                        <button type="button" ng-click="goToUrlFile(file.urlFile)" ng-disabled="file.status" disabled>-></button>
+                        <button type="button" ng-click="goToUrlFile(file.urlFile, file.nameFile)" ng-disabled="file.status" disabled>-></button>
                     </td>
                     <td tt-editable-cell  value="file.status" is-new="file.status">
                         <input type="text" tt-cell-field ng-model="file.status" readonly/>
                     </td>
                     <td class="table-buttons">
-                        <button type="button" ng-click="addFileInfo(file.nameFile)" ng-disabled="file.status"  disabled>+</button>
+                        <button type="button" ng-click="addFileInfo(file.id)" ng-disabled="file.status"  disabled>+</button>
                     </td>
                     <td tt-editable-cell  value="file.info" is-new="file.info">
                         <input type="text" tt-cell-field ng-model="file.info" readonly/>
                     </td>
                     <td class="table-buttons">
-                        <button type="button" ng-click="replaceFile(file.nameFile)" ng-disabled="file.newReplaceFile"  disabled>Replace</button>
-                        <button type="button" ng-click="undoReplace(file.nameFile)" ng-disabled="file.undoReplaceFile"  disabled>Undo replace</button>
+                        <button type="button" ng-click="replaceFile(file.id)" ng-disabled="file.newReplaceFile"  disabled>Replace</button>
+                        <button type="button" ng-click="undoReplace(file.id)" ng-disabled="file.undoReplaceFile"  disabled>Undo replace</button>
                     </td>
                     <input type="file" name="avatar" id="avatar" file-model="avatar" style="display: none">
                 </tr>

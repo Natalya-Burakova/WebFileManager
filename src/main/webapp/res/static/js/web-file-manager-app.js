@@ -208,8 +208,7 @@ angular.module('fileManagerApp', ['editableTableWidgets', 'frontendServices', 's
                     alert("Error. File is not select. ")
             };
 
-            $scope.goToUrlFile = function (data) {
-                var fileName = data.toString().substring(data.toString().lastIndexOf("/")+1,data.toString().length);
+            $scope.goToUrlFile = function (data, fileName) {
                 FileService.goToUrlFile(data)
                     .then(function (value) {
                         if (value!=null) {
@@ -229,32 +228,32 @@ angular.module('fileManagerApp', ['editableTableWidgets', 'frontendServices', 's
                     })
             };
 
-            $scope.addFileInfo = function (name) {
+            $scope.addFileInfo = function (id) {
                 var info = prompt("Window for entering information about the file: ");
                 if (info != "") {
-                    FileService.addFileInfo(name, info);
+                    FileService.addFileInfo(id, info);
                 }
                 else {
                     alert("Your info text is empty. ")
                 }
             };
 
-            $scope.replaceFile = function (name) {
+            $scope.replaceFile = function (id) {
                 document.getElementById("avatar").click();
                 var input = document.querySelector("input[name=avatar]");
 
                 input.onchange = function () {
                     var file = document.getElementById("avatar").files[0];
                     if (file!=null || file!=undefined) {
-                        FileService.replaceFileIn(file,  name);
+                        FileService.replaceFileIn(file,  id);
                     }
                     else alert("Error. File is not select. ")
                 }
 
             };
 
-            $scope.undoReplace = function (name) {
-                FileService.undoReplaceFileIn(name);
+            $scope.undoReplace = function (id) {
+                FileService.undoReplaceFileIn(id);
             }
 
 

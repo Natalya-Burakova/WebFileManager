@@ -16,8 +16,7 @@ public class UploadFile {
         private Integer count;
 
 
-        public UploadFile(String nameFile) { this.nameFile = nameFile;
-        }
+        public UploadFile(String nameFile) { this.nameFile = nameFile; }
 
 
         public UploadFile(String id, String nameFile, String user_id, byte[] file, String type, String status, Date data, String info, Integer count) {

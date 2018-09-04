@@ -10,4 +10,5 @@
         <welcome-file>res/public/login.htm</welcome-file>
         <welcome-file>res/public/login.jsp</welcome-file>
     </welcome-file-list>
+
 </web-app>

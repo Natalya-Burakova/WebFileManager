@@ -9,6 +9,7 @@ import java.util.List;
 public interface FileDao extends CrudDao<UploadFile>{
     List<UploadFile> findFilesForUser(User user);
     boolean isFileExist(UploadFile file);
+    UploadFile getFileById(String id);
     UploadFile getFileByName(String fileName);
     List<UploadFile> findAll();
     int updateCount(UploadFile model);

@@ -64,6 +64,12 @@ public class FileService {
         return fileDao.isFileExist(file);
     }
 
+
+
+    public UploadFile findFileByFileId(String id) {
+        return fileDao.getFileById(id);
+    }
+
     public UploadFile findFileByFileName(String fileName) {
         return fileDao.getFileByName(fileName);
     }

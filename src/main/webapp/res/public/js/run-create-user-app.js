@@ -4,9 +4,9 @@ require.config({
         angularMessages: '../../bower_components/angular-messages/angular-messages',
         csrfInterceptor: '../../bower_components/spring-security-csrf-token-interceptor/dist/spring-security-csrf-token-interceptor.min',
         lodash: "../../bower_components/lodash/dist/lodash",
-        editableTableWidgets: 'editable-table-widgets',
-        common: 'common',
-        loginApp: 'login'
+        editableTableWidgets: './editable-table-widgets',
+        common: './common',
+        createUserApp: './new-user'
     },
     shim: {
         angular: {
@@ -24,12 +24,14 @@ require.config({
         common: {
             deps: ['angular', 'csrfInterceptor', 'angularMessages','editableTableWidgets']
         },
-        loginApp: {
+        createUserApp: {
             deps: [ 'common']
         }
     }
 });
 
-require(['loginApp'], function () {
-    angular.bootstrap(document.getElementById('loginApp'), ['loginApp']);
+require(['createUserApp'], function () {
+
+    angular.bootstrap(document.getElementById('createUserApp'), ['newUserApp']);
+
 });
