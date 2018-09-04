@@ -2,7 +2,7 @@
   "name": "WebFileManager",
   "version": "1.0",
   "authors": ["n-byrakova@mail.ru"],
-  "description": "Sample Spring MVC | AngularJs project - Web File Manager",
+  "description": "Web File Manager",
   "dependencies": {
     "angular": "1.3.8",
     "angular-messages": "1.3.8",

@@ -17,9 +17,6 @@ public class Main {
     public static void main(String[] args) throws Exception {
         BasicConfigurator.configure();
 
-        System.out.println( System.getProperty("commandLine"));
-        System.out.println("HELLO)");
-
         String contextPath = "/" ;
         String appBase = ".";
         Tomcat tomcat = new Tomcat();

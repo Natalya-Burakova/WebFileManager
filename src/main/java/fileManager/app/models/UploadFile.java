@@ -2,6 +2,7 @@ package fileManager.app.models;
 
 import java.util.Date;
 
+
 public class UploadFile {
 
         private String id;
@@ -14,11 +15,10 @@ public class UploadFile {
         private byte[] file;
         private Integer count;
 
-        public UploadFile() {}
 
-        public UploadFile(String nameFile) {
-        this.nameFile = nameFile;
-    }
+        public UploadFile(String nameFile) { this.nameFile = nameFile;
+        }
+
 
         public UploadFile(String id, String nameFile, String user_id, byte[] file, String type, String status, Date data, String info, Integer count) {
                 this.id = id;
@@ -32,7 +32,8 @@ public class UploadFile {
                 this.count = count;
         }
 
-        public String  getId() {
+
+        public String getId() {
             return id;
         }
         public void setId(String id) { this.id = id; }
@@ -44,7 +45,7 @@ public class UploadFile {
         }
 
 
-        public String getUser() {
+        public String  getUser() {
             return user;
         }
         public void setUser(String user) {

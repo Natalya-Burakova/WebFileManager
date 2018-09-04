@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @Repository
 public class UserDaoImpl implements UserDao{
@@ -26,13 +27,13 @@ public class UserDaoImpl implements UserDao{
     //language=SQL
     private final String SQL_SELECT_ALL = "select * from new_user";
     //language=SQL
-    private final String INSERT_USER = "insert into new_user(login, mail, password) values (:login, :mail, :password)";
+    private final String INSERT_USER = "insert into new_user(id, login, mail, password) values (:id, :login, :mail, :password)";
     //language=SQL
     private final String DELETE_USER = "delete from new_user WHERE login = :login";
 
 
     private RowMapper<User> userRowMapper = (resultSet, i) -> {
-        User user =  new User(Integer.parseInt(resultSet.getString("id")), resultSet.getString("login"), resultSet.getString("mail"), resultSet.getString("password"));
+        User user =  new User(resultSet.getString("id"), resultSet.getString("login"), resultSet.getString("mail"), resultSet.getString("password"));
         return user;
     };
 
@@ -40,6 +41,7 @@ public class UserDaoImpl implements UserDao{
     @Override
     public int save(User user) {
         Map<String, Object> paramMap = new HashMap<String, Object>();
+        paramMap.put("id", user.getId());
         paramMap.put("login", user.getLogin());
         paramMap.put("mail", user.getMail());
         paramMap.put("password", user.getPassword());
@@ -62,19 +64,6 @@ public class UserDaoImpl implements UserDao{
         for (User user : listAllUsers){
             if (user.getLogin().equals(login))
                 return new User(user.getId(), login, user.getMail(), user.getPassword());
-        }
-        return null;
-    }
-
-    @Override
-    public User findUserById(Integer id) {
-        System.out.println("find user");
-        List<User> listAllUsers = findAll();
-        for (User user : listAllUsers){
-            if (user.getId().equals(id)) {
-                System.out.println("nashel");
-                return new User(id, user.getLogin(), user.getMail(), user.getPassword());
-            }
         }
         return null;
     }

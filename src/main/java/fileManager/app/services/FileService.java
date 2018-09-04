@@ -68,8 +68,6 @@ public class FileService {
         return fileDao.getFileByName(fileName);
     }
 
-    public UploadFile findFileById(String id) { return fileDao.getFileById(id); }
-
     public void updateCount(UploadFile file) {
         fileDao.updateCount(file);
     }

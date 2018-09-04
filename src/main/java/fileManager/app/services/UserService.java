@@ -26,7 +26,7 @@ public class UserService {
     @Autowired
     private UserDaoImpl usersDao;
 
-    public void createUser(String login, String mail, String password) {
+    public void createUser(String id, String login, String mail, String password) {
         assertNotBlank(login, "Login cannot be empty.");
         assertMinimumLength(login, 6, "Login must have at least 6 characters.");
         assertNotBlank(mail, "Email cannot be empty.");
@@ -36,13 +36,11 @@ public class UserService {
 
         if (!usersDao.isLoginAvailable(login)) throw new IllegalArgumentException("The login is not available.");
 
-        User user = new User(UUID.randomUUID().toString(), login, mail, new BCryptPasswordEncoder().encode(password));
+        User user = new User(id, login, mail, new BCryptPasswordEncoder().encode(password));
         usersDao.save(user);
     }
 
     public User findUserByLogin(String login) { return usersDao.findUserByLogin(login);}
-
-    public User findUserById(Integer id) { return usersDao.findUserById(id);}
 
     public boolean isUserExist(User user) { return usersDao.isLoginAvailable(user.getLogin()); }
 

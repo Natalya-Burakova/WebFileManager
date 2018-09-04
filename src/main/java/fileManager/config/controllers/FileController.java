@@ -48,10 +48,10 @@ public class FileController {
         List<UploadFile> savedFiles = fileService.findFileForUser(user.getUsername());
 
         List<FileDto> listFile = new ArrayList<FileDto>();
-        List<Integer> idList = new ArrayList<Integer>();
+        List<String> idList = new ArrayList<String>();
         for (UploadFile file: savedFiles) {
             if (!file.getStatus().equals("true") && !file.getStatus().equals("false")) {
-                Integer id = Integer.parseInt(file.getStatus().substring(file.getStatus().lastIndexOf("/")+1));
+                String id = file.getStatus().substring(file.getStatus().lastIndexOf("/")+1);
                 idList.add(id);
             }
         }

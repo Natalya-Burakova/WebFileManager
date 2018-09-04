@@ -1,0 +1,9 @@
+{
+  "name": "web",
+  "devDependencies": {
+    "bower": "~1.6.5"
+  },
+  "engines": {
+    "node": ">=0.10.40"
+  }
+}

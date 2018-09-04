@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @Repository
 public class FileDaoImpl implements FileDao{
@@ -42,7 +43,7 @@ public class FileDaoImpl implements FileDao{
 
 
     private RowMapper<UploadFile> fileRowMapper = (resultSet, i) -> {
-        UploadFile uploadFile =  new UploadFile(resultSet.getString("id"), resultSet.getString("name_file"), resultSet.getInt("user_id"), resultSet.getBytes("file"), resultSet.getString("type"), resultSet.getString("status"), resultSet.getDate("data"), resultSet.getString("info"), resultSet.getInt("count_down"));
+        UploadFile uploadFile =  new UploadFile(resultSet.getString("id"), resultSet.getString("name_file"),resultSet.getString("user_id"), resultSet.getBytes("file"), resultSet.getString("type"), resultSet.getString("status"), resultSet.getDate("data"), resultSet.getString("info"), resultSet.getInt("count_down"));
         return uploadFile;
     };
 
@@ -53,15 +54,6 @@ public class FileDaoImpl implements FileDao{
         return namedParameterJdbcTemplate.query(FIND_FILES_FOR_USER, paramMap, fileRowMapper);
     }
 
-    @Override
-    public UploadFile getFileById(String id) {
-        List<UploadFile> listAllFiles = findAll();
-        for (UploadFile file : listAllFiles){
-            if (file.getId().equals(id))
-                return new UploadFile(id, file.getNameFile(), file.getUser(), file.getFile(), file.getType(), file.getStatus(), file.getData(), file.getInfo(), file.getCount());
-        }
-        return null;
-    }
 
     @Override
     public boolean isFileExist(UploadFile fileUpload) {
@@ -82,7 +74,6 @@ public class FileDaoImpl implements FileDao{
         }
         return null;
     }
-
 
     @Override
     public List<UploadFile> findAll() {

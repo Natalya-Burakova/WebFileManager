@@ -1,13 +1,18 @@
 package fileManager.app.models;
 
+
 public class User {
 
-    private String  id;
+    private String id;
     private String login;
     private String mail;
     private String password;
 
-    public User(){}
+    public User(String login, String mail, String password) {
+        this.login = login;
+        this.mail = mail;
+        this.password = password;
+    }
 
     public User(String  id, String login, String mail, String password) {
         this.id = id;

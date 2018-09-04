@@ -2,3 +2,6 @@
 *.iml
 target
 out
+bower_components
+node
+node_modules

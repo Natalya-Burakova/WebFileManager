@@ -16,7 +16,6 @@ import java.io.IOException;
 @RequestMapping("/")
 public class StartController {
 
-
     @RequestMapping(method = RequestMethod.GET)
     public void start(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.getRequestDispatcher("res/public/login.html").forward(request, response);

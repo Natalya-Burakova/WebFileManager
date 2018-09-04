@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.UUID;
 
 
 @Controller
@@ -39,7 +40,7 @@ public class UserController {
     @RequestMapping(method = RequestMethod.POST)
     public void createUser(@RequestBody UserDto user,  HttpServletRequest request, HttpServletResponse response){
         User userEntity = new User(user.getLogin(), user.getMail(), user.getPassword());
-        userService.createUser(user.getLogin(), user.getMail(), user.getPassword());
+        userService.createUser(UUID.randomUUID().toString(), user.getLogin(), user.getMail(), user.getPassword());
         if (userService.isUserExist(userEntity)) {
             response.setStatus(HttpStatus.OK.value());
         } else response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
