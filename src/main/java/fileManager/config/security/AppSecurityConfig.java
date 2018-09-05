@@ -39,34 +39,35 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/res/public/**").permitAll()
-                .antMatchers("/res/static/img/**").permitAll()
+                .antMatchers("/res/private/img/**").permitAll()
                 .antMatchers("/res/bower_components/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/user").permitAll()
                 .anyRequest().authenticated()
+
                 .and()
                 .formLogin()
-                .defaultSuccessUrl("/res/start-page-web-file-manager.html")
+                .defaultSuccessUrl("/res/private/start-page-web-file-manager.html")
                 .loginProcessingUrl("/authenticate")
                 .usernameParameter("username")
                 .passwordParameter("password")
-                .successHandler(new AjaxAuthenticationSuccessHandler(new SavedRequestAwareAuthenticationSuccessHandler()))
+                .successHandler(new AuthSuccessHandler(new SavedRequestAwareAuthenticationSuccessHandler()))
                 .loginPage("/res/public/login.html")
+
                 .and()
                 .httpBasic()
+
                 .and()
                 .logout()
                 .logoutUrl("/logout")
                 .logoutSuccessUrl("/res/public/login.html")
                 .permitAll();
 
-        if ("true".equals(System.getProperty("httpsOnly"))) {
+        if ("true".equals(System.getProperty("httpsOnly")))
             http.requiresChannel().anyRequest().requiresSecure();
-        }
+
 
     }
 
     @Bean
-    public BCryptPasswordEncoder getBCryptPasswordEncoder(){
-        return new BCryptPasswordEncoder();
-    }
+    public BCryptPasswordEncoder getBCryptPasswordEncoder(){ return new BCryptPasswordEncoder(); }
 }

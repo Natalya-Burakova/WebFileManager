@@ -25,9 +25,7 @@ angular.module('common', ['ngMessages'])
             var password = $scope.vm.password != undefined ? $scope.vm.password : '';
             var email = $scope.vm.email != undefined ? $scope.vm.email : '';
 
-            return {login: username,
-                password: password,
-                mail: email};
+            return 'username=' + username + '&password=' + password + '&email=' + email;
         }
 
         $scope.login = function (username, password) {
@@ -43,8 +41,9 @@ angular.module('common', ['ngMessages'])
                 }
             })
                 .then(function(response) {
-                    if (response.status == 200) {
-                       window.location.replace('/res/start-page-web-file-manager.html');
+                    if (response.data == 'ok') {
+                        console.log("ok ajax");
+                       window.location.replace('/res/private/start-page-web-file-manager.html');
                     }
                     else {
                         $scope.vm.errorMessages = [];

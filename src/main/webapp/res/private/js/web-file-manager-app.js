@@ -156,7 +156,7 @@ angular.module('fileManagerApp', ['editableTableWidgets', 'frontendServices', 's
                             var i;
                             var message = "";
                             for (i = 0; i < spisok.length; i++) {
-                                message = message + "link: " + spisok[i].urlFile + ", count download: " + spisok[i].count +";<br/>";
+                                message = message + "file: " + spisok[i].nameFile + ", count download: " + spisok[i].count +";<br/>";
                             }
                         popup(message);
                         });

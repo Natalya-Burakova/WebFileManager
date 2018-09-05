@@ -8,13 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import java.security.Principal;
 import java.util.UUID;
 
 
@@ -28,10 +27,8 @@ public class UserController {
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
     @RequestMapping(method = RequestMethod.GET)
-    public UserDto getUserInfo(HttpServletRequest request, HttpServletResponse response) {
-       HttpSession session = request.getSession(false);
-       UserDetails userDetails = (UserDetails) session.getAttribute("user");
-       User user = userService.findUserByLogin(userDetails.getUsername());
+    public UserDto getUserInfo(Principal principal, HttpServletRequest request, HttpServletResponse response) {
+       User user = userService.findUserByLogin(principal.getName());
        return user != null ? new UserDto(user.getLogin()) : null;
     }
 

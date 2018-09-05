@@ -8,13 +8,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class AjaxAuthenticationSuccessHandler  implements AuthenticationSuccessHandler {
+public class AuthSuccessHandler implements AuthenticationSuccessHandler {
 
     private AuthenticationSuccessHandler defaultHandler;
 
-    public AjaxAuthenticationSuccessHandler(AuthenticationSuccessHandler defaultHandler) {
-        this.defaultHandler = defaultHandler;
-    }
+    public AuthSuccessHandler(AuthenticationSuccessHandler defaultHandler) { this.defaultHandler = defaultHandler; }
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -22,9 +20,7 @@ public class AjaxAuthenticationSuccessHandler  implements AuthenticationSuccessH
             response.getWriter().print("ok");
             response.getWriter().flush();
         }
-        else {
+        else
             defaultHandler.onAuthenticationSuccess(request, response, authentication);
-        }
-
     }
 }

@@ -5,16 +5,13 @@ import fileManager.app.dao.UserDaoImpl;
 
 import fileManager.app.models.User;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.UUID;
 import java.util.regex.Pattern;
 
-import static fileManager.app.services.Validation.assertMatches;
-import static fileManager.app.services.Validation.assertMinimumLength;
-import static fileManager.app.services.Validation.assertNotBlank;
 
 @Service
 public class UserService {
@@ -45,5 +42,8 @@ public class UserService {
     public boolean isUserExist(User user) { return usersDao.isLoginAvailable(user.getLogin()); }
 
 
+    private static void assertNotBlank(String username, String message) { if (StringUtils.isBlank(username)) throw new IllegalArgumentException(message); }
+    private static void assertMinimumLength(String username, int length, String message) { if (username.length() < length) throw new IllegalArgumentException(message); }
+    private static void assertMatches(String email, Pattern regex, String message) { if (!regex.matcher(email).matches()) throw new IllegalArgumentException(message); }
 
 }

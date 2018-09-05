@@ -13,7 +13,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,8 +21,8 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -42,10 +41,8 @@ public class FileController {
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
     @RequestMapping(method = RequestMethod.GET)
-    public FilesDto loadFiles(HttpServletRequest request, HttpServletResponse response) {
-        HttpSession session = request.getSession(false);
-        UserDetails user = (UserDetails) session.getAttribute("user");
-        List<UploadFile> savedFiles = fileService.findFileForUser(user.getUsername());
+    public FilesDto loadFiles(Principal principal, HttpServletRequest request, HttpServletResponse response) {
+        List<UploadFile> savedFiles = fileService.findFileForUser(principal.getName());
 
         List<FileDto> listFile = new ArrayList<FileDto>();
         List<String> idList = new ArrayList<String>();
@@ -72,10 +69,8 @@ public class FileController {
 
     @ResponseBody
     @RequestMapping(value="/upload", method = RequestMethod.POST)
-    public void uploadFile(@RequestParam(value = "file", required = true) MultipartFile file, HttpServletResponse response, HttpServletRequest request) throws IOException {
-        HttpSession session = request.getSession(false);
-        UserDetails userDetails = (UserDetails) session.getAttribute("user");
-        User user = userService.findUserByLogin(userDetails.getUsername());
+    public void uploadFile(Principal principal, @RequestParam(value = "file", required = true) MultipartFile file, HttpServletResponse response, HttpServletRequest request) throws IOException {
+        User user = userService.findUserByLogin(principal.getName());
         if (!fileService.isFileExist(new UploadFile(file.getOriginalFilename()))) {
             fileService.saveFile(user, file);
             response.setStatus(HttpStatus.OK.value());
@@ -151,10 +146,8 @@ public class FileController {
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
     @RequestMapping(value="/replace/{id}", method = RequestMethod.POST)
-    public void replaceFile(@RequestParam(value = "file", required = true) MultipartFile file, HttpServletRequest request, HttpServletResponse response) throws IOException {
-        HttpSession session = request.getSession(false);
-        UserDetails userDetails = (UserDetails) session.getAttribute("user");
-        User user = userService.findUserByLogin(userDetails.getUsername());
+    public void replaceFile(Principal principal, @RequestParam(value = "file", required = true) MultipartFile file, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        User user = userService.findUserByLogin(principal.getName());
 
         String id= request.getRequestURL().substring(request.getRequestURL().lastIndexOf("/") + 1);
         UploadFile uploadFile =  fileService.findFileByFileId(id);
@@ -178,10 +171,8 @@ public class FileController {
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
     @RequestMapping(value="/undoreplace/{id}", method = RequestMethod.GET)
-    public void undoReplaceFile(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        HttpSession session = request.getSession(false);
-        UserDetails userDetails = (UserDetails) session.getAttribute("user");
-        User user = userService.findUserByLogin(userDetails.getUsername());
+    public void undoReplaceFile(Principal principal, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        User user = userService.findUserByLogin(principal.getName());
 
         String id = request.getRequestURL().substring(request.getRequestURL().lastIndexOf("/") + 1);
         UploadFile uploadFile =  fileService.findFileByFileId(id);

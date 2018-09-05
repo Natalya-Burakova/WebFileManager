@@ -325,6 +325,5 @@
             <artifactId>h2</artifactId>
             <version>1.4.187</version>
         </dependency>
-
     </dependencies>
 </project>
