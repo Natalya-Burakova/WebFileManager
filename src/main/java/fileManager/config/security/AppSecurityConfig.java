@@ -54,9 +54,6 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginPage("/res/public/login.html")
 
                 .and()
-                .httpBasic()
-
-                .and()
                 .logout()
                 .logoutUrl("/logout")
                 .logoutSuccessUrl("/res/public/login.html")

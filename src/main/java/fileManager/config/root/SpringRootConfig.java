@@ -1,7 +1,6 @@
 package fileManager.config.root;
 
 
-import fileManager.app.services.UserDetailsServiceImpl;
 import org.hsqldb.util.DatabaseManagerSwing;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -28,6 +27,6 @@ public class SpringRootConfig {
 
     @PostConstruct
     public void startDBManager() {
-        DatabaseManagerSwing.main(new String[] { "--url", "jdbc:hsqldb:mem:mymemdb", "--user", "SA", "--password", ""});
+        DatabaseManagerSwing.main(new String[] { "--url", "jdbc:hsqldb:file:testdb", "--user", "SA", "--password", ""});
     }
 }
