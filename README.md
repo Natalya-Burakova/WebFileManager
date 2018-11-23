@@ -52,7 +52,7 @@
 ```
 **- Authentication**
 ```
-/authenticate	                **POST**	вход в систему
+/authenticate	                  **POST**	вход в систему
 /logout	                        **POST**	выход из текущего сейанса
 ```
 **- User** 
@@ -66,10 +66,10 @@
 /file/upload                    **POST**    добавление выбранного пользователем файла в бд
 /file                           **DELETE**  запрос на удаление выбранных файлов
 /file/addToBasket               **POST**    добавление выбранных файлов в корзину
-/file/{id}                **GET**     запрос на полученеи файла из бд
+/file/{id}                      **GET**     запрос на полученеи файла из бд
 /file//returnFromBasket         **POST**    вернуть выбранные файлы из корзины
-/file/rename/{id}          **PUT**     переименовать выбранный файл
-/file/replace/{id}        **POST**    заменить выбранный файл
-/file/undoreplace/{id}    **GET**     откатить операцию замены
-/file/info/{id}           **PUT**     добавление информации выбранному файлу
+/file/rename/{id}               **PUT**     переименовать выбранный файл
+/file/replace/{id}              **POST**    заменить выбранный файл
+/file/undoreplace/{id}          **GET**     откатить операцию замены
+/file/info/{id}                 **PUT**     добавление информации выбранному файлу
 ```
